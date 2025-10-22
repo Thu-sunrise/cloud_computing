@@ -1,0 +1,33 @@
+# Conventional Commit Template
+# -----------------------------
+# <type>(optional scope): <short summary>
+# 
+# [optional body]
+# 
+# [optional footer(s)]
+# 
+# Examples:
+#   feat: add new product detail page
+#   fix(cart): correct total price calculation
+#   docs: update setup guide
+#   refactor: simplify user controller logic
+#   chore: update dependencies
+#
+# -----------------------------
+# Common types:
+#   feat      - a new feature
+#   fix       - a bug fix
+#   refactor  - code improvement, not new feature or fix
+#   docs      - documentation only
+#   style     - formatting, no code change
+#   test      - add or update tests
+#   chore     - build/config/dependency changes
+#   perf      - performance improvements
+#   ci        - CI/CD configuration changes
+#
+# -----------------------------
+# Notes:
+# - Use imperative mood: "add", "fix", "update" (not "added", "fixed").
+# - Keep the first line under 72 characters.
+# - Leave a blank line between summary and body.
+# - Use body to explain the reason or detail if needed.

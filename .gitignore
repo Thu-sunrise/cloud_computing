@@ -1,9 +1,5 @@
 .vscode
 node_modules
 .package-lock.json
+.env
 
-*.log
-*.aux
-*.out
-*.synctex.gz
-# docs/requirements
