@@ -1,0 +1,28 @@
+{
+  "name": "second-hand-land",
+  "version": "1.0.0",
+  "description": "Fullstack e-commerce platform using React + Express",
+  "author": "Nguyen Trung An",
+  "contributors": [
+    "Ho Thi Minh Thu",
+    "Tran Gia Kiet",
+    "Phan Hoang Kien",
+    "Le Quoc Kiet"
+  ],
+  "keywords": [
+    "React",
+    "Express",
+    "MongoDB",
+    "Node.js",
+    "E-commerce"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Trung4n/second-hand-land.git"
+  }
+}
