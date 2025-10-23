@@ -13,10 +13,13 @@ import { AppError } from "./utils/AppError.js";
 export const createApp = () => {
   const app = express();
 
+  app.disable("x-powered-by"); // Security best practice
   app.use(helmet()); // Security headers
   app.use(cors({ origin: env.CORS_ORIGIN, credentials: true })); // CORS
   app.use(express.json({ limit: "1mb" })); // Body parser
-  app.use(morgan("dev")); // Logging
+  if (env.NODE_ENV !== "production") {
+    app.use(morgan("dev")); // Logger
+  }
   app.use(cookieParser()); // Cookie parser
 
   // Routes

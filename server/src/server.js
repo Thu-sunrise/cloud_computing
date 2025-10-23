@@ -12,6 +12,21 @@ const bootstrap = async () => {
   server.listen(env.PORT, () => {
     logger.info(`Server listening on port ${env.PORT}`);
   });
+
+  server.on("error", (err) => {
+    logger.error("Server error:", err);
+    process.exit(1);
+  });
+
+  process.on("SIGINT", () => {
+    logger.warn("Server shutting down (SIGINT)");
+    process.exit(0);
+  });
+
+  process.on("SIGTERM", () => {
+    logger.warn("Server shutting down (SIGTERM)");
+    process.exit(0);
+  });
 };
 
 bootstrap().catch((err) => {

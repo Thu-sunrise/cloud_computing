@@ -6,7 +6,7 @@ import { Routes, Route } from "react-router-dom";
 // import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 // import ChangePasswordPage from '@/pages/ChangePasswordPage';
 // import ProfilePage from '@/pages/ProfilePage';
-import PrivateRoute from "./PrivateRoute";
+import PrivateRouter from "./PrivateRouter";
 
 export default function AppRouter() {
   // YOUR CODE HERE
