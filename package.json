@@ -14,9 +14,11 @@
     "Express",
     "MongoDB",
     "Node.js",
+    "Vite",
     "E-commerce"
   ],
   "license": "MIT",
+  "postinstall": "npm install --prefix client && npm install --prefix server",
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
