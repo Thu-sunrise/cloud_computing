@@ -3,11 +3,12 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import createError from "http-errors";
+// import createError from "http-errors";
 
 import routes from "./routes/index.js";
 import { env } from "./config/env.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
+import { AppError } from "./utils/AppError.js";
 
 export const createApp = () => {
   const app = express();
@@ -21,7 +22,7 @@ export const createApp = () => {
   // Routes
   app.use("/api", routes);
   // 404 handler
-  app.use((_req, _res, next) => next(createError(404, "Not Found")));
+  app.use((_req, _res, next) => next(new AppError("Not Found", 404)));
   // Error handler
   app.use(errorHandler);
 

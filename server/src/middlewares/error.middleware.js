@@ -7,7 +7,8 @@ export const errorHandler = (err, _req, res, _next) => {
   let message = "Server error";
 
   if (env.NODE_ENV !== "production") {
-    logger.error(err);
+    // If you want to see detailed error, uncomment this
+    // logger.error(err);
   }
 
   if (err instanceof AppError) {
