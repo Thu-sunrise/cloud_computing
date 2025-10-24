@@ -1,19 +1,33 @@
-import base from "../eslint.config.js";
+import js from "@eslint/js";
 import n from "eslint-plugin-n";
-import security from "eslint-plugin-security";
+import importPlugin from "eslint-plugin-import";
+import prettier from "eslint-config-prettier";
+import globals from "globals";
 
 export default [
-  ...base,
+  {
+    ignores: ["node_modules", "dist", "eslint.config.js"],
+  },
+  js.configs.recommended,
+  n.configs["flat/recommended"],
+  importPlugin.flatConfigs.recommended,
+  prettier,
   {
     files: ["**/*.js"],
-    plugins: { n, security },
-    extends: ["plugin:n/recommended", "plugin:security/recommended"],
     languageOptions: {
-      globals: global.node,
+      ecmaVersion: "latest",
+      sourceType: "module",
     },
     rules: {
+      "no-console": "off",
       "n/no-missing-import": "off",
-      "security/detect-object-injection": "off",
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    },
+  },
+  {
+    files: ["**/*.test.js", "tests/**/*.js"],
+    languageOptions: {
+      globals: globals.jest,
     },
   },
 ];

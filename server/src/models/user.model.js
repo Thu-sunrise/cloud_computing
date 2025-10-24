@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
@@ -7,7 +8,7 @@ const userSchema = new mongoose.Schema(
     lastName: { type: String },
     password: { type: String, required: true },
     status: { type: String, enum: ["active", "inactive"], default: "active" },
-    role: { type: String, enum: ["customer", "admin"], default: "user" },
+    role: { type: String, enum: ["customer", "admin"], default: "customer" },
     // last login, created at, updated at will be handled by timestamps
   },
   { timestamps: true, discriminatorKey: "role" }

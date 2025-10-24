@@ -1,3 +1,4 @@
+/* eslint n/no-unpublished-import: "off" */
 // import { jest } from "@jest/globals";
 import request from "supertest";
 import mongoose from "mongoose";
