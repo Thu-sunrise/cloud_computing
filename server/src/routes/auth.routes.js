@@ -1,6 +1,6 @@
 import { Router } from "express";
-// import {register,...} from "../controllers/auth.controller.js";
-
+import {changePassword, login, register} from "../controllers/auth.controller.js";
+import { requireAuth } from "../middlewares/auth.middleware.js";
 export const router = Router();
 
 // DEFINE ROUTES HERE
@@ -9,4 +9,7 @@ export const router = Router();
 // router post /change-password
 // router post /forgot-password
 // Example:
-// router.post("/register", <middleware> ,register);
+// router.post("/register", register);
+router.post("/login", login);
+router.post("/change-password", requireAuth, changePassword);
+// module.exports = router;
