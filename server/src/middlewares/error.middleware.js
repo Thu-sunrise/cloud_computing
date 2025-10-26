@@ -8,7 +8,7 @@ export const errorHandler = (err, _req, res, _next) => {
 
   if (env.NODE_ENV !== "production") {
     // If you want to see detailed error, uncomment this
-    logger.error(err);
+    // logger.error(err);
   }
 
   if (err instanceof AppError) {
