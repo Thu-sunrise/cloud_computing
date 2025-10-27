@@ -1,0 +1,79 @@
+/* Container for each floating input group */
+.floating-group {
+  position: relative;
+  margin-bottom: 1.3rem;
+  width: 100%;
+}
+
+/* Input field styling */
+.floating-input {
+  width: 100%;
+  padding: 0.9rem 0.8rem;
+  font-size: 1rem;
+  border: 1.5px solid #cfcfcf;
+  border-radius: 8px;
+  outline: none;
+  background: white;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Focus state for input */
+.floating-input:focus {
+  border-color: #00b894; /* teal accent color */
+  box-shadow: 0 0 0 4px rgba(0, 184, 148, 0.08); /* subtle focus ring */
+}
+
+/* Floating label positioning */
+.floating-label {
+  position: absolute;
+  top: 50%;
+  left: 0.85rem;
+  transform: translateY(-50%);
+  color: #666;
+  background: white; /* prevent text overlapping input border */
+  padding: 0 0.3rem;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+/* Move label up when input is focused or has value */
+.floating-input:focus + .floating-label,
+.floating-input.has-value + .floating-label {
+  top: -8px;
+  left: 0.7rem;
+  font-size: 0.78rem;
+  color: #00b894; /* highlight color for active/focused label */
+}
+
+/* Error state styling for input */
+.has-error .floating-input {
+  border-color: #e11d48; /* red for error */
+}
+
+.has-error .floating-label {
+  color: #e11d48; /* red label when input has error */
+}
+
+/* Error message below input */
+.input-error {
+  color: #e11d48;
+  font-size: 0.82rem;
+  margin-top: 6px;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .floating-input {
+    padding: 0.8rem 0.6rem;
+    font-size: 0.95rem;
+  }
+  .floating-label {
+    left: 0.6rem;
+  }
+  .floating-input:focus + .floating-label,
+  .floating-input.has-value + .floating-label {
+    left: 0.55rem; /* adjust floating label position for small screens */
+  }
+}

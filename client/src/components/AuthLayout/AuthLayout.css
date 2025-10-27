@@ -1,0 +1,301 @@
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap");
+
+/* Reset box-sizing and remove default margin/padding */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Full screen layout */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* hide overall scrollbars */
+}
+
+/* Wrapper for login/register page */
+.auth-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  font-family: "Roboto", "Inter", sans-serif;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+/* Left image section */
+.auth-left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #8fb996;
+  padding: 2rem;
+  min-width: 300px;
+}
+
+/* Image inside left section */
+.auth-image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border-radius: 1rem;
+  border: 10px solid #7fa88d;
+  object-fit: cover;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  background: #fff;
+}
+
+/* Right form section */
+.auth-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 3rem;
+  min-width: 300px;
+  overflow-y: auto; /* enable vertical scroll if content overflows */
+}
+
+/* Form container */
+.auth-box {
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 1.25rem;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.5s ease; /* smooth fade-in on load */
+}
+
+/* Title styling */
+.auth-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3436;
+  margin-bottom: 0.5rem;
+}
+
+/* Subtitle / instructions */
+.form-subtitle {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+/* Form inputs layout */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Input fields styling */
+.auth-form input {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 16px;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+/* Focus effect for inputs */
+.auth-form input:focus {
+  border-color: #4b8063;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(75, 128, 99, 0.2);
+}
+
+/* Checkbox group layout */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 13px;
+  color: #4b8063;
+  flex-wrap: wrap; /* allow wrapping on small screens */
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+/* Links inside checkboxes */
+.checkbox-group a {
+  color: #4b8063;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.checkbox-group a:hover {
+  text-decoration: underline;
+}
+
+/* Error messages for checkboxes */
+.checkbox-error {
+  color: red;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* Options row: Remember Me + Forgot Password */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.form-options a {
+  color: #4b8063;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.form-options a:hover {
+  text-decoration: underline;
+}
+
+/* Primary submit button */
+.btn-primary {
+  background-color: #7fa88d;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  font-size: 16px;
+}
+
+.btn-primary:hover {
+  background-color: #6b9478;
+}
+
+/* Google login button */
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #3c4043;
+  font-weight: 500;
+  padding: 12px 0;
+  cursor: pointer;
+  width: 100%;
+  font-size: 15px;
+}
+
+.btn-google:hover {
+  background-color: #f7f8f8;
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Footer text */
+.form-footer {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 1rem;
+  color: #4b8063;
+}
+
+.form-footer a {
+  color: #4b8063;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tablet responsive */
+@media (max-width: 1024px) {
+  .auth-wrapper {
+    flex-direction: column;
+    height: auto;
+  }
+  .auth-left {
+    width: 100%;
+    max-height: 40vh;
+    padding: 1rem;
+  }
+  .auth-right {
+    width: 100%;
+    padding: 2rem 1.5rem;
+  }
+  .auth-box {
+    max-width: 90%;
+    padding: 2rem;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .auth-left {
+    display: none;
+  }
+  .auth-right {
+    width: 100%;
+    padding: 1rem;
+  }
+  .auth-box {
+    width: 95%;
+    padding: 1.5rem;
+    box-shadow: none;
+  }
+  .auth-title {
+    font-size: 1.8rem;
+  }
+  .form-footer {
+    font-size: 12px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .auth-form input {
+    padding: 12px;
+    font-size: 14px;
+  }
+  .form-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .checkbox-group {
+    gap: 0.3rem;
+    font-size: 12px;
+  }
+}
