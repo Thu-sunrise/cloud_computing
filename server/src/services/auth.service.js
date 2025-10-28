@@ -12,12 +12,12 @@ export const authService = {
     const user = await User.findOne({mail}).select("+password");
     // check if the user not exists
     if(!user){
-      throw new AppError("Email or password is incorrect", 401);
+      throw new AppError("Invalid email or password", 401);
     }
     // compare password
     const isMatch = await user.comparePassword(password);
     if(!isMatch){
-      throw new AppError("Email or password is incorrect", 401);
+      throw new AppError("Invalid email or password", 401);
     }
     // if user has been locked
     if (user.status === "inactive") {

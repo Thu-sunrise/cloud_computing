@@ -8,24 +8,22 @@ import { requireAuth } from "../middlewares/auth.middleware.js";
 
 export const register = asyncHandler(async (req, res) => {
   // YOUR CODE HERE
-  // const newUser = await new User({
-  //   mail: req.body.mail,
-  //   password: req.body.password,
-  // });
+  const newUser = await new User({
+    mail: req.body.mail,
+    password: req.body.password,
+  });
 
-  // //save to db
-  // const user = await newUser.save();
-  // user.password = undefined;
-  // res.status(200).json(user);
+  //save to db
+  console.log(newUser);
+  const user = await newUser.save();
+  console.log("luu thanh cong")
+  user.password = undefined;
+  res.status(200).json(user);
 });
 
 export const login = asyncHandler(async (req, res) => {
   const mail = req.body.mail;
   const password = req.body.password;
-  // check validate input
-  if (!mail || !password){
-    throw new AppError("Email and password are required", 400);
-  }
   // transfer the logic to the service
   const {token, user} = await authService.login({
     mail: mail, 
@@ -41,9 +39,7 @@ export const login = asyncHandler(async (req, res) => {
   // send response
   res.status(200).json({
     message: "Login successful",
-    data: {
-      user,
-    },
+    user: user,
   });
 });
 
@@ -52,13 +48,6 @@ export const changePassword = asyncHandler(async (req, res) => {
   const newPassword = req.body.newPassword;
   // get information from token
   const userId = req.user.id;
-  // DEBUG CONTROLLER
-  console.log("debug controller")
-  console.log(currentPassword);
-  console.log(newPassword);
-  console.log(userId);
-  // END DEBUG
-
   // check validate input
   if (!currentPassword || !newPassword){
     throw new AppError("Current Password and New Password are required", 400);
