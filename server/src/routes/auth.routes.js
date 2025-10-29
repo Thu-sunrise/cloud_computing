@@ -1,5 +1,5 @@
 import { Router } from "express";
-// import {register,...} from "../controllers/auth.controller.js";
+import { refeshToken } from "../controllers/auth.controller.js";
 
 export const router = Router();
 
@@ -10,3 +10,6 @@ export const router = Router();
 // router post /forgot-password
 // Example:
 // router.post("/register", <middleware> ,register);
+// router.post("/verify-otp", verifyOtp);
+
+router.post("/refresh-token", refeshToken);

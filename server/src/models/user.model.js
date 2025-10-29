@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     status: { type: String, enum: ["active", "inactive"], default: "active" },
     role: { type: String, enum: ["customer", "admin"], default: "customer" },
+    failedLoginAttempts: { type: Number, default: 0 },
     // last login, created at, updated at will be handled by timestamps
   },
   { timestamps: true, discriminatorKey: "role" }
