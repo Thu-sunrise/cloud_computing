@@ -1,6 +1,6 @@
 import Redis from "ioredis";
-import { env } from "./env.js";
 import { logger } from "../utils/logger.js";
+import { env } from "./env.js";
 
 const redis = new Redis({
   host: env.REDIS_HOST,
