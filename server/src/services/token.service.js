@@ -25,43 +25,61 @@ export const TokenService = {
       token: hashed,
       userAgent: req.headers["user-agent"],
       ip: req.ip,
-      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      // expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      expiresAt: new Date(Date.now() + 10 * 1000),
     });
 
     return raw;
   },
 
-  async verifyPersistentToken(rawToken) {
+  async verifyPersistentToken(rawToken, refresh = 0) {
     const hashed = PersistentToken.hash(rawToken);
 
-    const doc = await PersistentToken.findOne({ token: hashed, revoked: false });
-    if (!doc) return null;
+    let doc;
+    if (refresh == 0) doc = await PersistentToken.findOne({ token: hashed, revoked: false });
+    else doc = await PersistentToken.findOne({ token: hashed });
 
-    if (doc.expiresAt < Date.now()) {
+    if (!doc) return null;
+    if (doc.expiresAt < Date.now() && refresh == 0) {
       // expired -> revoke
       doc.revoked = true;
       doc.revokedAt = new Date();
       await doc.save();
-      return null;
+      // return null;
+      // Throw Expire Error here. Not Null doc
+      const err = new Error("Persistent token expired");
+      err.name = "TokenExpiredError";
+      throw err;
+    } else if (doc.expiresAt < Date.now() && refresh != 0) {
+      doc.revoked = true;
+      doc.revokedAt = new Date();
+      await doc.save();
     }
-
     return doc;
   },
 
   async rotatePersistentToken(oldTokenDoc, req) {
-    oldTokenDoc.revoked = true;
-    oldTokenDoc.revokedAt = new Date();
-    await oldTokenDoc.save();
+    // Find the old Persistent and adjust its attribute.
+    const hashedFind = PersistentToken.hash(oldTokenDoc);
+    // const doc = await PersistentToken.findOne({ token: hashedFind, revoked: false });
+    const doc = await PersistentToken.findOne({ token: hashedFind });
+    if (!doc) return null;
+    doc.revoked = true;
+    doc.revokedAt = new Date();
+    await doc.save();
 
+    // Generate new Persistent to replace
     const raw = PersistentToken.generateRawToken();
     const hashed = PersistentToken.hash(raw);
+
     // Create new token
     await PersistentToken.create({
-      userId: oldTokenDoc.userId,
+      userId: doc.userId,
       token: hashed,
       userAgent: req.headers["user-agent"],
       ip: req.ip,
-      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      // expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      expiresAt: new Date(Date.now() + 10 * 1000),
     });
 
     return raw;
@@ -70,7 +88,7 @@ export const TokenService = {
   /*
    * SESSION TOKEN METHODS
    */
-  createSessionToken(payload, expiresIn = "1h") {
+  createSessionToken(payload, expiresIn = "2s") {
     return jwt.sign(payload, env.JWT_SECRET, { expiresIn });
   },
 
@@ -78,7 +96,7 @@ export const TokenService = {
     try {
       return jwt.verify(token, env.JWT_SECRET);
     } catch (err) {
-      return null; // expired / invalid
+      throw err; // any Error that will later be handled
     }
   },
 
