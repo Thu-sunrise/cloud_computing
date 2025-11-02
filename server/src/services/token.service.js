@@ -35,26 +35,19 @@ export const TokenService = {
   async verifyPersistentToken(rawToken, refresh = 0) {
     const hashed = PersistentToken.hash(rawToken);
 
-    let doc;
-    if (refresh == 0) doc = await PersistentToken.findOne({ token: hashed, revoked: false });
-    else doc = await PersistentToken.findOne({ token: hashed });
+    const doc = await PersistentToken.findOne({ token: hashed });
 
-    if (!doc) return null;
     if (doc.expiresAt < Date.now() && refresh == 0) {
       // expired -> revoke
       doc.revoked = true;
       doc.revokedAt = new Date();
       await doc.save();
-      // return null;
       // Throw Expire Error here. Not Null doc
       const err = new Error("Persistent token expired");
       err.name = "TokenExpiredError";
       throw err;
-    } else if (doc.expiresAt < Date.now() && refresh != 0) {
-      doc.revoked = true;
-      doc.revokedAt = new Date();
-      await doc.save();
     }
+    // Refresh to return doc to convert data form old Token
     return doc;
   },
 
