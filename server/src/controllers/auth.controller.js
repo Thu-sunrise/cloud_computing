@@ -10,6 +10,9 @@ import { env } from "../config/env.js";
 export const register = asyncHandler(async (req, res) => {
   const { mail, password } = req.body;
 
+  if (mail === "" || password === "")
+    return res.status(400).json({ message: "You need to filled completely" });
+
   const isExisted = await AuthService.checkExistedUser(mail);
   if (isExisted) {
     return res.status(400).json({ message: "This email has already been used." });
@@ -38,6 +41,10 @@ export const register = asyncHandler(async (req, res) => {
 export const login = asyncHandler(async (req, res) => {
   // YOUR CODE HERE
   const { mail, password } = req.body;
+
+  if (mail === "" || password === "")
+    return res.status(400).json({ message: "You need to filled completely" });
+
   const user = await AuthService.login({ mail, password });
 
   // Generate Token
@@ -70,7 +77,46 @@ export const changePassword = asyncHandler(async (req, res) => {
 });
 
 export const forgotPassword = asyncHandler(async (req, res) => {
-  // YOUR CODE HERE
+  const { mail } = req.body;
+
+  // Check for required email
+  // if (!mail) {
+  //   return res.status(400).json({ message: "Email is required" });
+  // }
+
+  const user = AuthService.checkExistedUser(mail);
+  if (!user) res.status(400).json({ message: "Email has not been used before!" });
+
+  // Generate OTP
+  const otp = await OtpService.createOtp(mail);
+  console.log("otp", otp);
+
+  // Store otp into Redis
+  const key = `forgotUser:${mail}`;
+  const value = otp;
+  RedisService.set(key, value, env.OTP_EXPIRE_SEC);
+
+  // Send OTP email
+  await MailService.sendOtp(mail, otp);
+  return res
+    .status(200)
+    .json({ message: "OTP sent to your email, complete this to reset Password" });
+});
+
+export const forgotPasswordOTP = asyncHandler(async (req, res) => {
+  const { mail, newpassword, otp } = req.body;
+
+  // Verify OTP from Redis
+  const isValid = await OtpService.verifyOtp(mail, otp);
+  if (!isValid) {
+    return res.status(400).json({ message: "Invalid or expired OTP" });
+  }
+
+  // Change password on valid OTP
+  const user = await AuthService.forgotPasswordOTP({ mail, newpassword });
+  console.log(user);
+  if (!user) return res.status(500).json({ message: "Set new password failed. Try again!" });
+  return res.status(200).json({ message: "New password has been set.", user: user });
 });
 
 export const verifyOtp = asyncHandler(async (req, res) => {

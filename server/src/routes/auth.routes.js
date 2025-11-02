@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { login, refeshToken } from "../controllers/auth.controller.js";
-import { register, verifyOtp, testToken } from "../controllers/auth.controller.js";
-import { validateRegister } from "../middlewares/validate.middleware.js";
-import { requireAuth, requireAuth2 } from "../middlewares/auth.middleware.js";
+import { forgotPasswordOTP, login, refeshToken } from "../controllers/auth.controller.js";
+import { register, verifyOtp, testToken, forgotPassword } from "../controllers/auth.controller.js";
+import { validateInput } from "../middlewares/validate.middleware.js";
+import { requireAuth } from "../middlewares/auth.middleware.js";
 
 export const router = Router();
 
@@ -12,12 +12,16 @@ export const router = Router();
 // router post /change-password
 // router post /forgot-password
 // Example:
-router.post("/register", validateRegister, register);
+router.post("/register", validateInput, register);
 
-router.post("/login", login);
+router.post("/login", validateInput, login);
 
 router.post("/verify-otp", verifyOtp);
 
-router.get("/test-token", requireAuth2, testToken);
+router.post("/forgot-password", forgotPassword);
 
-router.post("/refresh-token", refeshToken);
+router.post("/forgot-password-otp", forgotPasswordOTP);
+
+router.get("/test-token", requireAuth, testToken);
+
+router.post("/refresh-token", requireAuth, refeshToken);

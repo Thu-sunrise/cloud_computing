@@ -34,7 +34,12 @@ export const AuthService = {
   async changePassword({ userId, currentPassword, newPassword }) {
     // YOUR CODE HERE
   },
-  async forgotPassword({ mail }) {
-    // YOUR CODE HERE
+  async forgotPasswordOTP({ mail, newpassword }) {
+    const user = await User.findOne({ mail: mail });
+
+    // Change password
+    user.password = newpassword;
+    await user.save();
+    return user;
   },
 };
