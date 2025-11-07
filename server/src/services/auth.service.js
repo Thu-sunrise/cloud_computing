@@ -1,39 +1,43 @@
 import { User } from "../models/user.model.js";
-import { signToken } from "../utils/jwt.js";
 import { AppError } from "../utils/AppError.js";
 // import { use } from "react";
 
-export const authService = {
-  async register({ email, password }) {
+export const AuthService = {
+  async register({ mail, password }) {
     // YOUR CODE HERE
   },
 
   async login({ mail, password }) {
     const user = await User.findOne({mail}).select("+password");
+    console.log(user);
     // check if the user not exists
     if(!user){
       throw new AppError("Invalid email or password", 401);
     }
     // compare password
     const isMatch = await user.comparePassword(password);
+
     if(!isMatch){
+      user.failedLoginAttempts = (user.failedLoginAttempts || 0) + 1;
+      if (user.failedLoginAttempts >= 5 && user.status === "active") {
+        user.status = "inactive";
+      }
+      await user.save();
       throw new AppError("Invalid email or password", 401);
     }
     // if user has been locked
     if (user.status === "inactive") {
       throw new AppError("Your account has been locked.", 403);
     }
-    // create JWT token
-    const payload = {
-      id: user._id,
-      mail: user.mail,
-      role: user.role,
-    };
-    const token = signToken(payload);
+    // reset failed login attempts
+    if (user.failedLoginAttempts > 0){
+      user.failedLoginAttempts = 0;
+      await user.save();
+    }
     // delete password before returning to the client
     user.password = undefined;
     // return user to the client
-    return {token, user}
+    return user;
   },
 
   async changePassword({ userId, currentPassword, newPassword }) {
@@ -51,7 +55,7 @@ export const authService = {
     user.password = newPassword;
     await user.save();
   },
-  async forgotPassword({ email }) {
+  async forgotPassword({ mail }) {
     // YOUR CODE HERE
   },
 };

@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 // import createError from "http-errors";
 
 import routes from "./routes/index.js";
+import testRoute from "./routes/test.routes.js";
 import { env } from "./config/env.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import { AppError } from "./utils/AppError.js";
@@ -24,6 +25,7 @@ export const createApp = () => {
 
   // Routes
   app.use("/api", routes);
+  app.use("/test", testRoute);
   // 404 handler
   app.use((_req, _res, next) => next(new AppError("Not Found", 404)));
   // Error handler
