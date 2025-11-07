@@ -5,6 +5,7 @@ import RegisterPage from "../pages/AuthPage/RegisterPage";
 import ForgotPasswordPage from "../pages/AuthPage/ForgotPasswordPage";
 import ChangePasswordPage from "../pages/AuthPage/ChangePasswordPage";
 import HomePage from "../pages/HomePage/HomePage";
+import OtpPage from "../pages/AuthPage/OtpPage";
 
 function TitleUpdater() {
   const location = useLocation();
@@ -34,6 +35,7 @@ export default function AppRouter() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
+        <Route path="/verify-otp" element={<OtpPage />} />
         <Route path="/home" element={<HomePage />} />
       </Routes>
     </BrowserRouter>

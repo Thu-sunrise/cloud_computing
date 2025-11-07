@@ -5,9 +5,11 @@ import { useForm } from "../../hooks/useForm";
 import { validateForgotPassword } from "../../utils/validate";
 import { useAuth } from "../../hooks/useAuth";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordPage = () => {
   const { forgotPassword } = useAuth();
+  const navigate = useNavigate(); // ✅ dùng để chuyển trang
 
   const { form, errors, handleChange, handleSubmit } = useForm({
     initialValues: { email: "" },
@@ -15,7 +17,10 @@ const ForgotPasswordPage = () => {
     onSubmit: async (values) => {
       try {
         await forgotPassword(values);
-        toast.success("Password reset link sent!");
+        toast.success("OTP has been sent to your email!");
+
+        // ✅ chuyển sang trang OTP, kèm email
+        navigate("/verify-otp", { state: { email: values.email } });
       } catch (err) {
         toast.error(err.message);
       }
