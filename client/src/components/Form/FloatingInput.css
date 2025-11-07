@@ -1,0 +1,116 @@
+/* ===== BASE STYLES ===== */
+.floating-group {
+  position: relative;
+  margin-bottom: 1.3rem;
+  width: 100%;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.floating-input {
+  width: 100%;
+  padding: 0.9rem 2.5rem 0.9rem 0.8rem; /* chừa chỗ cho icon */
+  font-size: 1rem;
+  border: 1.5px solid #cfcfcf;
+  border-radius: 8px;
+  outline: none;
+  background: white;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.floating-input:focus {
+  border-color: #00b894;
+  box-shadow: 0 0 0 4px rgba(0, 184, 148, 0.08);
+}
+
+.floating-label {
+  position: absolute;
+  top: 50%;
+  left: 0.85rem;
+  transform: translateY(-50%);
+  color: #666;
+  background: white;
+  padding: 0 0.3rem;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.floating-input:focus + .floating-label,
+.floating-input.has-value + .floating-label {
+  top: -8px;
+  left: 0.7rem;
+  font-size: 0.78rem;
+  color: #00b894;
+}
+
+/* ===== TOGGLE BUTTON ===== */
+.toggle-password-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #00796b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.toggle-password-btn:hover {
+  background: rgba(0, 184, 148, 0.1);
+  color: #00564d;
+}
+
+/* ===== ERROR ===== */
+.has-error .floating-input {
+  border-color: #e11d48;
+}
+
+.has-error .floating-label {
+  color: #e11d48;
+}
+
+.input-error {
+  color: #e11d48;
+  font-size: 0.82rem;
+  margin-top: 6px;
+}
+
+/* ===== HIDE DEFAULT BROWSER ICON ===== */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none !important;
+}
+
+input[type="password"]::-webkit-textfield-decoration-container,
+input[type="password"]::-webkit-password-toggle,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  display: none !important;
+  appearance: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .floating-input {
+    padding: 0.8rem 2.2rem 0.8rem 0.6rem;
+  }
+  .floating-label {
+    left: 0.6rem;
+  }
+  .floating-input:focus + .floating-label,
+  .floating-input.has-value + .floating-label {
+    left: 0.55rem;
+  }
+}
