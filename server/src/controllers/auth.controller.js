@@ -18,7 +18,6 @@ export const register = asyncHandler(async (req, res) => {
 });
 
 export const login = asyncHandler(async (req, res) => {
-  console.log("test thu ham")
   const mail = req.body.mail;
   const password = req.body.password;
   console.log(mail, password);

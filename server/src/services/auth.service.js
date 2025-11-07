@@ -9,7 +9,6 @@ export const AuthService = {
 
   async login({ mail, password }) {
     const user = await User.findOne({mail}).select("+password");
-    console.log(user);
     // check if the user not exists
     if(!user){
       throw new AppError("Invalid email or password", 401);
