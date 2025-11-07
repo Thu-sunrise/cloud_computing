@@ -65,10 +65,10 @@ const LoginPage = () => {
           Login
         </button>
 
-        <button type="button" className="btn-google">
+        {/* <button type="button" className="btn-google">
           <img src="/g-logo.png" alt="Google" className="google-icon" />
           Login with Google
-        </button>
+        </button> */}
 
         <p className="form-footer">
           Don’t have an account? <a href="/register">Create Account</a>

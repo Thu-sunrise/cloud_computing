@@ -10,18 +10,21 @@ export const useForm = ({
 
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
-    setForm((prev) => ({ ...prev, [id]: type === "checkbox" ? checked : value }));
-
-    const next = { ...form, [id]: type === "checkbox" ? checked : value };
-    const v = validate(next);
-    setErrors(v);
+    setForm((prev) => {
+      const next = { ...prev, [id]: type === "checkbox" ? checked : value };
+      const validationErrors = validate(next);
+      setErrors(validationErrors);
+      return next;
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const v = validate(form);
-    setErrors(v);
-    if (Object.keys(v).length > 0) return;
+    const validationErrors = validate(form);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) return;
+
     await onSubmit(form);
   };
 

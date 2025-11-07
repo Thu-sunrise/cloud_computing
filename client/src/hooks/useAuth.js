@@ -1,41 +1,29 @@
 import { authApi } from "../api/authApi";
 
 export const useAuth = () => {
-  const login = async ({ email, password }) => {
+  const handleApi = async (apiCall, defaultError) => {
     try {
-      const data = await authApi.login({ email, password });
-      return data;
+      const res = await apiCall();
+      return res.data;
     } catch (err) {
-      throw new Error(err.message || "Login failed");
+      console.error(`${defaultError}:`, err);
+      const message =
+        err.response?.data?.message || err.message || `${defaultError} — Unknown error`;
+
+      throw new Error(message);
     }
   };
 
-  const register = async (payload) => {
-    try {
-      const data = await authApi.register(payload);
-      return data;
-    } catch (err) {
-      throw new Error(err.message || "Register failed");
-    }
-  };
+  const login = ({ email, password }) =>
+    handleApi(() => authApi.login({ email, password }), "Login error");
 
-  const forgotPassword = async ({ email }) => {
-    try {
-      const data = await authApi.forgotPassword({ email });
-      return data;
-    } catch (err) {
-      throw new Error(err.message || "Forgot password failed");
-    }
-  };
+  const register = (payload) => handleApi(() => authApi.register(payload), "Register error");
 
-  const changePassword = async (payload) => {
-    try {
-      const data = await authApi.changePassword(payload);
-      return data;
-    } catch (err) {
-      throw new Error(err.message || "Change password failed");
-    }
-  };
+  const forgotPassword = ({ email }) =>
+    handleApi(() => authApi.forgotPassword({ email }), "Forgot password error");
+
+  const changePassword = (payload) =>
+    handleApi(() => authApi.changePassword(payload), "Change password error");
 
   return { login, register, forgotPassword, changePassword };
 };

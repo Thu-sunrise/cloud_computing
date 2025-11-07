@@ -92,12 +92,11 @@ const RegisterPage = () => {
           I agree to the{" "}
           <a href="/terms" target="_blank" rel="noopener noreferrer">
             Terms & Conditions
-          </a>{" "}
-          and{" "}
+          </a>
+          {/* and{" "}
           <a href="/privacy" target="_blank" rel="noopener noreferrer">
             Privacy Policy
-          </a>
-          .
+          </a> */}
         </label>
         {errors.agreeTerms && <p className="checkbox-error">{errors.agreeTerms}</p>}
 
