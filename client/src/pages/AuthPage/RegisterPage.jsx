@@ -1,6 +1,6 @@
 import React from "react";
 import AuthLayout from "../../components/AuthLayout/AuthLayout";
-import FloatingInput from "../../components/Form/FloatingInput";
+import FloatingInput from "../../components/AuthLayout/FloatingInput";
 import { useForm } from "../../hooks/useForm";
 import { validateRegister } from "../../utils/validate";
 import { useAuth } from "../../hooks/useAuth";
@@ -31,9 +31,9 @@ const RegisterPage = () => {
 
   return (
     <AuthLayout title="Create Account">
-      <p className="form-subtitle">Sign up to get started!</p>
+      <p className="text-gray-500 text-center mb-8">Sign up to get started!</p>
 
-      <form onSubmit={handleSubmit} className="auth-form">
+      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         <FloatingInput
           id="name"
           type="text"
@@ -70,42 +70,57 @@ const RegisterPage = () => {
           error={errors.confirmPassword}
         />
 
-        <div className="form-options">
-          <label className="checkbox-group">
-            <input
-              type="checkbox"
-              id="rememberMe"
-              checked={form.rememberMe}
-              onChange={handleChange}
-            />
+        {/* Remember Me */}
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="rememberMe"
+            checked={form.rememberMe}
+            onChange={handleChange}
+            className="w-4 h-4 accent-[#7fa88d] rounded"
+          />
+          <label htmlFor="rememberMe" className="text-[#4b8063] text-sm">
             Remember Me
           </label>
         </div>
 
-        <label className="checkbox-group">
+        {/* Agree Terms */}
+        <div className="flex items-center gap-2">
           <input
             type="checkbox"
             id="agreeTerms"
             checked={form.agreeTerms}
             onChange={handleChange}
+            className="w-4 h-4 accent-[#7fa88d] rounded"
           />
-          I agree to the{" "}
-          <a href="/terms" target="_blank" rel="noopener noreferrer">
-            Terms & Conditions
-          </a>
-          {/* and{" "}
-          <a href="/privacy" target="_blank" rel="noopener noreferrer">
-            Privacy Policy
-          </a> */}
-        </label>
-        {errors.agreeTerms && <p className="checkbox-error">{errors.agreeTerms}</p>}
+          <label htmlFor="agreeTerms" className="text-[#4b8063] text-sm">
+            I agree to the{" "}
+            <a
+              href="/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline text-[#4b8063]"
+            >
+              Terms & Conditions
+            </a>
+          </label>
+        </div>
+        {errors.agreeTerms && <p className="text-rose-600 text-sm">{errors.agreeTerms}</p>}
 
-        <button type="submit" className="btn-primary">
+        {/* Register Button */}
+        <button
+          type="submit"
+          className="w-full bg-[#7fa88d] hover:bg-[#6b9478] text-white font-semibold py-3 rounded-lg transition-colors"
+        >
           Register
         </button>
 
-        <p className="form-footer">
-          Already have an account? <a href="/login">Login</a>
+        {/* Footer */}
+        <p className="text-center text-[#4b8063] mt-2">
+          Already have an account?{" "}
+          <a href="/login" className="font-semibold hover:underline">
+            Login
+          </a>
         </p>
       </form>
     </AuthLayout>

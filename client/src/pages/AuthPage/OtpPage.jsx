@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import AuthLayout from "../../components/AuthLayout/AuthLayout";
-import FloatingInput from "../../components/Form/FloatingInput";
+import FloatingInput from "../../components/AuthLayout/FloatingInput";
 import { toast } from "react-toastify";
-// import { useAuth } from "../../hooks/useAuth";
 
 const OtpPage = () => {
-  // const { verifyOtp } = useAuth();
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // const email = location.state?.email || "";
-
-  const email = "example@mail.com"; // dùng mail tạm
+  const email = "example@mail.com"; // temporary
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
 
@@ -21,16 +15,15 @@ const OtpPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const validation + verifyOtp tạm bỏ
     if (!otp.trim()) setError("OTP is required");
     else toast.success("OTP submitted (demo)");
   };
 
   return (
     <AuthLayout title="Verify OTP">
-      <p className="form-subtitle">Enter the 6-digit code we sent to your email</p>
+      <p className="text-gray-500 text-center mb-8">Enter the 6-digit code we sent to your email</p>
 
-      <form onSubmit={handleSubmit} className="auth-form">
+      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         <FloatingInput
           id="otp"
           label="Enter OTP"
@@ -39,13 +32,18 @@ const OtpPage = () => {
           onChange={handleChange}
           error={error}
         />
-
-        <button type="submit" className="btn-primary">
+        <button
+          type="submit"
+          className="w-full bg-[#7fa88d] hover:bg-[#6b9478] text-white font-semibold py-3 rounded-lg transition-colors"
+        >
           Verify
         </button>
 
-        <p className="form-footer">
-          Didn’t receive the code? <a href="/forgot-password">Resend OTP</a>
+        <p className="text-center text-sm text-[#4b8063] mt-4">
+          Didn’t receive the code?{" "}
+          <a href="/forgot-password" className=" font-semibold hover:underline">
+            Resend OTP
+          </a>
         </p>
       </form>
     </AuthLayout>

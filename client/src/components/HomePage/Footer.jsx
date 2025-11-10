@@ -1,55 +1,63 @@
 import React from "react";
-import "./Footer.css";
 
 const Footer = () => {
   return (
-    <section className="about-section">
-      <h2 className="about-title">
-        What is Second Hand Land?
-        <br />
-        <a href="/about" className="about-link">
-          Read our wonderfully weird story
-        </a>
-      </h2>
+    <footer className="bg-gray-50 text-gray-800 border-t border-gray-200">
+      <div className="max-w-7xl mx-auto px-6 py-12 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 justify-items-center">
+          {/* About */}
+          <div>
+            <h3 className="font-semibold mb-3">About</h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>About Second Hand Land</li>
+              <li>Our Mission</li>
+              <li>Sustainability</li>
+              <li>Blog / Tips</li>
+            </ul>
+          </div>
 
-      <div className="about-grid">
-        <div className="about-card">
-          <h3>Give Old Things New Life</h3>
-          <p>
-            We believe every pre-loved item has a story worth continuing. Instead of throwing things
-            away, let’s give them a second chance to be cherished.
-          </p>
-          <em>A small choice for you, a big step for the planet.</em>
+          {/* Buy & Sell */}
+          <div>
+            <h3 className="font-semibold mb-3">Buy & Sell</h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>How to Buy</li>
+              <li>How to Sell</li>
+              <li>Seller Guidelines</li>
+              <li>Pricing / Fees</li>
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div>
+            <h3 className="font-semibold mb-3">Support</h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>Help Center</li>
+              <li>Contact Us</li>
+              <li>Shipping & Returns</li>
+              <li>Terms & Privacy</li>
+            </ul>
+          </div>
+
+          {/* Connect */}
+          <div>
+            <h3 className="font-semibold mb-3">Connect</h3>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li>Facebook</li>
+              <li>Instagram</li>
+              <li>TikTok</li>
+              <li>Email Newsletter</li>
+            </ul>
+          </div>
         </div>
 
-        <div className="about-card">
-          <h3>Support Local & Sustainable Living</h3>
-          <p>
-            Every purchase you make supports local sellers and helps build a more sustainable way of
-            living together.
-          </p>
-          <em>Each item carries a touch of real human connection.</em>
-        </div>
-
-        <div className="about-card">
-          <h3>Shop Smart, Live Mindfully</h3>
-          <p>
-            Find unique, high-quality items at fair prices — because mindful shopping is something
-            to be proud of.
-          </p>
-          <p style={{ fontWeight: 300, fontStyle: "italic", fontSize: "small" }}>
-            Buy less, choose well.
+        <div className="mt-8 border-t border-gray-200 pt-6">
+          <p className="font-semibold italic">Second Hand Land — Giving old things a new story</p>
+          <p className="text-xs text-gray-500 mt-2">
+            © 2025 Second Hand Land. All rights reserved.
           </p>
         </div>
       </div>
-
-      <div className="help-section">
-        <p>
-          Have a question? <strong>We’re here to help.</strong>
-        </p>
-        <button className="help-btn">Go to Help Center</button>
-      </div>
-    </section>
+    </footer>
   );
 };
 

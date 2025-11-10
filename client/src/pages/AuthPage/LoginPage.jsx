@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "../../components/AuthLayout/AuthLayout";
-import FloatingInput from "../../components/Form/FloatingInput"; // sửa chữ F
+import FloatingInput from "../../components/AuthLayout/FloatingInput"; // Đã sửa chữ F
 import { useForm } from "../../hooks/useForm";
 import { validateLogin } from "../../utils/validate";
 import { useAuth } from "../../hooks/useAuth";
@@ -18,18 +18,21 @@ const LoginPage = () => {
     onSubmit: async (values) => {
       try {
         await login(values);
-        toast.success(" Login successful!");
+        toast.success("Login successful!");
         navigate("/home");
       } catch (err) {
-        toast.error(err.message);
+        toast.error(err.message || "Login failed");
       }
     },
   });
 
   return (
     <AuthLayout title="Login">
-      <p className="form-subtitle">Please enter your login details</p>
-      <form onSubmit={handleSubmit} className="auth-form">
+      {/* subtitle */}
+      <p className="text-gray-600 mb-6 text-center text-base">Please enter your login details</p>
+
+      {/* form */}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full animate-fadeIn">
         <FloatingInput
           id="email"
           type="email"
@@ -48,30 +51,49 @@ const LoginPage = () => {
           error={errors.password}
         />
 
-        <div className="form-options">
-          <label className="checkbox-group">
+        {/* remember + forgot password */}
+        <div className="flex justify-between items-center text-sm flex-wrap gap-2 text-[#4b8063]">
+          <label className="flex items-center gap-2">
             <input
               type="checkbox"
               id="rememberMe"
               checked={form.rememberMe}
               onChange={handleChange}
+              className="w-4 h-4 accent-[#7fa88d]"
             />
             Remember Me
           </label>
-          <a href="/forgot-password">Forgot Password?</a>
+
+          <a href="/forgot-password" className="font-semibold hover:underline">
+            Forgot Password?
+          </a>
         </div>
 
-        <button type="submit" className="btn-primary">
+        {/* login button */}
+        <button
+          type="submit"
+          className="bg-[#7fa88d] hover:bg-[#6b9478] text-white font-semibold py-3 rounded-lg w-full text-lg transition-colors"
+        >
           Login
         </button>
 
-        {/* <button type="button" className="btn-google">
-          <img src="/g-logo.png" alt="Google" className="google-icon" />
+        {/* optional google login */}
+        {/* 
+        <button
+          type="button"
+          className="flex items-center justify-center gap-2 border border-[#dadce0] rounded-lg bg-white text-[#3c4043] font-medium py-3 w-full text-base hover:bg-[#f7f8f8] transition"
+        >
+          <img src="/g-logo.png" alt="Google" className="w-5 h-5" />
           Login with Google
-        </button> */}
+        </button> 
+        */}
 
-        <p className="form-footer">
-          Don’t have an account? <a href="/register">Create Account</a>
+        {/* footer */}
+        <p className="text-center text-sm text-[#4b8063] mt-4">
+          Don’t have an account?{" "}
+          <a href="/register" className="font-semibold hover:underline">
+            Create Account
+          </a>
         </p>
       </form>
     </AuthLayout>

@@ -1,6 +1,6 @@
 import React from "react";
 import AuthLayout from "../../components/AuthLayout/AuthLayout";
-import FloatingInput from "../../components/Form/FloatingInput";
+import FloatingInput from "../../components/AuthLayout/FloatingInput";
 import { useForm } from "../../hooks/useForm";
 import { validateChangePassword } from "../../utils/validate";
 import { useAuth } from "../../hooks/useAuth";
@@ -28,8 +28,11 @@ const ChangePasswordPage = () => {
 
   return (
     <AuthLayout title="Change Password">
-      <p className="form-subtitle">Update your account password</p>
-      <form onSubmit={handleSubmit} className="auth-form" noValidate>
+      {/* Sub heading */}
+      <p className="text-gray-500 text-center mb-8">Update your account password</p>
+
+      {/* Form */}
+      <form onSubmit={handleSubmit} noValidate className="space-y-5">
         <FloatingInput
           id="oldPassword"
           type="password"
@@ -38,6 +41,7 @@ const ChangePasswordPage = () => {
           onChange={handleChange}
           error={errors.oldPassword}
         />
+
         <FloatingInput
           id="newPassword"
           type="password"
@@ -46,6 +50,7 @@ const ChangePasswordPage = () => {
           onChange={handleChange}
           error={errors.newPassword}
         />
+
         <FloatingInput
           id="confirmPassword"
           type="password"
@@ -55,7 +60,10 @@ const ChangePasswordPage = () => {
           error={errors.confirmPassword}
         />
 
-        <button type="submit" className="btn-primary">
+        <button
+          type="submit"
+          className="w-full bg-[#7fa88d] hover:bg-[#6b9478] text-white font-semibold py-3 rounded-lg transition-colors"
+        >
           Update Password
         </button>
       </form>

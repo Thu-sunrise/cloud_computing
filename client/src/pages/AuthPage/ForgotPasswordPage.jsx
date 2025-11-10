@@ -1,6 +1,6 @@
 import React from "react";
 import AuthLayout from "../../components/AuthLayout/AuthLayout";
-import FloatingInput from "../../components/Form/FloatingInput";
+import FloatingInput from "../../components/AuthLayout/FloatingInput";
 import { useForm } from "../../hooks/useForm";
 import { validateForgotPassword } from "../../utils/validate";
 import { useAuth } from "../../hooks/useAuth";
@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordPage = () => {
   const { forgotPassword } = useAuth();
-  const navigate = useNavigate(); // ✅ dùng để chuyển trang
+  const navigate = useNavigate();
 
   const { form, errors, handleChange, handleSubmit } = useForm({
     initialValues: { email: "" },
@@ -18,8 +18,6 @@ const ForgotPasswordPage = () => {
       try {
         await forgotPassword(values);
         toast.success("OTP has been sent to your email!");
-
-        // ✅ chuyển sang trang OTP, kèm email
         navigate("/verify-otp", { state: { email: values.email } });
       } catch (err) {
         toast.error(err.message);
@@ -29,8 +27,9 @@ const ForgotPasswordPage = () => {
 
   return (
     <AuthLayout title="Forgot Password">
-      <p className="form-subtitle">Enter your email to reset your password</p>
-      <form onSubmit={handleSubmit} className="auth-form">
+      <p className="text-gray-500 text-center mb-8">Enter your email to reset your password</p>
+
+      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         <FloatingInput
           id="email"
           type="email"
@@ -40,12 +39,18 @@ const ForgotPasswordPage = () => {
           error={errors.email}
         />
 
-        <button type="submit" className="btn-primary">
+        <button
+          type="submit"
+          className="w-full bg-[#7fa88d] hover:bg-[#6b9478] text-white font-semibold py-3 rounded-lg transition-colors"
+        >
           Send Reset Link
         </button>
 
-        <p className="form-footer">
-          Remember your password? <a href="/login">Back to Login</a>
+        <p className="text-center text-[#4b8063] mt-2">
+          Remember your password?{" "}
+          <a href="/login" className="font-semibold hover:underline">
+            Back to Login
+          </a>
         </p>
       </form>
     </AuthLayout>
