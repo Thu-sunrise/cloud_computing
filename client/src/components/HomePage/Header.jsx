@@ -1,40 +1,73 @@
 import React from "react";
-import { ShoppingCart, MessageCircle, Bell, User, Search } from "lucide-react";
+import { ShoppingCart, MessageCircle, Bell, User, Search, Menu } from "lucide-react";
 import logo from "../../assets/images/logo.png";
 
 function Header() {
   return (
-    <header className="flex items-center justify-between bg-[#7dac8c] px-5 py-1.5 h-[50px]">
-      {/* logo */}
-      <div className="flex-shrink-0">
-        <img src={logo} alt="Logo" className="h-[50px] object-contain" />
+    <header className="w-full">
+      {/* ==== TOP HEADER ==== */}
+      <div className="flex items-center justify-between bg-[#7dac8c] px-5 h-[70px]">
+        {/* Logo */}
+        <div className="h-auto w-auto">
+          <img
+            src={logo}
+            alt="Logo"
+            className="h-[70px] object-contain" // nhỏ hơn đúng trong ảnh
+          />
+        </div>
+
+        {/* Search Bar */}
+        <div className="relative w-[25%] flex items-center">
+          <input
+            type="text"
+            placeholder="Search"
+            className="w-full h-[40px] pl-4 pr-12 bg-[#f2f4f3] 
+                 rounded-lg text-[16px] text-gray-800 outline-none 
+                 border border-gray-300"
+          />
+
+          {/* Search icon style giống hình: nền vuông bo góc, màu navy */}
+          <button
+            className="absolute right-1 top-1/2 -translate-y-1/2 
+                w-8 h-8 bg-[#2f3b40] rounded-md 
+                flex items-center justify-center 
+                text-white hover:bg-[#3b4b52] transition"
+          >
+            <Search size={22} />
+          </button>
+        </div>
+
+        {/* Icons Right */}
+        <div className="flex items-center gap-6 p-10">
+          {[ShoppingCart, MessageCircle, Bell, User].map((Icon, idx) => (
+            <div
+              key={idx}
+              className="bg-white w-10 h-10 rounded-full flex items-center justify-center 
+                   cursor-pointer hover:bg-gray-200 hover:scale-105 transition shadow"
+            >
+              <Icon size={20} />
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="relative mx-10 max-w-[25%] flex-1">
-        <input
-          type="text"
-          placeholder="Search"
-          className="w-full h-8 pl-4 pr-10 bg-[#f6f6f6] rounded-full text-sm text-gray-800 outline-none border-none shadow-sm"
-        />
-        <button className="absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 bg-[#2f3b40] rounded-full flex items-center justify-center text-white hover:bg-[#3e4a50] transition-colors duration-200">
-          <Search size={14} />
-        </button>
-      </div>
+      {/* ==== NAV BAR SECOND LINE ==== */}
+      <div className="w-full bg-[#d4e2d8] h-[55px] flex items-center px-6 shadow-sm">
+        {/* All Category Button */}
+        <div
+          className="flex items-center gap-2 px-4 py-1 border rounded-lg bg-white cursor-pointer 
+                        hover:bg-gray-100 transition text-gray-700 font-medium shadow-sm"
+        >
+          <Menu size={20} />
+          <span>All Category</span>
+        </div>
 
-      {/* icon menu */}
-      <div className="flex items-center gap-9">
-        <div className="bg-white w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-transform duration-200 hover:bg-gray-200 hover:scale-105">
-          <ShoppingCart size={18} />
-        </div>
-        <div className="bg-white w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-transform duration-200 hover:bg-gray-200 hover:scale-105">
-          <MessageCircle size={18} />
-        </div>
-        <div className="bg-white w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-transform duration-200 hover:bg-gray-200 hover:scale-105">
-          <Bell size={18} />
-        </div>
-        <div className="bg-white w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-transform duration-200 hover:bg-gray-200 hover:scale-105">
-          <User size={18} />
-        </div>
+        {/* Nav Links */}
+        <nav className="flex items-center gap-10 ml-10 text-gray-700 font-medium text-[16px]">
+          <button className="hover:text-black transition">Home</button>
+          <button className="hover:text-black transition">About</button>
+          <button className="hover:text-black transition">Contact</button>
+        </nav>
       </div>
     </header>
   );

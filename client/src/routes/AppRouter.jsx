@@ -6,6 +6,9 @@ import ForgotPasswordPage from "../pages/AuthPage/ForgotPasswordPage";
 import ChangePasswordPage from "../pages/AuthPage/ChangePasswordPage";
 import HomePage from "../pages/HomePage/HomePage";
 import OtpPage from "../pages/AuthPage/OtpPage";
+import ViewProductPage from "../pages/ViewProductPage/ViewProductPage";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
+// import CategoryCard from "../components/HomePage/Category/CategoryCard";
 
 function TitleUpdater() {
   const location = useLocation();
@@ -17,6 +20,8 @@ function TitleUpdater() {
       "/forgot-password": "Forgot Password | SecondHandLand",
       "/change-password": "Change Password | SecondHandLand",
       "/home": "Home | SecondHandLand",
+      "/view-product": "View Product | SecondHandLand",
+      profile: "Profile | SecondHandLand",
     };
 
     document.title = pathTitleMap[location.pathname] || "SecondHandLand";
@@ -37,6 +42,8 @@ export default function AppRouter() {
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/verify-otp" element={<OtpPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/view-product" element={<ViewProductPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </BrowserRouter>
   );
