@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Electronics",
+    "description": "Used electronic devices"
+  },
+  {
+    "name": "Phones & Accessories",
+    "description": "Second-hand phones and accessories"
+  },
+  {
+    "name": "Computers & Laptops",
+    "description": "Used computers and laptops"
+  },
+  {
+    "name": "Cameras",
+    "description": "Used cameras and photography equipment"
+  },
+  {
+    "name": "Furniture",
+    "description": "Used home furniture"
+  },
+  {
+    "name": "Home Appliances",
+    "description": "Used household appliances"
+  },
+  {
+    "name": "Books",
+    "description": "Second-hand books"
+  },
+  {
+    "name": "Clothes",
+    "description": "Used clothes for men and women"
+  },
+  {
+    "name": "Shoes",
+    "description": "Used shoes"
+  },
+  {
+    "name": "Bags & Accessories",
+    "description": "Tote bags, backpacks, and other accessories"
+  },
+  {
+    "name": "Sports & Outdoors",
+    "description": "Used sports equipment and outdoor gear"
+  },
+  {
+    "name": "Toys & Games",
+    "description": "Second-hand toys and games"
+  },
+  {
+    "name": "Musical Instruments",
+    "description": "Used musical instruments"
+  },
+  {
+    "name": "Vehicles",
+    "description": "Used cars, bikes, and scooters"
+  },
+  {
+    "name": "Collectibles",
+    "description": "Collectible items and antiques"
+  }
+]

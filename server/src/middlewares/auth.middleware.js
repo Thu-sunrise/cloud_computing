@@ -2,24 +2,24 @@ import { TokenService } from "../services/token.service.js";
 
 export const requireAuth = async (req, res, next) => {
   const session = req.cookies.sessionToken;
-  const persistent = req.cookies.persistentToken;
   try {
     const payload = TokenService.verifySessionToken(session);
     if (payload) {
       req.user = payload;
       return next();
     }
-    return res.status(401).json({ message: "Invalid Session Token" });
   } catch (err) {
     // If Sessions Token expired, keep checking on Persistent Token
-    if (err.name === "TokenExpiredError") {
+    if (err.name === "SessionTokenExpiredError") {
       try {
+        const persistent = req.cookies.persistentToken;
+
         const doc = await TokenService.verifyPersistentToken(persistent);
         if (!doc) {
           return res.status(401).json({ message: "Invalid persistent token" });
         }
 
-        //Rotate Session Token inside Persistent Token Condition
+        // Rotate Session Token inside Persistent Token Condition
         const { newSessionToken, payload } = await TokenService.rotateSessionToken(doc.userId);
 
         if (!newSessionToken) {
@@ -37,16 +37,16 @@ export const requireAuth = async (req, res, next) => {
         return next();
       } catch (err) {
         // In case Persistent Token expired, request user to refresh them all.
-        if (err.name === "TokenExpiredError") {
+        if (err.name === "PersistentTokenExpiredError") {
           return res
             .status(400)
-            .json({ message: "Persistent Token has expired, please refresh it." });
+            .json({ message: "Persistent token has expired, please refresh it." });
         }
-        return res.status(401).json({ message: "Invalid Persistent Token" });
+        return res.status(401).json({ message: "Invalid persistent token" });
       }
     }
-    return res.status(401).json({ message: "Invalid Session Token" });
   }
+  return res.status(401).json({ message: "Invalid session token" });
 };
 
 export const requireRole = (...allowedRoles) => {
