@@ -1,0 +1,86 @@
+.home {
+  background-color: #f7f7f3;
+  color: #2f3b40;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Banner */
+.home__banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #d4e3cf;
+  padding: 40px 80px;
+  border-bottom: 1px solid #b6c4b0;
+}
+
+.banner__text h1 {
+  font-size: 36px;
+  color: #2f3b40;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.banner__text p {
+  font-size: 18px;
+  color: #4c5c53;
+}
+
+.banner__image img {
+  width: 300px;
+  max-width: 40vw;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Today's Picks */
+.home__picks {
+  padding: 40px 80px;
+  text-align: center;
+  background-color: #e8f1e7;
+}
+
+.home__picks h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  color: #2f3b40;
+  font-weight: 600;
+}
+
+/* About section */
+.home__about {
+  background-color: #d4e3cf;
+  padding: 60px 80px;
+  text-align: center;
+}
+
+.home__about h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #2f3b40;
+}
+
+.home__about p {
+  max-width: 700px;
+  margin: 0 auto 40px;
+  color: #4c5c53;
+  font-size: 14px;
+}
+
+.home__about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+}
+
+.home__about-grid h3 {
+  color: #2f3b40;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.home__about-grid p {
+  color: #4c5c53;
+  font-size: 13px;
+  line-height: 1.4;
+}
