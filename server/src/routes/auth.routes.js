@@ -6,6 +6,7 @@ import {
   forgotPassword,
   logout,
   refeshToken,
+  register,
 } from "../controllers/auth.controller.js";
 import { validateInput } from "../middlewares/validate.middleware.js";
 import { requireAuth } from "../middlewares/auth.middleware.js";
@@ -18,9 +19,11 @@ export const router = Router();
 // router post /change-password
 // router post /forgot-password
 // Example:
-router.post("/sendOTP", validateInput, sendOTP);
+router.post("/sendOTP", sendOTP);
 
-router.post("/login", validateInput, login);
+router.post("/register", register);
+
+router.post("/login", login);
 
 router.post("/forgot-password", forgotPassword);
 

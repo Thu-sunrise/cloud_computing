@@ -34,6 +34,10 @@ export const sendOTP = asyncHandler(async (req, res) => {
     storedMail = mail;
   } else if (type === "forgot-password") {
     const { mail } = req.body;
+    const isExisted = await AuthService.checkExistedUser(mail);
+    if (!isExisted) {
+      return res.status(400).json({ message: "No email found!" });
+    }
 
     // Check for required email and email conditions
     if (!mail) {
@@ -48,7 +52,6 @@ export const sendOTP = asyncHandler(async (req, res) => {
   // Generate OTP
   const otp = await OtpService.createOtp(storedMail);
   console.log("otp", otp);
-
   // Store otp into Redis
   const key = `mail:${storedMail}`;
   const value = otp;
@@ -65,7 +68,8 @@ export const register = asyncHandler(async (req, res) => {
   // validate OTP from redis
   const key1 = `mail:${mail}`;
   const OTP = await RedisService.get(key1);
-  if (!OTP) {
+  console.log(OTP);
+  if (!OTP || otp !== OTP) {
     return res.status(400).json({ message: "Invalid OTP!" });
   }
 
@@ -141,18 +145,20 @@ export const changePassword = asyncHandler(async (req, res) => {
 });
 
 export const forgotPassword = asyncHandler(async (req, res) => {
-  const { mail, newpassword } = req.body;
+  const { mail, newpassword, otp } = req.body;
 
   // Get OTP form Redis and verify
   const key = `mail:${mail}`;
-  const OTP = RedisService.get(key);
-  if (!OTP) {
+  const OTP = await RedisService.get(key);
+  console.log(OTP);
+  console.log(otp);
+  if (!OTP || otp != OTP) {
     return res.status(400).json({ message: "Invalid OTP!" });
   }
 
   // Set password
   const user = AuthService.forgotPassword({ mail, newpassword });
-  return res.status(200).json({ message: "forgot password" });
+  return res.status(200).json({ message: "Changed password successfully!" });
 });
 
 export const forgotPasswordOTP = asyncHandler(async (req, res) => {
