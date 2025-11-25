@@ -3,18 +3,10 @@ import { AppError } from "../utils/AppError.js";
 
 export const AuthService = {
   async checkExistedUser(mail) {
-    // Check if User's already existed
-    const existingUser = await User.findOne({ mail });
-    return existingUser;
+    const user = await User.findOne({ mail });
+    return !!user;
   },
-  async register({ mail, password }) {
-    const newUser = new User({
-      mail: mail,
-      password: password,
-    });
-    newUser.save();
-    return newUser;
-  },
+
   async login({ mail, password }) {
     // YOUR CODE HERE
     // Check if User's already existed
@@ -31,14 +23,19 @@ export const AuthService = {
 
     return user;
   },
-  async changePassword({ userId, currentPassword, newPassword }) {
-    // YOUR CODE HERE
-  },
-  async forgotPassword({ mail, newpassword }) {
-    const user = await User.findOne({ mail: mail });
 
-    // Change password
-    user.password = newpassword;
+  async register({ mail, password }) {
+    const newUser = new User({
+      mail: mail,
+      password: password,
+    });
+    await newUser.save();
+    return newUser;
+  },
+
+  async updatePassword(mail, newPassword) {
+    const user = await User.findOne({ mail });
+    user.password = newPassword;
     await user.save();
     return user;
   },

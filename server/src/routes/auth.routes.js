@@ -7,9 +7,11 @@ import {
   logout,
   refeshToken,
   register,
+  verifyOtp,
 } from "../controllers/auth.controller.js";
 import { validateInput } from "../middlewares/validate.middleware.js";
 import { requireAuth } from "../middlewares/auth.middleware.js";
+import { verify } from "jsonwebtoken";
 
 export const router = Router();
 
@@ -19,7 +21,9 @@ export const router = Router();
 // router post /change-password
 // router post /forgot-password
 // Example:
-router.post("/sendOTP", sendOTP);
+router.post("/send-otp", sendOTP);
+
+router.post("/verify-otp", verifyOtp);
 
 router.post("/register", register);
 

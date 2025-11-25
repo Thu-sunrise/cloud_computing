@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 // import createError from "http-errors";
 
 import routes from "./routes/index.js";
-import testRoute from "./routes/test.routes.js";
+import testRoute from "./routes/test.route.js";
 import { env } from "./config/env.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import { AppError } from "./utils/AppError.js";

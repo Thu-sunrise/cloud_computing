@@ -1,9 +1,8 @@
-// import axiosClient from "./axiosClient"; // Uncomment this line when axiosClient is available
+import axiosClient from "./axiosClient";
 
 export const authApi = {
-  // YOUR CODE HERE
-  // login
-  // register
-  // change password
-  // forgot password
+  login: (payload) => axiosClient.post("/auth/login", payload),
+  register: (payload) => axiosClient.post("/auth/register", payload),
+  forgotPassword: (payload) => axiosClient.post("/auth/forgot-password", payload),
+  changePassword: (payload) => axiosClient.post("/auth/change-password", payload),
 };
