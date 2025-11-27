@@ -4,41 +4,81 @@ import { AppError } from "../utils/AppError.js";
 class UserService {
   async getAllUsers() {
     const selectedFields = "mail name role avatar";
-    return await User.find().select("-__v").select(selectedFields);
+    return await User.find().select(selectedFields);
+  }
+
+  async getMyInfo(id) {
+    return await User.findById(id).select("-__v");
   }
 
   async getUserById(id) {
     const selectedFields = "mail name role avatar";
-    return await User.findById(id).select("-__v").select(selectedFields);
+    return await User.findById(id).select(selectedFields);
   }
 
   async createUser(data) {
     return await User.create(data);
   }
 
-  async updateUser(id, data) {
-    // List of allowed fields to update
+  async updateMyInfo(id, data) {
     const allowedFields = ["name", "avatar"];
-    const updates = {};
-    const requestFields = Object.keys(data);
-    // Get allowed fields to update
-    for (const field of requestFields) {
-      if (allowedFields.includes(field)) {
-        updates[field] = data[field];
+
+    // Validate fields
+    for (const field of Object.keys(data)) {
+      if (!allowedFields.includes(field)) {
+        throw new AppError(`Field "${field}" is not allowed to update.`, 400);
       }
     }
-    // The updated user object
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      { $set: updates },
-      { new: true, runValidators: true }
-    ).select("-password -__v");
-    // Check if user not found
-    if (!updatedUser) {
-      throw new AppError("No user found with that ID", 404);
+
+    // Build update object
+    const updateData = {};
+    if (data.name) {
+      if (data.name.firstName) updateData["name.firstName"] = data.name.firstName;
+      if (data.name.lastName) updateData["name.lastName"] = data.name.lastName;
     }
-    // Return
-    return updatedUser;
+    if (data.avatar) updateData.avatar = data.avatar;
+
+    // Update without validation on other fields
+    const user = await User.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      {
+        new: true, // return updated document
+        runValidators: true, // validate only updated fields
+        select: "-__v", // select fields to return
+      }
+    );
+
+    if (!user) throw new AppError("User not found", 404);
+    return user;
+  }
+
+  async updateUser(id, data) {
+    const allowedFields = ["status", "role", "failedLoginAttempts"];
+
+    const updateData = {};
+
+    for (const field of Object.keys(data)) {
+      if (allowedFields.includes(field)) {
+        updateData[field] = data[field];
+      } else {
+        throw new AppError(`Field "${field}" is not allowed to update.`, 400);
+      }
+    }
+
+    // Update without validation on other fields
+    const user = await User.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      {
+        new: true,
+        runValidators: true,
+        select: "-__v",
+      }
+    );
+
+    if (!user) throw new AppError("User not found", 404);
+    return user;
   }
 
   async deleteUser(id) {

@@ -58,18 +58,19 @@ export const register = asyncHandler(async (req, res) => {
 export const login = asyncHandler(async (req, res) => {
   const mail = req.body.mail;
   const password = req.body.password;
-  console.log(mail, password);
+  console.log(password);
   // transfer the logic to the service
   const user = await AuthService.login({
     mail: mail,
     password: password,
   });
-  console.log(user._id);
-  // create payload for token
+  user.password = undefined;
+  // create session token
   const payload = { sub: user._id, role: user.role };
-  // create token
-  const sessionToken = TokenService.createSessionToken(payload);
-  const persistentToken = await TokenService.createPersistentToken(user._id, req);
+  const sessionToken = await TokenService.createSessionToken(payload);
+  // create persistent token
+  const userAgent = req.headers["user-agent"];
+  const persistentToken = await TokenService.createPersistentToken(user._id, userAgent);
   // set cookies for session token
   res.cookie("session", sessionToken, {
     httpOnly: true,

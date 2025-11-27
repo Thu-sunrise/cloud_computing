@@ -1,8 +1,12 @@
 import { User } from "../models/user.model.js";
 import { AppError } from "../utils/AppError.js";
-// import { use } from "react";
 
 export const AuthService = {
+  async checkExistedUser(mail) {
+    const user = await User.findOne({ mail });
+    return !!user;
+  },
+
   async login({ mail, password }) {
     const user = await User.findOne({ mail }).select("+password");
     // check if the user not exists
@@ -16,11 +20,19 @@ export const AuthService = {
     }
 
     // compare password
-    if (await user.comparePassword(password)) {
+    const isPasswordCorrect = await user.comparePassword(password);
+
+    if (!isPasswordCorrect) {
       user.failedLoginAttempts = user.failedLoginAttempts + 1;
+      console.log(user.failedLoginAttempts);
 
       if (user.failedLoginAttempts >= 5) {
         user.status = "inactive";
+        await user.save();
+        throw new AppError(
+          "Your account has been locked due to too many failed login attempts.",
+          403
+        );
       }
 
       await user.save();
