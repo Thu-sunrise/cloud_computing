@@ -2,7 +2,6 @@ import { AuthService } from "../services/auth.service.js";
 import { MailService } from "../services/mail.service.js";
 import { TokenService } from "../services/token.service.js";
 import { RedisService } from "../services/redis.service.js";
-
 import { env } from "../config/env.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { AppError } from "../utils/AppError.js";
@@ -57,7 +56,41 @@ export const register = asyncHandler(async (req, res) => {
  * return success response (no need to return user data)
  */
 export const login = asyncHandler(async (req, res) => {
-  // YOUR CODE HERE
+  const mail = req.body.mail;
+  const password = req.body.password;
+  console.log(mail, password);
+  // transfer the logic to the service
+  const user = await AuthService.login({
+    mail: mail,
+    password: password,
+  });
+  console.log(user._id);
+  // create payload for token
+  const payload = { sub: user._id, role: user.role };
+  // create token
+  const sessionToken = TokenService.createSessionToken(payload);
+  const persistentToken = await TokenService.createPersistentToken(user._id, req);
+  // set cookies for session token
+  res.cookie("session", sessionToken, {
+    httpOnly: true,
+    secure: env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 60 * 60 * 1000,
+    path: "/",
+  });
+  // set cookies for persistent token
+  res.cookie("persistent", persistentToken, {
+    httpOnly: true,
+    secure: env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    path: "/",
+  });
+  // send response
+  res.status(200).json({
+    message: "Login successful",
+    user: user,
+  });
 });
 
 /**
@@ -68,7 +101,20 @@ export const login = asyncHandler(async (req, res) => {
  * return success response (no need to return user data)
  */
 export const changePassword = asyncHandler(async (req, res) => {
-  // YOUR CODE HERE
+  const currentPassword = req.body.currentPassword;
+  const newPassword = req.body.newPassword;
+  // get information from token
+  const userId = req.user.sub;
+  // check compare
+  if (currentPassword === newPassword) {
+    throw new AppError("New password must be different from the current password", 400);
+  }
+  // transfer the logic to the service
+  await AuthService.changePassword({ userId, currentPassword, newPassword });
+  // send response
+  res.status(200).json({
+    message: "Password changed successfully. Please log in again.",
+  });
 });
 
 /**
@@ -90,7 +136,24 @@ export const forgotPassword = asyncHandler(async (req, res) => {
  * return success response
  */
 export const logout = asyncHandler(async (req, res) => {
-  // YOUR CODE HERE
+  // delete cookie token session
+  res.clearCookie("session", {
+    httpOnly: true,
+    secure: env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/",
+  });
+  // delete cookie token persistent
+  res.clearCookie("persistent", {
+    httpOnly: true,
+    secure: env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/",
+  });
+  // send response
+  res.status(200).json({
+    message: "Logged out successfully.",
+  });
 });
 
 export const refeshToken = asyncHandler(async (req, res) => {

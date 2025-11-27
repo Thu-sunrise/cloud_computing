@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.js";
 import { AppError } from "../utils/AppError.js";
+// import { use } from "react";
 
 export const AuthService = {
   async login({ mail, password }) {
@@ -25,11 +26,27 @@ export const AuthService = {
       await user.save();
       throw new AppError("Invalid email or password", 401);
     }
-
     // reset failed login attempts
     if (user.failedLoginAttempts > 0) {
       user.failedLoginAttempts = 0;
       await user.save();
     }
+    return user;
+  },
+
+  async changePassword({ userId, currentPassword, newPassword }) {
+    const user = await User.findById(userId).select("+password");
+    // check if the user not exists
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+    // check if the currentPassword is not correct
+    const isMatch = await user.comparePassword(currentPassword);
+    if (!isMatch) {
+      throw new AppError("Incorrect current password", 401);
+    }
+    // set newPassword and save in database if the currentPassword is correct
+    user.password = newPassword;
+    await user.save();
   },
 };
