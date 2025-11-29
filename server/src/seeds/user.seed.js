@@ -16,17 +16,17 @@ export const seed = async () => {
     await User.deleteMany();
 
     for (const user of seedUsers) {
-      const hashedPassword = await bcrypt.hash(user.password, 10);
+      // const hashedPassword = await bcrypt.hash(user.password, 10);
 
       if (user.role === "customer") {
         await Customer.create({
           ...user,
-          password: hashedPassword,
+          password: user.password,
         });
       } else if (user.role === "admin") {
         await Admin.create({
           ...user,
-          password: hashedPassword,
+          password: user.password,
         });
       }
     }
