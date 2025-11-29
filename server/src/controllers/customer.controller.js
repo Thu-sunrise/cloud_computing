@@ -3,18 +3,14 @@ import { CustomerService } from "../services/customer.service.js";
 
 export const getAllCustomers = asyncHandler(async (req, res) => {
   // transfer the logic to the service
-  try {
-    const data = await CustomerService.getAllCustomers(req.query);
-    if (!data || data.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No customers found",
-      });
-    }
-    res.json({ success: true, data: data });
-  } catch (error) {
-    next(error);
+  const data = await CustomerService.getAllCustomers(req.query);
+  if (!data || data.length === 0) {
+    return res.status(404).json({
+      success: false,
+      message: "No customers found",
+    });
   }
+  res.json({ success: true, data: data });
 });
 
 export const createCustomer = asyncHandler(async (req, res) => {

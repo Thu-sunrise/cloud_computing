@@ -2,9 +2,9 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 
 export const generateOtpAndHash = async () => {
-  const raw = crypto.randomInt(100000, 999999).toString();
-  const hashed = await bcrypt.hash(raw, 10);
-  return { raw, hashed };
+  const otpRaw = crypto.randomInt(100000, 999999).toString();
+  const otpHashed = await bcrypt.hash(otpRaw, 10);
+  return { otpRaw, otpHashed };
 };
 
 export const generateToken = (length = 32) => {

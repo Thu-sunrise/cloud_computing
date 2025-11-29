@@ -12,7 +12,7 @@ export const router = Router();
 import { requireAuth } from "../middlewares/auth.middleware.js";
 
 // Define user-related routes here
-router.get("/list", requireAuth, getAllUsers);
+router.get("/list", getAllUsers);
 router.post("/new", createUser);
 router.delete("/profile", requireAuth, deleteUser);
 router.put("/profile", requireAuth, updateMyInfo);

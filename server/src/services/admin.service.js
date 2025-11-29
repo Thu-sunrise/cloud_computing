@@ -18,7 +18,7 @@ export const AdminService = {
       "avatar",
     ];
 
-    const { page = 1, limit = 10, sort = "-createdAt", fields, search, ...filter } = queryObj;
+    const { page = 1, limit = 10, sort = "-createdAt", fields, search, ...filter } = query;
 
     if (search) {
       filter.$or = searchFields.map((field) => ({

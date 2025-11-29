@@ -2,7 +2,7 @@ import { User } from "../models/user.model.js";
 import { AppError } from "../utils/AppError.js";
 
 export const UserService = {
-  async getAllUsers(query, role) {
+  async getAllUsers(query) {
     const searchFields = ["name.firstName", "name.lastName"];
 
     const allowedFields = [
@@ -18,7 +18,7 @@ export const UserService = {
       "avatar",
     ];
 
-    const { page = 1, limit = 10, sort = "-createdAt", fields, search, ...filter } = queryObj;
+    const { page = 1, limit = 10, sort = "-createdAt", fields, search, ...filter } = query;
 
     if (search) {
       filter.$or = searchFields.map((field) => ({
@@ -41,7 +41,7 @@ export const UserService = {
     }
 
     const [items, total] = await Promise.all([
-      User.find(filter).sort(sort).skip(skip).limit(limitNumber).select(selectStr), // Truyền chuỗi select đã xử lý kỹ càng vào đây
+      User.find(filter).sort(sort).skip(skip).limit(limitNumber).select(selectStr),
       User.countDocuments(filter),
     ]);
 
