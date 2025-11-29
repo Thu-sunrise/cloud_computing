@@ -18,6 +18,10 @@ input[type="password"]::-webkit-outer-spin-button {
 input[type="password"]::-webkit-password-toggle {
   display: none;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
 /* body{
   font-family;
 } */

@@ -8,6 +8,8 @@ import HomePage from "../pages/HomePage/HomePage";
 import OtpPage from "../pages/AuthPage/OtpPage";
 import ViewProductPage from "../pages/ViewProductPage/ViewProductPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import CartPage from "../pages/CartPage/CartPage";
+import CheckOutPage from "@/pages/CartPage/CheckOutPage/CheckOutPage.jsx";
 // import CategoryCard from "../components/HomePage/Category/CategoryCard";
 
 function TitleUpdater() {
@@ -21,6 +23,8 @@ function TitleUpdater() {
       "/change-password": "Change Password | SecondHandLand",
       "/home": "Home | SecondHandLand",
       "/view-product": "View Product | SecondHandLand",
+      "/home/cart": "Cart | SecondHandLand",
+      "/home/checkout": "CheckOutPage | SecondHandLand",
       profile: "Profile | SecondHandLand",
     };
 
@@ -42,8 +46,10 @@ export default function AppRouter() {
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/verify-otp" element={<OtpPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/home/cart" element={<CartPage />} />
         <Route path="/view-product" element={<ViewProductPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/home/cart/checkout" element={<CheckOutPage />} />
       </Routes>
     </BrowserRouter>
   );
