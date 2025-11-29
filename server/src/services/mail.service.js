@@ -1,28 +1,30 @@
-import nodemailer from "nodemailer";
-import { env } from "../config/env.js";
-import { logger } from "../utils/logger.js";
 import handlebars from "handlebars";
 import fs from "fs";
 import path from "path";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: env.EMAIL_USER,
-    pass: env.EMAIL_PASS,
-  },
-});
+import { env } from "../config/env.js";
+import { transporter } from "../config/mail.config.js";
+import { logger } from "../utils/logger.js";
 
-const loadTemplate = (fileName, data) => {
-  const filePath = path.join(process.cwd(), "src", "templates", fileName);
-  const source = fs.readFileSync(filePath, "utf8");
-  const compiled = handlebars.compile(source);
-  return compiled(data);
-};
+const cache = new Map();
 
 export const MailService = {
+  loadTemplate(fileName, data) {
+    if (cache.has(fileName)) {
+      return cache.get(fileName)(data);
+    }
+
+    const filePath = path.join(process.cwd(), "src", "templates", fileName);
+    const source = fs.readFileSync(filePath, "utf8");
+    const compiled = handlebars.compile(source);
+
+    cache.set(fileName, compiled);
+
+    return compiled(data);
+  },
+
   async sendTemplate(to, subject, templateName, data, retries = 2) {
-    const html = loadTemplate(templateName, data);
+    const html = this.loadTemplate(templateName, data);
     try {
       const info = await transporter.sendMail({
         from: `"Second Hand Land" <${env.EMAIL_USER}>`,
@@ -31,13 +33,13 @@ export const MailService = {
         html,
       });
 
-      logger.info(`Email sent to ${to} (id: ${info.messageId})`);
+      logger.info(`[MAIL] Sent to ${to} (id: ${info.messageId})`);
       return info;
     } catch (err) {
-      logger.error(`Failed to send email to ${to}: ${err.message}`);
+      logger.error(`[MAIL] Failed to send email to ${to}: ${err.message}`);
 
       if (retries > 0) {
-        logger.warn(`Retrying... attempts left: ${retries}`);
+        logger.warn(`[MAIL] Retrying... attempts left: ${retries}`);
         return this.sendTemplate(to, subject, templateName, data, retries - 1);
       }
 

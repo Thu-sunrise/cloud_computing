@@ -3,13 +3,33 @@ import crypto from "crypto";
 
 const persistentTokenSchema = new mongoose.Schema(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    token: { type: String, required: true, index: true },
-    userAgent: { type: String },
-    ip: { type: String },
-    expiresAt: { type: Date, required: true },
-    revoked: { type: Boolean, default: false },
-    revokedAt: Date,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    token: {
+      type: String,
+      required: true,
+      index: true,
+    },
+    userAgent: {
+      type: String,
+    },
+    ip: {
+      type: String,
+    },
+    expiresAt: {
+      type: Date,
+      required: true,
+    },
+    revoked: {
+      type: Boolean,
+      default: false,
+    },
+    revokedAt: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

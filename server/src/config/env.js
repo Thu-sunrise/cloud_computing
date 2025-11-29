@@ -12,4 +12,7 @@ export const env = {
   REDIS_HOST: process.env.REDIS_HOST,
   REDIS_PORT: process.env.REDIS_PORT,
   OTP_EXPIRE_SEC: process.env.OTP_EXPIRE_SEC,
+  CLOUD_NAME: process.env.CLOUD_NAME,
+  CLOUD_API_KEY: process.env.CLOUD_API_KEY,
+  CLOUD_API_SECRET: process.env.CLOUD_API_SECRET,
 };

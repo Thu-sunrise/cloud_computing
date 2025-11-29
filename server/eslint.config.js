@@ -19,7 +19,7 @@ export default [
       sourceType: "module",
     },
     rules: {
-      "no-console": "off",
+      "no-console": "error",
       "n/no-missing-import": "off",
       "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     },
