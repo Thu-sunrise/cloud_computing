@@ -20,8 +20,14 @@ beforeAll(async () => {
   const { connectDB } = await import("../../src/config/db.js");
   await connectDB(uri);
   // Seed the database with initial users
-  await User.insertMany(seedUsers);
+  // await User.insertMany(seedUsers);
   app = createApp();
+  const userPromises = seedUsers.map(userData => {
+    const user = new User(userData);
+    return user.save(); // .save() SẼ kích hoạt pre-save hook và hash mật khẩu
+  });
+
+  await Promise.all(userPromises);
 });
 
 afterAll(async () => {
@@ -44,7 +50,7 @@ describe("Auth - Login API", () => {
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty("user");
     expect(res.body.user.mail).toBe("thu@example.com");
-    expect(res.cookies).toBeDefined();
+    expect(res.header['set-cookie']).toBeDefined();
   });
   it("Testcase 2: Login with incorrect password", async () => {
     const res = await request(app).post("/api/auth/login").send({
@@ -78,7 +84,7 @@ describe("Auth - Login API", () => {
   it("Testcase 6: Login with extra spaces in email", async () => {
     const res = await request(app).post("/api/auth/login").send({
       mail: "   an@example.com   ",
-      password: "securepassword",
+      password: "123456",
     });
     expect(res.statusCode).toEqual(200);
     expect(res.body.user.mail).toBe("an@example.com");
