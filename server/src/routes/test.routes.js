@@ -3,6 +3,8 @@ import { RedisService } from "../services/redis.service.js";
 import { MailService } from "../services/mail.service.js";
 import { CloudinaryService } from "../services/cloudinary.service.js";
 
+import { requireAuth } from "../middlewares/auth.middleware.js";
+
 import { upload } from "../config/multer.js";
 // import { generateOtpAndHash } from "../utils/crypto.js";
 const router = express.Router();
@@ -46,6 +48,10 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 router.get("/url-cloudinary", (req, res) => {
   const signedUrl = CloudinaryService.generateSignedUrl("images/user/1763474508667_tlb8r6");
   res.json({ signedUrl });
+});
+
+router.get("/auth", requireAuth, async (req, res) => {
+  res.status(200).json({ message: "Done" });
 });
 
 export default router;
