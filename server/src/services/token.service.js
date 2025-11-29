@@ -54,7 +54,7 @@ export const TokenService = {
     oldTokenDoc.revokedAt = new Date();
     await oldTokenDoc.save();
     // Generate new Persistent to replace
-    const raw = PersistentToken.generateRawToken();
+    const rawToken = PersistentToken.generateRawToken();
     const hashed = PersistentToken.hash(raw);
     // Create new token
     await PersistentToken.create({
@@ -64,7 +64,7 @@ export const TokenService = {
       ip: ip,
       expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     });
-    return { raw, userId: oldTokenDoc.userId };
+    return { rawToken, userId: oldTokenDoc.userId };
   },
 
   async getPersistentTokenByRaw(rawToken) {
@@ -100,7 +100,7 @@ export const TokenService = {
       return null;
     }
     const payload = { sub: user._id, role: user.role };
-    const newSessionToken = TokenService.createSessionToken(payload);
-    return { newSessionToken, payload };
+    const token = TokenService.createSessionToken(payload);
+    return token;
   },
 };

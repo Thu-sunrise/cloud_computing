@@ -1,155 +1,114 @@
+import bcrypt from "bcryptjs";
+
 import { AuthService } from "../services/auth.service.js";
 import { MailService } from "../services/mail.service.js";
 import { TokenService } from "../services/token.service.js";
 import { RedisService } from "../services/redis.service.js";
+import { UserService } from "../services/user.service.js";
+import { CustomerService } from "../services/customer.service.js";
+
 import { env } from "../config/env.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { AppError } from "../utils/AppError.js";
 import { generateOtpAndHash, generateToken } from "../utils/crypto.js";
 
-import bcrypt from "bcryptjs";
-/**
- * @route POST /auth/send-otp?type={register|forgot-password}
- * validate request body and params (use validate.middleware.js)
- * check user existence in database (use user.service.js):
- * - if register: user should not exist
- * - if forgot-password: user should exist
- * store otp, token, user data in redis:
- * - register: key = otp:<token>, value = {mail, pw, otpHash}
- * - forgot-password: key = otp:<token>, value = {mail, otpHash}
- * send otp email
- * return token in response
- */
 export const sendOTP = asyncHandler(async (req, res) => {
-  // YOUR CODE HERE
   const { type } = req.query;
-  const { raw, hashed } = await generateOtpAndHash();
+  const { mail } = req.body;
+  const { otpRaw, otpHashed } = await generateOtpAndHash();
   const token = generateToken();
-  let storedMail;
 
+  const key = `otp:${token}`;
+  let value;
+  const isExisted = await UserService.getUserByMail(mail);
   if (type === "register") {
-    const { mail, password } = req.body;
+    const { password } = req.body;
 
-    const isExisted = await AuthService.checkExistedUser(mail);
     if (isExisted) {
-      return res.status(400).json({ message: "This email has already been used." });
+      return res.status(400).json({ message: "Email already exists" });
     }
-    const key = `otp:${token}`;
-    const value = { mail, password, hashed };
-    RedisService.set(key, value, env.OTP_EXPIRE_SEC);
-    storedMail = mail;
+
+    value = { mail, password, otpHashed };
   } else if (type === "forgot-password") {
-    const { mail } = req.body;
-
-    const isExisted = await AuthService.checkExistedUser(mail);
     if (!isExisted) {
-      return res.status(400).json({ message: "Email has not been used before!" });
+      return res.status(404).json({ message: "User not found" });
     }
-    const key = `otp:${token}`;
-    const value = { mail, hashed };
-    RedisService.set(key, value, env.OTP_EXPIRE_SEC);
-    storedMail = mail;
-  }
-  console.log("otp", raw);
-  // Send OTP email
-  // await MailService.sendOtp(storedMail, raw);
 
-  return res.status(200).json({ message: token });
+    value = { mail, otpHashed };
+  }
+
+  RedisService.set(key, value, env.OTP_EXPIRE_SEC);
+  // Send OTP email
+  await MailService.sendOtp(mail, otpRaw);
+
+  return res.status(200).json({ message: "OTP sent", token: token });
 });
 
-/**
- * @route POST /auth/verify-otp?token={token}
- * validate request body and params (use validate.middleware.js)
- * get otp from redis using token (if not found, return error)
- * compare otp from request with otpHash from redis (if not match, return error)
- * return success response (no need to return user data)
- */
 export const verifyOtp = asyncHandler(async (req, res) => {
   const { token } = req.query;
   const { otp } = req.body;
+
   const key = `otp:${token}`;
-  const data = await RedisService.get(key);
-  if (!data) {
-    throw new AppError("Invalid or expired token", 400);
+  const value = await RedisService.get(key);
+
+  if (!value || !bcrypt.compare(otp.toString(), value.otpHashed)) {
+    return res.status(404).json({ message: "Invalid OTP" });
   }
-  const isValid = await bcrypt.compare(otp, data.hashed);
-  if (!isValid) {
-    throw new AppError("Invalid OTP", 400);
-  }
+
   return res.status(200).json({ message: "OTP verified successfully" });
 });
 
-/**
- * @route POST /auth/register?token={token}
- * validate request body and params (use validate.middleware.js)
- * get user data from redis using token (if not found, return error)
- * create user in database (use user.service.js)
- * generate session and persistent tokens (use token.service.js)
- * set cookies for session and persistent tokens
- * return success response (no need to return user data)
- */
 export const register = asyncHandler(async (req, res) => {
   const { token } = req.query;
   const key = `otp:${token}`;
-  const data = await RedisService.get(key);
-  if (!data) {
-    throw new AppError("Invalid or expired token", 400);
+  const value = await RedisService.get(key);
+
+  if (!value) {
+    return res.status(400).json({ message: "Invalid or expired token" });
   }
-  const user = await AuthService.register({ mail: data.mail, password: data.password });
+
+  const { id, role } = await CustomerService.create(value.mail, value.password);
+
   // Generate Persistent Token
-  const userAgent = req.headers["user-agent"];
-  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   const persistentToken = await TokenService.createPersistentToken(
-    user._id.toString(),
-    userAgent,
-    ip
+    id,
+    req.headers["user-agent"],
+    req.ip
   );
-  // Generate Session Token
-  const payload = { sub: user._id.toString(), role: user.role };
-  const sessionToken = TokenService.createSessionToken(payload);
+
+  const sessionToken = TokenService.createSessionToken({ sub: id, role: role });
 
   // Attach to cookie
-  res.cookie("sessionToken", sessionToken, {
+  res.cookie("session", sessionToken, {
     httpOnly: true,
     secure: env.NODE_ENV === "production",
     sameSite: "strict",
     // maxAge: 1 * 2 * 1000, // 2s
   });
-  res.cookie("persistentToken", persistentToken, {
+  res.cookie("persistent", persistentToken, {
     httpOnly: true,
     secure: env.NODE_ENV === "production",
     sameSite: "strict",
     // maxAge: 1 * 10 * 1000,
   });
 
-  return res.status(200).json({ message: "" });
+  return res.status(200).json({ message: "Register successful" });
 });
 
-/**
- * @route POST /auth/login
- * validate request body (use validate.middleware.js)
- * check user existence and password (use auth.service.js)
- * create session and persistent tokens (use token.service.js)
- * set cookies for session and persistent tokens
- * return success response (no need to return user data)
- */
 export const login = asyncHandler(async (req, res) => {
-  const mail = req.body.mail;
-  const password = req.body.password;
+  const { mail, password } = req.body;
 
   // transfer the logic to the service
-  const user = await AuthService.login({
-    mail: mail,
-    password: password,
-  });
-  user.password = undefined;
+  const { id, role } = await AuthService.login(mail, password);
+
+  const persistentToken = await TokenService.createPersistentToken(
+    id,
+    req.headers["user-agent"],
+    req.ip
+  );
   // create session token
-  const payload = { sub: user._id, role: user.role };
-  const sessionToken = await TokenService.createSessionToken(payload);
-  // create persistent token
-  const userAgent = req.headers["user-agent"];
-  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-  const persistentToken = await TokenService.createPersistentToken(user._id, userAgent, ip);
+  const payload = { sub: id, role: role };
+  const sessionToken = TokenService.createSessionToken(payload);
+
   // set cookies for session token
   res.cookie("session", sessionToken, {
     httpOnly: true,
@@ -167,56 +126,25 @@ export const login = asyncHandler(async (req, res) => {
     path: "/",
   });
   // send response
-  res.status(200).json({
-    message: "Login successful",
-    user: user,
-  });
+  res.status(200).json({ message: "Login successful" });
 });
 
-/**
- * @route POST /auth/change-password?token={token}
- * validate request body (use validate.middleware.js)
- * get userId from token
- * updateUser func (use user.service.js, compare current password, new password)
- * return success response (no need to return user data)
- */
 export const changePassword = asyncHandler(async (req, res) => {
-  const currentPassword = req.body.currentPassword;
-  const newPassword = req.body.newPassword;
+  const { oldPassword, newPassword } = req.body;
   // get information from token
   const userId = req.user.sub;
-  // check compare
-  if (currentPassword === newPassword) {
-    throw new AppError("New password must be different from the current password", 400);
-  }
   // transfer the logic to the service
-  await AuthService.changePassword({ userId, currentPassword, newPassword });
+  await AuthService.changePassword(userId, oldPassword, newPassword);
   // send response
-  res.status(200).json({
-    message: "Password changed successfully. Please log in again.",
-  });
+  res.status(200).json({ message: "Password changed successfully." });
 });
 
-/**
- * @route POST /auth/forgot-password
- * validate request body (use validate.middleware.js)
- * get mail and newpassword from request body
- * updateUser func (use user.service.js)
- * return success response (no need to return user data)
- */
 export const forgotPassword = asyncHandler(async (req, res) => {
-  const { mail, newpassword } = req.body;
-  const updatedUsser = await AuthService.updatePassword(mail, newpassword);
+  const { mail, newPassword } = req.body;
+  await AuthService.updatePassword(mail, newPassword);
   return res.status(200).json({ message: "Password updated successfully" });
 });
 
-/**
- * @route POST /auth/logout
- * get persistent token from cookies
- * delete tokens from database (use token.service.js)
- * clear cookies for session and persistent tokens
- * return success response
- */
 export const logout = asyncHandler(async (req, res) => {
   // delete cookie token session
   res.clearCookie("session", {
@@ -238,24 +166,23 @@ export const logout = asyncHandler(async (req, res) => {
   });
 });
 
-export const refeshToken = asyncHandler(async (req, res) => {
-  const tokenDoc = req.cookies.persistentToken;
-  const newPersistentTokenDoc = await TokenService.rotatePersistentToken(
-    tokenDoc,
+export const refreshToken = asyncHandler(async (req, res) => {
+  const oldToken = req.cookies.persistent;
+  const { rawToken, userId } = await TokenService.rotatePersistentToken(
+    oldToken,
     req.headers["user-agent"],
     req.ip
   );
-  const newSessionToken = await TokenService.rotateSessionToken(newPersistentTokenDoc.userId);
-  // Get UserID through doc from new Persistent Token, then gain a new Session Token
-  const doc = await TokenService.verifyPersistentToken(newPersistentTokenDoc.raw);
+  const newSessionToken = await TokenService.rotateSessionToken(userId);
+
   // const newSessionToken = await TokenService.rotateSessionToken(doc.userId);
-  res.cookie("sessionToken", newSessionToken.newSessionToken, {
+  res.cookie("session", newSessionToken, {
     httpOnly: true,
     secure: env.NODE_ENV === "production",
     sameSite: "strict",
     // maxAge: 60 * 60 * 1000,
   });
-  res.cookie("persistentToken", newPersistentTokenDoc.raw, {
+  res.cookie("persistent", rawToken, {
     httpOnly: true,
     secure: env.NODE_ENV === "production",
     sameSite: "strict",
@@ -263,13 +190,4 @@ export const refeshToken = asyncHandler(async (req, res) => {
   });
 
   res.status(200).json({ message: "Tokens refreshed" });
-});
-
-//--------------------------TEST-----------------------------------------
-
-export const testToken = asyncHandler(async (req, res) => {
-  const Res = "Action Proceeded";
-  res.status(200).json({
-    message: Res,
-  });
 });

@@ -3,10 +3,9 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-// import createError from "http-errors";
 
 import routes from "./routes/index.js";
-import testRoute from "./routes/test.route.js";
+import testRoute from "./routes/test.routes.js";
 import { env } from "./config/env.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import { AppError } from "./utils/AppError.js";
