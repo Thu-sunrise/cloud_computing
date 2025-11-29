@@ -1,8 +1,17 @@
 import React from "react";
 import { ShoppingCart, MessageCircle, Bell, User, Search, Menu } from "lucide-react";
 import logo from "../../assets/images/logo.png";
+import { Link } from "react-router-dom";//link to href
 
 function Header() {
+
+  const navItems = [
+    { icon: ShoppingCart, path: "/home/cart" },
+    { icon: MessageCircle, path: "/NotFound" },
+    { icon: Bell, path: "/NotFound" },
+    { icon: User, path: "/profile" },
+  ];
+
   return (
     <header className="w-full">
       {/* ==== TOP HEADER ==== */}
@@ -13,6 +22,7 @@ function Header() {
             src={logo}
             alt="Logo"
             className="h-[70px] object-contain" // nhỏ hơn đúng trong ảnh
+            href = "/home"
           />
         </div>
 
@@ -39,15 +49,20 @@ function Header() {
 
         {/* Icons Right */}
         <div className="flex items-center gap-6 p-10">
-          {[ShoppingCart, MessageCircle, Bell, User].map((Icon, idx) => (
-            <div
-              key={idx}
-              className="bg-white w-10 h-10 rounded-full flex items-center justify-center 
-                   cursor-pointer hover:bg-gray-200 hover:scale-105 transition shadow"
-            >
-              <Icon size={20} />
-            </div>
-          ))}
+          {navItems.map((item, idx) => {
+            const Icon = item.icon;
+
+            return (
+              <Link
+                key={idx}
+                to={item.path}
+                className="bg-white w-10 h-10 rounded-full flex items-center justify-center
+                 cursor-pointer hover:bg-gray-200 hover:scale-105 transition shadow text-black"
+              >
+                <Icon size={20} />
+              </Link>
+            );
+          })}
         </div>
       </div>
 
