@@ -44,7 +44,7 @@ export const sendOTP = asyncHandler(async (req, res) => {
 });
 
 export const verifyOtp = asyncHandler(async (req, res) => {
-  const { token } = req.query;
+  const { type, token } = req.query;
   const { otp } = req.body;
 
   const key = `otp:${token}`;
@@ -54,7 +54,10 @@ export const verifyOtp = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "Invalid OTP" });
   }
 
-  return res.status(200).json({ message: "OTP verified successfully" });
+  return res.status(200).json({
+    message: "OTP verified successfully",
+    type: type,
+  });
 });
 
 export const register = asyncHandler(async (req, res) => {

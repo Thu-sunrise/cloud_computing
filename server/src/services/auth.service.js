@@ -10,7 +10,8 @@ export const AuthService = {
     } else if (user.status === "inactive") {
       throw new AppError("Your account has locked", 400);
     }
-    if (!user.comparePassword(password)) {
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
       user.failedLoginAttempts += 1;
 
       if (user.failedLoginAttempts >= 3) user.status = "inactive";
@@ -34,7 +35,7 @@ export const AuthService = {
       throw new AppError("User not found", 404);
     }
     // check if the currentPassword is not correct
-    const isMatch = user.comparePassword(oldPassword);
+    const isMatch = await user.comparePassword(oldPassword);
     if (!isMatch) {
       throw new AppError("Incorrect current password", 401);
     }

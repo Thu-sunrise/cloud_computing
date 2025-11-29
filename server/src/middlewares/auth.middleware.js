@@ -13,8 +13,6 @@ export const requireAuth = async (req, res, next) => {
     // If Sessions Token expired, keep checking on Persistent Token
     if (err.name === "SessionTokenExpiredError") {
       try {
-        const persistent = req.cookies.persistentToken;
-
         const doc = await TokenService.verifyPersistentToken(persistent);
         if (!doc) {
           return res.status(401).json({ message: "Invalid persistent token" });
