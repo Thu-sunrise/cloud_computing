@@ -17,7 +17,7 @@ import {
   Plus,
 } from "lucide-react";
 import bgBanner from "../../assets/images/hello.png";
-import Header from "../../components/HomePage/Header";
+import Header from "../../components/AllPage/HeaderNoNavBar";
 import InfoApp from "../../components/HomePage/InfoApp";
 import Footer from "../../components/HomePage/Footer";
 export default function ProfilePage() {
@@ -145,7 +145,7 @@ export default function ProfilePage() {
           </aside>
 
           {/* MAIN */}
-          <div className="flex-1 px-6">
+          <div className="flex-1 px-6 justify-center">
             {/* TAB BAR */}
             <div className="w-full max-w-5xl mx-auto">
               <div className="flex items-center border-b">
@@ -269,7 +269,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <InfoApp></InfoApp>
+      {/* <InfoApp></InfoApp> */}
       <Footer></Footer>
     </>
   );

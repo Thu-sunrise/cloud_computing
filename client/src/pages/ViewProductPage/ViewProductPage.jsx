@@ -49,7 +49,7 @@ export default function ViewProductPage() {
       </div>
 
       <ProductGrid />
-      <InfoApp />
+      {/* <InfoApp /> */}
       <Footer />
     </>
   );

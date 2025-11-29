@@ -8,8 +8,9 @@ import HomePage from "../pages/HomePage/HomePage";
 import OtpPage from "../pages/AuthPage/OtpPage";
 import ViewProductPage from "../pages/ViewProductPage/ViewProductPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import SettingPage from "../pages/SettingPage/SettingPage";
 // import CategoryCard from "../components/HomePage/Category/CategoryCard";
-
+// import SettingPage from "../pages/SettingPage/SettingPage";
 function TitleUpdater() {
   const location = useLocation();
 
@@ -21,7 +22,8 @@ function TitleUpdater() {
       "/change-password": "Change Password | SecondHandLand",
       "/home": "Home | SecondHandLand",
       "/view-product": "View Product | SecondHandLand",
-      profile: "Profile | SecondHandLand",
+      "/profile": "Profile | SecondHandLand",
+      "/setting": "Setting | SecondHandLand",
     };
 
     document.title = pathTitleMap[location.pathname] || "SecondHandLand";
@@ -44,6 +46,7 @@ export default function AppRouter() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/view-product" element={<ViewProductPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/setting" element={<SettingPage />} />
       </Routes>
     </BrowserRouter>
   );

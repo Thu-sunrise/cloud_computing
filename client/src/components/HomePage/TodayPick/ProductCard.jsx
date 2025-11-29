@@ -5,7 +5,7 @@ export default function ProductCard({ image, title, condition, points, oldPoints
   return (
     <div
       className="bg-[#e4f2da] rounded-xl overflow-hidden shadow-md flex flex-col 
-                    transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer"
+                    transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer text-xl"
     >
       {/* IMAGE */}
       <div className="relative w-full h-64 overflow-hidden">
@@ -18,7 +18,7 @@ export default function ProductCard({ image, title, condition, points, oldPoints
 
       {/* CONTENT */}
       <div className="p-3 flex flex-col gap-1">
-        <h3 className="font-semibold text-sm">{title}</h3>
+        <h3 className="font-semibold text-sm text-xl">{title}</h3>
 
         {/* CONDITIONS */}
         <div className="flex gap-2 mt-1">
@@ -31,7 +31,7 @@ export default function ProductCard({ image, title, condition, points, oldPoints
         </div>
 
         {/* POINTS */}
-        <div className="mt-2 text-sm">
+        <div className="mt-2 text-sm text-xl">
           <span className="font-semibold">{points} points</span>
         </div>
 
