@@ -72,8 +72,14 @@ export const UserService = {
     return doc;
   },
 
-  async createUser(data) {
-    return await User.create(data);
+  async createUser(mail, password) {
+    const exist = await User.findOne({ mail });
+
+    if (exist) {
+      throw new AppError("Email already exists", 401);
+    }
+    const user = await User.create({ mail, password });
+    return { id: user._id, role: user.role };
   },
 
   async updateMyInfo(id, data) {

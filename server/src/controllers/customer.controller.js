@@ -15,7 +15,8 @@ export const getAllCustomers = asyncHandler(async (req, res) => {
 
 export const createCustomer = asyncHandler(async (req, res) => {
   // transfer the logic to the service
-  const user = await CustomerService.createCustomer(req.body);
+  const { mail, password } = req.body;
+  const user = await CustomerService.createCustomer(mail, password);
   res.json({ success: true, data: user });
 });
 

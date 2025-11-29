@@ -39,7 +39,8 @@ export const getUserById = asyncHandler(async (req, res) => {
 
 export const createUser = asyncHandler(async (req, res) => {
   // transfer the logic to the service
-  const user = await UserService.createUser(req.body);
+  const { mail, password } = req.body;
+  const user = await UserService.createUser(mail, password);
   res.json({ success: true, data: user });
 });
 

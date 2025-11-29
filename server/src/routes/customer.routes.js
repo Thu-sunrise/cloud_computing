@@ -12,7 +12,7 @@ export const router = Router();
 import { requireAuth } from "../middlewares/auth.middleware.js";
 
 // Define customer-related routes here
-router.get("/list", getAllCustomers);
+router.get("/list", requireAuth, getAllCustomers);
 router.post("/new", createCustomer);
 
 router.get("/address/list", requireAuth, getListAddresses);
