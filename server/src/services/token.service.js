@@ -5,6 +5,7 @@ import { User } from "../models/user.model.js";
 
 import { AppError } from "../utils/AppError.js";
 import { env } from "../config/env.js";
+import { raw } from "express";
 
 export const TokenService = {
   /*
@@ -13,7 +14,6 @@ export const TokenService = {
   async createPersistentToken(userId, userAgent, ip) {
     const raw = PersistentToken.generateRawToken();
     const hashed = PersistentToken.hash(raw);
-
     const count = await PersistentToken.countDocuments({ userId });
     if (count >= 5) {
       // Delete oldest
@@ -31,11 +31,10 @@ export const TokenService = {
 
     return raw;
   },
-
   async verifyPersistentToken(rawToken) {
     const doc = await this.getPersistentTokenByRaw(rawToken);
-    if (!doc) return null;
 
+    if (!doc) return null;
     if (doc.expiresAt < Date.now()) {
       // expired -> revoke
       doc.revoked = true;
@@ -43,10 +42,9 @@ export const TokenService = {
       await doc.save();
       throw new AppError("PersistentTokenExpiredError", 400);
     }
-
+    // Refresh to return doc to convert data form old Token
     return doc;
   },
-
   async rotatePersistentToken(rawOldToken, userAgent, ip) {
     let oldTokenDoc = await this.getPersistentTokenByRaw(rawOldToken);
     if (!oldTokenDoc) {
@@ -55,7 +53,7 @@ export const TokenService = {
     oldTokenDoc.revoked = true;
     oldTokenDoc.revokedAt = new Date();
     await oldTokenDoc.save();
-
+    // Generate new Persistent to replace
     const raw = PersistentToken.generateRawToken();
     const hashed = PersistentToken.hash(raw);
     // Create new token
@@ -66,8 +64,7 @@ export const TokenService = {
       ip: ip,
       expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     });
-
-    return raw;
+    return { raw, userId: oldTokenDoc.userId };
   },
 
   async getPersistentTokenByRaw(rawToken) {
@@ -83,7 +80,7 @@ export const TokenService = {
   /*
    * SESSION TOKEN METHODS
    */
-  createSessionToken(payload, expiresIn = "1h") {
+  createSessionToken(payload, expiresIn = "40s") {
     return jwt.sign(payload, env.JWT_SECRET, { expiresIn });
   },
 
@@ -99,14 +96,11 @@ export const TokenService = {
 
   async rotateSessionToken(userId) {
     const user = await User.findById(userId).lean();
-
     if (!user || user.status === "inactive") {
       return null;
     }
-
     const payload = { sub: user._id, role: user.role };
     const newSessionToken = TokenService.createSessionToken(payload);
-
     return { newSessionToken, payload };
   },
 };

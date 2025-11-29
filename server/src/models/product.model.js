@@ -8,12 +8,12 @@ const productSchema = new mongoose.Schema(
       ref: "Customer",
       required: true,
     },
-    categoryId: {
-      // FK
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: true,
-    },
+    // categoryId: {
+    //   // FK
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "Category",
+    //   required: true,
+    // },
     name: {
       type: String,
       required: true,
@@ -35,14 +35,18 @@ const productSchema = new mongoose.Schema(
     },
     images: [
       {
-        publicId: {
-          type: String,
-        },
+        // publicId: {
+        //   type: String,
+        // },
+        publicId: { type: String, required: true },
+        url: { type: String, required: true },
+        resource_type: { type: String, default: "image" },
       },
     ],
     status: {
       type: String,
       enum: ["active", "pending", "rejected", "deleted"],
+      default: "pending",
     },
   },
   { timestamps: true }
