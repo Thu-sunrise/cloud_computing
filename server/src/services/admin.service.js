@@ -1,45 +1,90 @@
 import { User } from "../models/user.model.js";
-import BaseService from "./base.service.js";
-import userService from "./user.service.js";
 import { Admin } from "../models/admin.model.js";
 
-class AdminService extends BaseService {
-  constructor() {
-    super(Admin);
-  }
-  async updateAdmin(id, data) {
-    return await userService.updateMyInfo(id, data);
-  }
+export const AdminService = {
+  async getAllAdmins(query) {
+    const searchFields = ["name.firstName", "name.lastName"];
 
-  async getAllAdmins(query, role) {
-    return await super.getAll(query, role);
-  }
+    const allowedFields = [
+      "name.firstName",
+      "name.lastName",
+      "role",
+      "status",
+      "gender",
+      "dateOfBirth",
+      "address",
+      "createdAt",
+      "updatedAt",
+      "avatar",
+    ];
 
-  async getAllUsers(query, role) {
-    return await userService.getAllUsers(query, role);
-  }
+    const { page = 1, limit = 10, sort = "-createdAt", fields, search, ...filter } = queryObj;
+
+    if (search) {
+      filter.$or = searchFields.map((field) => ({
+        [field]: { $regex: search, $options: "i" },
+      }));
+    }
+
+    const pageNumber = parseInt(page);
+    const limitNumber = parseInt(limit);
+    const skip = (pageNumber - 1) * limitNumber;
+
+    let selectStr = "";
+
+    if (fields) {
+      const requestedFields = fields.split(",");
+      const finalFields = requestedFields.filter((field) => allowedFields.includes(field));
+      selectStr = finalFields.length > 0 ? finalFields.join(" ") : allowedFields.join(" ");
+    } else {
+      selectStr = allowedFields.join(" ");
+    }
+
+    const [items, total] = await Promise.all([
+      Admin.find(filter).sort(sort).skip(skip).limit(limitNumber).select(selectStr),
+      Admin.countDocuments(filter),
+    ]);
+
+    return {
+      page: pageNumber,
+      limit: limitNumber,
+      total,
+      totalPages: Math.ceil(total / limitNumber),
+      items,
+    };
+  },
 
   async deleteAdmin(id) {
-    const result = await super.delete(id);
-    return result;
-  }
+    const doc = await Admin.findByIdAndDelete(id);
+    if (!doc) throw new AppError("No document found with that ID", 404);
+    return doc;
+  },
 
   async createAdmin(data) {
-    return await super.create(data);
-  }
-
-  async getMyInfo(id) {
-    return await super.getById(id);
-  }
-
-  async getAdminById(id) {
-    return await userService.getUserById(id);
-  }
+    return await Admin.create(data);
+  },
 
   async updateUserById(id, data) {
     const allowedFields = ["role", "status", "failedLoginAttempts"];
 
-    return await super.update(id, { $set: data }, allowedFields);
-  }
-}
-export default new AdminService();
+    const updateData = {};
+
+    Object.keys(data).forEach((field) => {
+      if (allowedFields.includes(field)) {
+        updateData[field] = data[field];
+      }
+    });
+
+    if (Object.keys(updateData).length === 0) {
+      throw new AppError("No valid fields to update", 400);
+    }
+
+    const doc = await User.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!doc) throw new AppError("No document found with that ID", 404);
+    return doc;
+  },
+};

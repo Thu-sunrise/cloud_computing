@@ -1,47 +1,67 @@
 import { Customer } from "../models/customer.model.js";
-import { User } from "../models/user.model.js";
-import BaseService from "./base.service.js";
-import userService from "./user.service.js";
 
-class CustomerService extends BaseService {
-  constructor() {
-    super(Customer);
-  }
+export const CustomerService = {
+  async getAllCustomers(query) {
+    const searchFields = ["name.firstName", "name.lastName"];
 
-  async getAllCustomer(query, role) {
-    return await super.getAll(query, role);
-  }
-
-  async getMyInfo(id) {
-    return await super.getById(id);
-  }
-
-  async getCustomerById(id) {
-    return await userService.getUserById(id);
-  }
-
-  async createCustomer(data) {
-    return await super.create(data);
-  }
-
-  async updateCustomer(id, data) {
     const allowedFields = [
-      "firstName",
-      "lastName",
-      "avatar",
-      "mail",
+      "name.firstName",
+      "name.lastName",
+      "role",
+      "status",
       "gender",
       "dateOfBirth",
-      "phone",
+      "address",
+      "createdAt",
+      "updatedAt",
+      "avatar",
     ];
-    console.log("data");
-    // Update without validation on other fields
-    return await super.update(id, data, allowedFields);
-  }
+
+    const { page = 1, limit = 10, sort = "-createdAt", fields, search, ...filter } = query;
+
+    if (search) {
+      filter.$or = searchFields.map((field) => ({
+        [field]: { $regex: search, $options: "i" },
+      }));
+    }
+
+    const pageNumber = parseInt(page);
+    const limitNumber = parseInt(limit);
+    const skip = (pageNumber - 1) * limitNumber;
+
+    let selectStr = "";
+
+    if (fields) {
+      const requestedFields = fields.split(",");
+      const finalFields = requestedFields.filter((field) => allowedFields.includes(field));
+      selectStr = finalFields.length > 0 ? finalFields.join(" ") : allowedFields.join(" ");
+    } else {
+      selectStr = allowedFields.join(" ");
+    }
+
+    const [items, total] = await Promise.all([
+      Customer.find(filter).sort(sort).skip(skip).limit(limitNumber).select(selectStr), // Truyền chuỗi select đã xử lý kỹ càng vào đây
+      Customer.countDocuments(filter),
+    ]);
+
+    return {
+      page: pageNumber,
+      limit: limitNumber,
+      total,
+      totalPages: Math.ceil(total / limitNumber),
+      items,
+    };
+  },
+
+  async createCustomer(data) {
+    return await Customer.create(data);
+  },
 
   async deleteCustomer(id) {
-    await super.delete(id);
-  }
+    const doc = await Customer.findByIdAndDelete(id);
+    if (!doc) throw new AppError("No document found with that ID", 404);
+    return doc;
+  },
 
   async getAddresses(userId, addressId) {
     const customer = await Customer.findById(userId).select("address");
@@ -51,14 +71,14 @@ class CustomerService extends BaseService {
     if (!addressSubDoc) throw new AppError("Address not found", 404);
     // sort -> isDefault on top
     return addressSubDoc;
-  }
+  },
 
   async getListAddresses(id) {
     const customer = await Customer.findById(id).select("address");
     if (!customer) throw new AppError("Customer not found", 404);
     // sort -> isDefault on top
     return customer.address.sort((a, b) => b.isDefault - a.isDefault);
-  }
+  },
 
   async addAddress(id, addressData) {
     const finalData = addressData.address ? addressData.address : addressData;
@@ -76,7 +96,7 @@ class CustomerService extends BaseService {
     customer.address.push(finalData);
     await customer.save();
     return customer.address;
-  }
+  },
 
   async updateAddress(userId, addressId, data) {
     const customer = await Customer.findById(userId);
@@ -97,7 +117,7 @@ class CustomerService extends BaseService {
     addressSubDoc.set(finalData);
     await customer.save();
     return customer.address;
-  }
+  },
 
   async deleteAddress(userId, addressId) {
     const customer = await Customer.findById(userId);
@@ -115,7 +135,5 @@ class CustomerService extends BaseService {
 
     await customer.save();
     return customer.address;
-  }
-}
-
-export default new CustomerService();
+  },
+};

@@ -1,38 +1,123 @@
 import { User } from "../models/user.model.js";
 import { AppError } from "../utils/AppError.js";
-import BaseService from "./base.service.js";
 
-class UserService extends BaseService {
-  constructor() {
-    super(User);
-  }
+export const UserService = {
   async getAllUsers(query, role) {
-    return await super.getAll(query, role);
-  }
+    const searchFields = ["name.firstName", "name.lastName"];
+
+    const allowedFields = [
+      "name.firstName",
+      "name.lastName",
+      "role",
+      "status",
+      "gender",
+      "dateOfBirth",
+      "address",
+      "createdAt",
+      "updatedAt",
+      "avatar",
+    ];
+
+    const { page = 1, limit = 10, sort = "-createdAt", fields, search, ...filter } = queryObj;
+
+    if (search) {
+      filter.$or = searchFields.map((field) => ({
+        [field]: { $regex: search, $options: "i" },
+      }));
+    }
+
+    const pageNumber = parseInt(page);
+    const limitNumber = parseInt(limit);
+    const skip = (pageNumber - 1) * limitNumber;
+
+    let selectStr = "";
+
+    if (fields) {
+      const requestedFields = fields.split(",");
+      const finalFields = requestedFields.filter((field) => allowedFields.includes(field));
+      selectStr = finalFields.length > 0 ? finalFields.join(" ") : allowedFields.join(" ");
+    } else {
+      selectStr = allowedFields.join(" ");
+    }
+
+    const [items, total] = await Promise.all([
+      User.find(filter).sort(sort).skip(skip).limit(limitNumber).select(selectStr), // Truyền chuỗi select đã xử lý kỹ càng vào đây
+      User.countDocuments(filter),
+    ]);
+
+    return {
+      page: pageNumber,
+      limit: limitNumber,
+      total,
+      totalPages: Math.ceil(total / limitNumber),
+      items,
+    };
+  },
 
   async getMyInfo(id) {
-    return await super.getById(id);
-  }
+    const doc = await User.findById(id);
+    if (!doc) throw new AppError("No document found with that ID", 404);
+    return doc;
+  },
 
-  async getUserById(id) {
-    const selectedFields = "mail name role avatar gender dateOfBirth phone";
-    return await User.findById(id).select(selectedFields);
-  }
+  async getUserById(id, role) {
+    const selectedFields = "mail name role avatar gender dateOfBirth phone address";
+
+    if (role === "admin") {
+      const selectedFields = "mail name role avatar gender dateOfBirth phone status address";
+    }
+
+    const doc = await User.findById(id).select(selectedFields);
+    if (!doc) throw new AppError("No document found with that ID", 404);
+    return doc;
+  },
 
   async createUser(data) {
-    return await super.create(data);
-  }
+    return await User.create(data);
+  },
 
   async updateMyInfo(id, data) {
-    const allowedFields = ["firstName", "lastName", "avatar", "mail"];
+    const allowedFields = [
+      "firstName",
+      "lastName",
+      "avatar",
+      "mail",
+      "gender",
+      "dateOfBirth",
+      "phone",
+    ];
 
-    // Update without validation on other fields
-    return await super.update(id, data, allowedFields);
-  }
+    const updateData = {};
+
+    Object.keys(data).forEach((field) => {
+      if (allowedFields.includes(field)) {
+        if (field === "firstName") {
+          updateData["name.firstName"] = data[field];
+        } else if (field === "lastName") {
+          updateData["name.lastName"] = data[field];
+        } else {
+          updateData[field] = data[field];
+        }
+      }
+    });
+
+    if (Object.keys(updateData).length === 0) {
+      throw new AppError("No valid fields to update", 400);
+    }
+
+    const doc = await User.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!doc) throw new AppError("No document found with that ID", 404);
+    console.log(doc);
+    return doc;
+  },
 
   async deleteUser(id) {
-    return await super.delete(id);
-  }
-}
-
-export default new UserService();
+    const doc = await User.findByIdAndDelete(id);
+    if (!doc) throw new AppError("No document found with that ID", 404);
+    return doc;
+  },
+};

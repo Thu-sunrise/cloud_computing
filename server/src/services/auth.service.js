@@ -2,11 +2,6 @@ import { User } from "../models/user.model.js";
 import { AppError } from "../utils/AppError.js";
 
 export const AuthService = {
-  async checkExistedUser(mail) {
-    const user = await User.findOne({ mail });
-    return !!user;
-  },
-
   async login({ mail, password }) {
     // YOUR CODE HERE
     // Check if User's already existed
@@ -14,28 +9,13 @@ export const AuthService = {
     console.log(user);
     if (!user) {
       throw new AppError("Invalid email or password", 401);
+    } else if (user.status === "inactive") {
+      throw new AppError("Your account has locked", 400);
     }
+    if (!user.comparePassword(password)) {
+      user.failedLoginAttempts += 1;
 
-    // if user has been locked
-    if (user.status === "inactive") {
-      throw new AppError("Your account has been locked.", 403);
-    }
-    console.log("test");
-    // compare password
-    const isPasswordCorrect = await user.comparePassword(password);
-    console.log(isPasswordCorrect);
-    if (!isPasswordCorrect) {
-      user.failedLoginAttempts = user.failedLoginAttempts + 1;
-      console.log(user.failedLoginAttempts);
-
-      if (user.failedLoginAttempts >= 5) {
-        user.status = "inactive";
-        await user.save();
-        throw new AppError(
-          "Your account has been locked due to too many failed login attempts.",
-          403
-        );
-      }
+      if (user.failedLoginAttempts >= 3) user.status = "inactive";
 
       await user.save();
       throw new AppError("Invalid email or password", 401);
@@ -45,17 +25,18 @@ export const AuthService = {
       user.failedLoginAttempts = 0;
       await user.save();
     }
-    return user;
+
+    return { id: user._id, role: user.role };
   },
 
-  async changePassword({ userId, currentPassword, newPassword }) {
-    const user = await User.findById(userId).select("+password");
+  async changePassword(userId, oldPassword, newPassword) {
+    const user = await User.findById(userId);
     // check if the user not exists
     if (!user) {
       throw new AppError("User not found", 404);
     }
     // check if the currentPassword is not correct
-    const isMatch = await user.comparePassword(currentPassword);
+    const isMatch = user.comparePassword(oldPassword);
     if (!isMatch) {
       throw new AppError("Incorrect current password", 401);
     }
