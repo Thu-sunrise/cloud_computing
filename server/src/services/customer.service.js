@@ -1,44 +1,46 @@
 import { Customer } from "../models/customer.model.js";
-import { AppError } from "../utils/AppError.js";
+import { User } from "../models/user.model.js";
+import BaseService from "./base.service.js";
+import userService from "./user.service.js";
 
-class CustomerService {
-  async getAllCustomer() {
-    return await Customer.find().select("-__v");
+class CustomerService extends BaseService {
+  constructor() {
+    super(Customer);
   }
 
-  async getCustomerById(id) {
-    return await Customer.findById(id).select("-__v");
+  async getAllCustomer(query, role) {
+    return await super.getAll(query, role);
   }
 
   async getMyInfo(id) {
-    return await Customer.findById(id).select("-__v");
+    return await super.getById(id);
+  }
+
+  async getCustomerById(id) {
+    return await userService.getUserById(id);
   }
 
   async createCustomer(data) {
-    return await Customer.create(data);
+    return await super.create(data);
   }
 
   async updateCustomer(id, data) {
-    // The updated user object
-    const updatedCustomer = await Customer.findByIdAndUpdate(
-      id,
-      { $set: data },
-      { new: true, runValidators: true }
-    );
-    // Check if user not found
-    if (!updatedCustomer) {
-      throw new AppError("No user found with that ID", 404);
-    }
-    // Return
-    return updatedCustomer;
+    const allowedFields = [
+      "firstName",
+      "lastName",
+      "avatar",
+      "mail",
+      "gender",
+      "dateOfBirth",
+      "phone",
+    ];
+    console.log("data");
+    // Update without validation on other fields
+    return await super.update(id, data, allowedFields);
   }
 
   async deleteCustomer(id) {
-    const deleted = await Customer.findByIdAndDelete(id);
-    if (!deleted) {
-      throw new AppError("No customer found with that ID", 404);
-    }
-    return deleted;
+    await super.delete(id);
   }
 
   async getAddresses(userId, addressId) {

@@ -2,16 +2,32 @@ import { Customer } from "../models/customer.model.js";
 import customerService from "../services/customer.service.js";
 
 class CustomerController {
-  async getAllCustomers(req, res) {
+  async getAllCustomers(req, res, next) {
     // transfer the logic to the service
-    const users = await customerService.getAllCustomer();
-    if (!users || users.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No customers found",
-      });
+    try {
+      const role = req.user.role;
+      const data = await customerService.getAllCustomer(req.query, role);
+      if (!data || data.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No customers found",
+        });
+      }
+      res.json({ success: true, data: data });
+    } catch (error) {
+      next(error);
     }
-    res.json({ success: true, data: users });
+  }
+
+  async getMyInfo(req, res) {
+    const id = req.user?.sub;
+    if (!id) return res.status(401).json({ success: false, message: "Unauthorized" });
+    // transfer the logic to the service
+    const user = await customerService.getMyInfo(id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "Customer not found" });
+    }
+    res.json({ success: true, data: user });
   }
 
   async getCustomerById(req, res) {
@@ -30,10 +46,12 @@ class CustomerController {
   }
 
   async updateCustomer(req, res) {
+    console.log("test1");
     try {
       const id = req.user?.sub;
       if (!id) return res.status(401).json({ success: false, message: "Unauthorized" });
       const data = req.body;
+      console.log(id);
       // transfer the logic to the service
       const updateUser = await customerService.updateCustomer(id, data);
       // return
@@ -52,7 +70,7 @@ class CustomerController {
       const id = req.user?.sub;
       if (!id) return res.status(401).json({ success: false, message: "Unauthorized" });
       // transfer the logic to the service
-      const result = await customerService.deleteCustomer(id);
+      await customerService.deleteCustomer(id);
       // return
       return res.status(200).json({
         success: true,
