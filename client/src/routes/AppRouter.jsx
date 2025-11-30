@@ -10,6 +10,8 @@ import ViewProductPage from "../pages/ViewProductPage/ViewProductPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import CartPage from "../pages/CartPage/CartPage";
 import CheckOutPage from "@/pages/CartPage/CheckOutPage/CheckOutPage.jsx";
+// import OtpPage from "../pages/AuthPage/OtpPage";
+import ResetPasswordPage from "../pages/AuthPage/ResetPasswordPage";
 // import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 // import CategoryCard from "../components/HomePage/Category/CategoryCard";
 import MyListing  from "@/pages/ProfilePage/MyListing";
@@ -24,6 +26,7 @@ function TitleUpdater() {
       "/login": "Login | SecondHandLand",
       "/register": "Register | SecondHandLand",
       "/forgot-password": "Forgot Password | SecondHandLand",
+      "/reset-password": "Reset Password | SecondHandLand",
       "/change-password": "Change Password | SecondHandLand",
       "/home": "Home | SecondHandLand",
       "/view-product": "View Product | SecondHandLand",
@@ -50,6 +53,7 @@ export default function AppRouter() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/verify-otp" element={<OtpPage />} />

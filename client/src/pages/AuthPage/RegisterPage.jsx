@@ -1,127 +1,163 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthLayout from "../../components/AuthLayout/AuthLayout";
 import FloatingInput from "../../components/AuthLayout/FloatingInput";
-import { useForm } from "../../hooks/useForm";
-import { validateRegister } from "../../utils/validate";
-import { useAuth } from "../../hooks/useAuth";
-import { toast } from "react-toastify";
+import { authApi } from "@/api/authApi";
 
 const RegisterPage = () => {
-  const { register } = useAuth();
-
-  const { form, errors, handleChange, handleSubmit } = useForm({
-    initialValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      agreeTerms: false,
-      rememberMe: false,
-    },
-    validate: validateRegister,
-    onSubmit: async (values) => {
-      try {
-        await register(values);
-        toast.success("Registration successful!");
-      } catch (err) {
-        toast.error(err.message);
-      }
-    },
+  const navigate = useNavigate();
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    otp: "",
   });
+  const [token, setToken] = useState(null);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setError("");
+    setSuccessMessage("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccessMessage("");
+
+    // STEP 1: Gửi OTP
+    if (step === 1) {
+      if (!form.email || !form.password || !form.confirmPassword) {
+        setError("Please fill in all fields!");
+        return;
+      }
+      if (form.password !== form.confirmPassword) {
+        setError("Passwords do not match!");
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const res = await authApi.sendOtp("register", form.email, form.password);
+        setToken(res.data.token);
+        setStep(2);
+        setSuccessMessage("OTP sent to your email!");
+      } catch (err) {
+        setError(err.response?.data?.message || "Failed to send OTP");
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
+    // STEP 2: Verify OTP + tạo user
+    if (!form.otp || !token) {
+      setError("OTP is required");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Verify OTP
+      await authApi.verifyOtp("register", token, form.otp);
+
+      // Tạo user
+      await authApi.register(token, {
+        mail: form.email,
+        password: form.password,
+        role: "customer",
+        status: "active",
+      });
+
+      setSuccessMessage("🎉 Registration successful! Redirecting to login...");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+
+      // Reset form
+      setStep(1);
+      setForm({ email: "", password: "", confirmPassword: "", otp: "" });
+      setToken(null);
+    } catch (err) {
+      setError(err.response?.data?.message || "OTP verification or registration failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <AuthLayout title="Create Account">
-      <p className="text-gray-500 text-center mb-8">Sign up to get started!</p>
+      <form onSubmit={handleSubmit} className="space-y-5 max-w-md mx-auto relative">
+        {/* Thông báo lỗi */}
+        {error && (
+          <div className="bg-red-100 text-red-800 border border-red-300 rounded-lg px-4 py-2 text-center">
+            {error}
+          </div>
+        )}
+        {/* Thông báo thành công */}
+        {successMessage && (
+          <div className="bg-green-100 text-green-800 border border-green-300 rounded-lg px-4 py-2 text-center">
+            {successMessage}
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-        <FloatingInput
-          id="name"
-          type="text"
-          label="Full Name"
-          value={form.name}
-          onChange={handleChange}
-          error={errors.name}
-        />
-
-        <FloatingInput
-          id="email"
-          type="email"
-          label="Email"
-          value={form.email}
-          onChange={handleChange}
-          error={errors.email}
-        />
-
-        <FloatingInput
-          id="password"
-          type="password"
-          label="Password"
-          value={form.password}
-          onChange={handleChange}
-          error={errors.password}
-        />
-
-        <FloatingInput
-          id="confirmPassword"
-          type="password"
-          label="Confirm Password"
-          value={form.confirmPassword}
-          onChange={handleChange}
-          error={errors.confirmPassword}
-        />
-
-        {/* Remember Me */}
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="rememberMe"
-            checked={form.rememberMe}
+        {step === 1 ? (
+          <>
+            <FloatingInput
+              id="email"
+              type="email"
+              label="Email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              error={error}
+            />
+            <FloatingInput
+              id="password"
+              type="password"
+              label="Password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              error={error}
+              autoComplete="new-password"
+            />
+            <FloatingInput
+              id="confirmPassword"
+              type="password"
+              label="Confirm Password"
+              name="confirmPassword"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              error={error}
+              autoComplete="new-password"
+            />
+          </>
+        ) : (
+          <FloatingInput
+            id="otp"
+            type="text"
+            label="Enter OTP"
+            name="otp"
+            value={form.otp}
             onChange={handleChange}
-            className="w-4 h-4 accent-[#7fa88d] rounded"
+            error={error}
           />
-          <label htmlFor="rememberMe" className="text-[#4b8063] text-sm">
-            Remember Me
-          </label>
-        </div>
+        )}
 
-        {/* Agree Terms */}
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="agreeTerms"
-            checked={form.agreeTerms}
-            onChange={handleChange}
-            className="w-4 h-4 accent-[#7fa88d] rounded"
-          />
-          <label htmlFor="agreeTerms" className="text-[#4b8063] text-sm">
-            I agree to the{" "}
-            <a
-              href="/terms"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline text-[#4b8063]"
-            >
-              Terms & Conditions
-            </a>
-          </label>
-        </div>
-        {errors.agreeTerms && <p className="text-rose-600 text-sm">{errors.agreeTerms}</p>}
-
-        {/* Register Button */}
         <button
           type="submit"
-          className="w-full bg-[#7fa88d] hover:bg-[#6b9478] text-white font-semibold py-3 rounded-lg transition-colors"
+          disabled={loading}
+          className="w-full bg-[#7fa88d] hover:bg-[#6b9478] text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-60"
         >
-          Register
+          {loading ? "Processing..." : step === 1 ? "Send OTP" : "Verify OTP"}
         </button>
-
-        {/* Footer */}
-        <p className="text-center text-[#4b8063] mt-2">
-          Already have an account?{" "}
-          <a href="/login" className="font-semibold hover:underline">
-            Login
-          </a>
-        </p>
       </form>
     </AuthLayout>
   );

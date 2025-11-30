@@ -1,45 +1,119 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "../../components/AuthLayout/AuthLayout";
-import FloatingInput from "../../components/AuthLayout/FloatingInput"; // Đã sửa chữ F
-import { useForm } from "../../hooks/useForm";
-import { validateLogin } from "../../utils/validate";
-import { useAuth } from "../../hooks/useAuth";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import FloatingInput from "../../components/AuthLayout/FloatingInput";
+import { authApi } from "@/api/authApi";
+import { CheckCircle, XCircle } from "lucide-react";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
 
-  const { form, errors, handleChange, handleSubmit } = useForm({
-    initialValues: { email: "", password: "", rememberMe: false },
-    validate: validateLogin,
-    onSubmit: async (values) => {
-      try {
-        await login(values);
-        toast.success("Login successful!");
-        navigate("/home");
-      } catch (err) {
-        toast.error(err.message || "Login failed");
-      }
-    },
+  // Form state
+  const [form, setForm] = useState({
+    mail: "",
+    password: "",
+    rememberMe: false,
   });
+
+  const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState(""); // Hiển thị lỗi login
+  const [success, setSuccess] = useState(""); // Hiển thị login thành công
+  const [loading, setLoading] = useState(false);
+
+  // Load saved mail if rememberMe
+  useEffect(() => {
+    const savedMail = localStorage.getItem("savedMail");
+    if (savedMail) setForm((prev) => ({ ...prev, mail: savedMail, rememberMe: true }));
+  }, []);
+
+  // Validation logic
+  const validate = (values) => {
+    const errs = {};
+    if (!values.mail) {
+      errs.mail = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.mail)) {
+      errs.mail = "Email is invalid";
+    }
+
+    if (!values.password) {
+      errs.password = "Password is required";
+    }
+    return errs;
+  };
+
+  // Handle input change
+  const handleChange = (e) => {
+    const { id, value, type, checked } = e.target;
+    const nextForm = {
+      ...form,
+      [id]: type === "checkbox" ? checked : value,
+    };
+    setForm(nextForm);
+    setErrors(validate(nextForm));
+  };
+
+  // Handle submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setApiError("");
+    setSuccess("");
+
+    const validationErrors = validate(form);
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) return;
+
+    setLoading(true);
+    try {
+      const res = await authApi.login(form.mail, form.password);
+
+      if (form.rememberMe) {
+        localStorage.setItem("savedMail", form.mail);
+      } else {
+        localStorage.removeItem("savedMail");
+      }
+
+      setSuccess("🎉 Login successful! Redirecting...");
+      setTimeout(() => navigate("/home"), 1500);
+    } catch (err) {
+      console.error("Login failed:", err);
+      const message = err.response?.data?.message || err.message || "Login failed";
+      setApiError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <AuthLayout title="Login">
-      {/* subtitle */}
       <p className="text-gray-600 mb-6 text-center text-base">Please enter your login details</p>
 
-      {/* form */}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full animate-fadeIn">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-5 w-full max-w-md mx-auto animate-fadeIn"
+      >
+        {/* ERROR BOX */}
+        {apiError && (
+          <div className="flex items-center gap-3 bg-red-100 text-red-800 border border-red-300 rounded-lg px-4 py-2">
+            <XCircle size={20} className="text-red-600" />
+            <span className="font-medium">{apiError}</span>
+          </div>
+        )}
+
+        {/* SUCCESS BOX */}
+        {success && (
+          <div className="flex items-center gap-3 bg-green-100 text-green-800 border border-green-300 rounded-lg px-4 py-2">
+            <CheckCircle size={20} className="text-green-600" />
+            <span className="font-medium">{success}</span>
+          </div>
+        )}
+
         <FloatingInput
-          id="email"
+          id="mail"
           type="email"
           label="Email"
-          value={form.email}
+          value={form.mail}
           onChange={handleChange}
-          error={errors.email}
+          error={errors.mail}
         />
 
         <FloatingInput
@@ -51,7 +125,6 @@ const LoginPage = () => {
           error={errors.password}
         />
 
-        {/* remember + forgot password */}
         <div className="flex justify-between items-center text-sm flex-wrap gap-2 text-[#4b8063]">
           <label className="flex items-center gap-2">
             <input
@@ -67,28 +140,19 @@ const LoginPage = () => {
           <a href="/forgot-password" className="font-semibold hover:underline">
             Forgot Password?
           </a>
+          {/* <a href="/change-password" className="font-semibold hover:underline">
+            Change Password?
+          </a> */}
         </div>
 
-        {/* login button */}
         <button
           type="submit"
-          className="bg-[#7fa88d] hover:bg-[#6b9478] text-white font-semibold py-3 rounded-lg w-full text-lg transition-colors"
+          disabled={loading}
+          className="bg-[#7fa88d] hover:bg-[#6b9478] text-white font-semibold py-3 rounded-lg w-full text-lg transition-colors disabled:opacity-60"
         >
-          Login
+          {loading ? "Logging in..." : "Login"}
         </button>
 
-        {/* optional google login */}
-        {/* 
-        <button
-          type="button"
-          className="flex items-center justify-center gap-2 border border-[#dadce0] rounded-lg bg-white text-[#3c4043] font-medium py-3 w-full text-base hover:bg-[#f7f8f8] transition"
-        >
-          <img src="/g-logo.png" alt="Google" className="w-5 h-5" />
-          Login with Google
-        </button> 
-        */}
-
-        {/* footer */}
         <p className="text-center text-sm text-[#4b8063] mt-4">
           Don’t have an account?{" "}
           <a href="/register" className="font-semibold hover:underline">
