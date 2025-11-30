@@ -42,4 +42,13 @@ export const AuthService = {
     user.password = newPassword;
     await user.save();
   },
+  async updatePassword(mail, newPassword) {
+    const user = await User.findOne({ mail });
+    // check if the user not exists
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+    user.password = newPassword;
+    await user.save();
+  },
 };
