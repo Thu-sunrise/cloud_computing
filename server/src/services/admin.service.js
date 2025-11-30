@@ -54,37 +54,7 @@ export const AdminService = {
     };
   },
 
-  async deleteAdmin(id) {
-    const doc = await Admin.findByIdAndDelete(id);
-    if (!doc) throw new AppError("No document found with that ID", 404);
-    return doc;
-  },
-
   async createAdmin(data) {
     return await Admin.create(data);
-  },
-
-  async updateUserById(id, data) {
-    const allowedFields = ["role", "status", "failedLoginAttempts"];
-
-    const updateData = {};
-
-    Object.keys(data).forEach((field) => {
-      if (allowedFields.includes(field)) {
-        updateData[field] = data[field];
-      }
-    });
-
-    if (Object.keys(updateData).length === 0) {
-      throw new AppError("No valid fields to update", 400);
-    }
-
-    const doc = await User.findByIdAndUpdate(id, updateData, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!doc) throw new AppError("No document found with that ID", 404);
-    return doc;
   },
 };

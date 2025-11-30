@@ -60,14 +60,8 @@ export const UserService = {
     return doc;
   },
 
-  async getUserById(id, role) {
-    const selectedFields = "mail name role avatar gender dateOfBirth phone address";
-
-    if (role === "admin") {
-      const selectedFields = "mail name role avatar gender dateOfBirth phone status address";
-    }
-
-    const doc = await User.findById(id).select(selectedFields);
+  async getUserById(id) {
+    const doc = await User.findById(id);
     if (!doc) throw new AppError("No document found with that ID", 404);
     return doc;
   },
@@ -82,47 +76,25 @@ export const UserService = {
     return { id: user._id, role: user.role };
   },
 
-  async updateMyInfo(id, data) {
-    const allowedFields = [
-      "firstName",
-      "lastName",
-      "avatar",
-      "mail",
-      "gender",
-      "dateOfBirth",
-      "phone",
-    ];
-
-    const updateData = {};
-
-    Object.keys(data).forEach((field) => {
-      if (allowedFields.includes(field)) {
-        if (field === "firstName") {
-          updateData["name.firstName"] = data[field];
-        } else if (field === "lastName") {
-          updateData["name.lastName"] = data[field];
-        } else {
-          updateData[field] = data[field];
-        }
-      }
-    });
-
-    if (Object.keys(updateData).length === 0) {
-      throw new AppError("No valid fields to update", 400);
-    }
-
-    const doc = await User.findByIdAndUpdate(id, updateData, {
-      new: true,
-      runValidators: true,
-    });
-
+  async deleteUser(id) {
+    const doc = await User.findByIdAndDelete(id);
     if (!doc) throw new AppError("No document found with that ID", 404);
-    console.log(doc);
     return doc;
   },
 
-  async deleteUser(id) {
-    const doc = await User.findByIdAndDelete(id);
+  async updateUserById(id, data) {
+    if (Object.keys(data).length === 0) {
+      throw new AppError("No valid fields to update", 400);
+    }
+    const doc = await User.findByIdAndUpdate(
+      id,
+      { $set: data },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
     if (!doc) throw new AppError("No document found with that ID", 404);
     return doc;
   },

@@ -1,5 +1,6 @@
 import { Customer } from "../models/customer.model.js";
 import { User } from "../models/user.model.js";
+import { AppError } from "../utils/AppError.js";
 
 export const CustomerService = {
   async getAllCustomers(query) {
@@ -64,8 +65,47 @@ export const CustomerService = {
     return { id: user._id, role: user.role };
   },
 
-  async deleteCustomer(id) {
-    const doc = await Customer.findByIdAndDelete(id);
+  async updateMyInfo(id, data) {
+    const allowedFields = [
+      "firstName",
+      "lastName",
+      "avatar",
+      "mail",
+      "gender",
+      "dateOfBirth",
+      "phone",
+    ];
+
+    const updateData = {};
+
+    Object.keys(data).forEach((field) => {
+      if (allowedFields.includes(field)) {
+        if (field === "firstName") {
+          updateData["name.firstName"] = data[field];
+        } else if (field === "lastName") {
+          updateData["name.lastName"] = data[field];
+        } else {
+          updateData[field] = data[field];
+        }
+      }
+    });
+
+    if (Object.keys(updateData).length === 0) {
+      throw new AppError("No valid fields to update", 400);
+    }
+
+    const doc = await Customer.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!doc) throw new AppError("No document found with that ID", 404);
+    return doc;
+  },
+
+  async getCustomerById(id) {
+    const selectedFields = "mail name role avatar gender dateOfBirth phone address";
+    const doc = await User.findById(id).select(selectedFields);
     if (!doc) throw new AppError("No document found with that ID", 404);
     return doc;
   },

@@ -80,7 +80,7 @@ export const TokenService = {
   /*
    * SESSION TOKEN METHODS
    */
-  createSessionToken(payload, expiresIn = "40s") {
+  createSessionToken(payload, expiresIn = "1h") {
     return jwt.sign(payload, env.JWT_SECRET, { expiresIn });
   },
 

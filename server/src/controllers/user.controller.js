@@ -29,8 +29,7 @@ export const getMyInfo = asyncHandler(async (req, res) => {
 
 export const getUserById = asyncHandler(async (req, res) => {
   // transfer the logic to the service
-  const role = await req.user.role;
-  const user = await UserService.getUserById(req.params.id, role);
+  const user = await UserService.getUserById(req.params.id);
   if (!user) {
     return res.status(404).json({ success: false, message: "User not found" });
   }
@@ -44,24 +43,8 @@ export const createUser = asyncHandler(async (req, res) => {
   res.json({ success: true, data: user });
 });
 
-export const updateMyInfo = asyncHandler(async (req, res) => {
-  // const id = req.user.sub;
-  const id = req.user?.sub;
-  if (!id) return res.status(401).json({ success: false, message: "Unauthorized" });
-  const data = req.body;
-  // transfer the logic to the service
-  const updateUser = await UserService.updateMyInfo(id, data);
-  // return
-  return res.status(200).json({
-    success: true,
-    message: "Information updated successfully.",
-    data: updateUser,
-  });
-});
-
 export const deleteUser = asyncHandler(async (req, res) => {
-  const id = req.user?.sub;
-  if (!id) return res.status(401).json({ success: false, message: "Unauthorized" });
+  const { id } = req.params;
   // transfer the logic to the service
   const result = await UserService.deleteUser(id);
 
@@ -69,5 +52,19 @@ export const deleteUser = asyncHandler(async (req, res) => {
   return res.status(200).json({
     success: true,
     message: result.message,
+  });
+});
+
+export const updateUserById = asyncHandler(async (req, res) => {
+  // check role
+  const data = req.body;
+  const { id } = req.params;
+  // transfer the logic to the service
+  const updateUser = await UserService.updateUserById(id, data);
+
+  return res.status(200).json({
+    success: true,
+    message: "Information updated successfully.",
+    data: updateUser,
   });
 });

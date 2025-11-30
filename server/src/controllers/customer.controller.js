@@ -20,15 +20,27 @@ export const createCustomer = asyncHandler(async (req, res) => {
   res.json({ success: true, data: user });
 });
 
-export const deleteCustomer = asyncHandler(async (req, res) => {
+export const getCustomerById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const result = await CustomerService.getCustomerById(id);
+  return res.status(200).json({
+    success: true,
+    message: result,
+  });
+});
+
+export const updateMyInfo = asyncHandler(async (req, res) => {
+  // const id = req.user.sub;
   const id = req.user?.sub;
   if (!id) return res.status(401).json({ success: false, message: "Unauthorized" });
+  const data = req.body;
   // transfer the logic to the service
-  await customerService.deleteCustomer(id);
+  const updateUser = await CustomerService.updateMyInfo(id, data);
   // return
   return res.status(200).json({
     success: true,
-    message: result.message,
+    message: "Information updated successfully.",
+    data: updateUser,
   });
 });
 
@@ -36,13 +48,13 @@ export const getAddresses = asyncHandler(async (req, res) => {
   const userId = req.user.sub;
   const addressId = req.params;
 
-  const addresses = await customerService.getAddresses(userId, addressId);
+  const addresses = await CustomerService.getAddresses(userId, addressId);
   res.status(200).json({ success: true, data: addresses });
 });
 
 export const getListAddresses = asyncHandler(async (req, res) => {
   const id = req.user.sub;
-  const addresses = await customerService.getListAddresses(id);
+  const addresses = await CustomerService.getListAddresses(id);
   res.status(200).json({ success: true, data: addresses });
 });
 
@@ -50,7 +62,7 @@ export const addAddress = asyncHandler(async (req, res) => {
   const id = req.user.sub;
   const data = req.body;
 
-  const addresses = await customerService.addAddress(id, data);
+  const addresses = await CustomerService.addAddress(id, data);
   res.status(200).json({ success: true, message: "Added new address", data: addresses });
 });
 
@@ -59,7 +71,7 @@ export const updateAddress = asyncHandler(async (req, res) => {
   const userId = req.user.sub;
   const data = req.body;
 
-  const address = await customerService.updateAddress(userId, addressId, data);
+  const address = await CustomerService.updateAddress(userId, addressId, data);
   res.status(200).json({ success: true, message: "Address updated", data: address });
 });
 
@@ -67,6 +79,6 @@ export const deleteAddress = asyncHandler(async (req, res) => {
   const userId = req.user.sub;
   const addressId = req.params;
 
-  const addAddress = await customerService.deleteAddress(userId, addressId);
+  const addAddress = await CustomerService.deleteAddress(userId, addressId);
   res.status(200).json({ success: true, message: "Address deleted", data: addAddress });
 });

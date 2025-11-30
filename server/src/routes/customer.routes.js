@@ -7,13 +7,16 @@ import {
   deleteAddress,
   updateAddress,
   createCustomer,
+  getCustomerById,
+  updateMyInfo,
 } from "../controllers/customer.controller.js";
 export const router = Router();
 import { requireAuth } from "../middlewares/auth.middleware.js";
 
 // Define customer-related routes here
 router.get("/list", requireAuth, getAllCustomers);
-router.post("/new", createCustomer);
+router.get("/:id", getCustomerById);
+router.put("/:id", updateMyInfo);
 
 router.get("/address/list", requireAuth, getListAddresses);
 router.get("/address/:id", requireAuth, getAddresses);
