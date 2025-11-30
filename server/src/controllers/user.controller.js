@@ -1,99 +1,70 @@
-import { User } from "../models/user.model.js";
-import userService from "../services/user.service.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { UserService } from "../services/user.service.js";
 
-class UserController {
-  async getAllUsers(req, res) {
-    try {
-      const data = await userService.getAllUsers(req.query);
-      // if not found
-      if (!data || data.length === 0) {
-        return res.status(404).json({
-          success: false,
-          message: "No users found",
-        });
-      }
-      // if found -> return
-      res.status(200).json({ success: true, data: data });
-    } catch (error) {
-      next(error);
-    }
+export const getAllUsers = asyncHandler(async (req, res) => {
+  const data = await UserService.getAllUsers(req.query);
+  // if not found
+  if (!data || data.length === 0) {
+    return res.status(404).json({
+      success: false,
+      message: "No users found",
+    });
+  }
+  // if found -> return
+  res.status(200).json({ success: true, data: data });
+});
+
+export const getMyInfo = asyncHandler(async (req, res) => {
+  const myId = req.user?.sub;
+  if (!myId) return res.status(401).json({ success: false, message: "Unauthorized" });
+
+  const myInfo = await UserService.getMyInfo(myId);
+
+  if (!myInfo) {
+    return res.status(404).json({ success: false, message: "Not found" });
   }
 
-  async getMyInfo(req, res, next) {
-    try {
-      const myId = req.user?.sub;
-      if (!myId) return res.status(401).json({ success: false, message: "Unauthorized" });
+  res.json({ success: true, data: myInfo });
+});
 
-      const myInfo = await userService.getMyInfo(myId);
-
-      if (!myInfo) {
-        return res.status(404).json({ success: false, message: "Not found" });
-      }
-
-      res.json({ success: true, data: myInfo });
-    } catch (error) {
-      next(error);
-    }
+export const getUserById = asyncHandler(async (req, res) => {
+  // transfer the logic to the service
+  const user = await UserService.getUserById(req.params.id);
+  if (!user) {
+    return res.status(404).json({ success: false, message: "User not found" });
   }
+  res.json({ success: true, data: user });
+});
 
-  async getUserById(req, res, next) {
-    try {
-      // transfer the logic to the service
-      const user = await userService.getUserById(req.params.id);
-      if (!user) {
-        return res.status(404).json({ success: false, message: "User not found" });
-      }
-      res.json({ success: true, data: user });
-    } catch (error) {
-      next(error);
-    }
-  }
+export const createUser = asyncHandler(async (req, res) => {
+  // transfer the logic to the service
+  const { mail, password } = req.body;
+  const user = await UserService.createUser(mail, password);
+  res.json({ success: true, data: user });
+});
 
-  async createUser(req, res, next) {
-    try {
-      // transfer the logic to the service
-      const user = await userService.createUser(req.body);
-      res.json({ success: true, data: user });
-    } catch (error) {
-      next(error);
-    }
-  }
+export const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  // transfer the logic to the service
+  const result = await UserService.deleteUser(id);
 
-  async updateMyInfo(req, res, next) {
-    try {
-      // const id = req.user.sub;
-      const id = req.user?.sub;
-      if (!id) return res.status(401).json({ success: false, message: "Unauthorized" });
-      const data = req.body;
-      // transfer the logic to the service
-      const updateUser = await userService.updateMyInfo(id, data);
-      // return
-      return res.status(200).json({
-        success: true,
-        message: "Information updated successfully.",
-        data: updateUser,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
+  // return
+  return res.status(200).json({
+    success: true,
+    message: result.message,
+  });
+});
 
-  async deleteUser(req, res, next) {
-    try {
-      const id = req.user?.sub;
-      if (!id) return res.status(401).json({ success: false, message: "Unauthorized" });
-      // transfer the logic to the service
-      const result = await userService.deleteUser(id);
+export const updateUserById = asyncHandler(async (req, res) => {
+  // check role
+  const data = req.body;
+  const { id } = req.params;
+  // transfer the logic to the service
+  const updateUser = await UserService.updateUserById(id, data);
 
-      // return
-      return res.status(200).json({
-        success: true,
-        message: result.message,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-}
-
-export default new UserController();
+  return res.status(200).json({
+    success: true,
+    message: "Information updated successfully.",
+    data: updateUser,
+  });
+});

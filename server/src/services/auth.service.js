@@ -4,6 +4,7 @@ import { AppError } from "../utils/AppError.js";
 export const AuthService = {
   async login(mail, password) {
     const user = await User.findOne({ mail });
+
     if (!user) {
       throw new AppError("Invalid email or password", 401);
     } else if (user.status === "inactive") {
@@ -39,6 +40,15 @@ export const AuthService = {
       throw new AppError("Incorrect current password", 401);
     }
     // set newPassword and save in database if the currentPassword is correct
+    user.password = newPassword;
+    await user.save();
+  },
+  async updatePassword(mail, newPassword) {
+    const user = await User.findOne({ mail });
+    // check if the user not exists
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
     user.password = newPassword;
     await user.save();
   },
