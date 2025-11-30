@@ -6,6 +6,7 @@ import ForgotPasswordPage from "../pages/AuthPage/ForgotPasswordPage";
 import ChangePasswordPage from "../pages/AuthPage/ChangePasswordPage";
 import HomePage from "../pages/HomePage/HomePage";
 import OtpPage from "../pages/AuthPage/OtpPage";
+import ResetPasswordPage from "../pages/AuthPage/ResetPasswordPage";
 import ViewProductPage from "../pages/ViewProductPage/ViewProductPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 
@@ -18,6 +19,7 @@ function TitleUpdater() {
   useEffect(() => {
     const pathTitleMap = {
       "/login": "Login | SecondHandLand",
+      "/reset-password": "Reset Password | SecondHandLand",
       "/register": "Register | SecondHandLand",
       "/forgot-password": "Forgot Password | SecondHandLand",
       "/change-password": "Change Password | SecondHandLand",
@@ -41,6 +43,8 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />

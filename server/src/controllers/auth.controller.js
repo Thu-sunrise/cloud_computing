@@ -50,7 +50,7 @@ export const verifyOtp = asyncHandler(async (req, res) => {
   const key = `otp:${token}`;
   const value = await RedisService.get(key);
 
-  if (!value || !bcrypt.compare(otp.toString(), value.otpHashed)) {
+  if (!value || !(await bcrypt.compare(otp.toString(), value.otpHashed))) {
     return res.status(404).json({ message: "Invalid OTP" });
   }
 

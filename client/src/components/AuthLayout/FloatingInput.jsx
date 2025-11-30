@@ -6,31 +6,27 @@ const FloatingInput = ({ id, label, type = "text", value, onChange, error }) => 
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    setHasValue(value && value.trim() !== "");
+    setHasValue(Boolean(value && value.toString().trim() !== ""));
   }, [value]);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   const inputType = type === "password" && showPassword ? "text" : type;
 
   return (
     <div className="relative mb-5 w-full">
       <div className="relative w-full">
-        {/* Input */}
         <input
           id={id}
+          name={id} // ✅ Thêm name để useForm hoạt động chuẩn
           type={inputType}
           value={value}
           onChange={onChange}
           placeholder=" "
-          required
           className={`peer w-full rounded-lg border-[1.5px] px-3 pr-10 py-3 text-base outline-none bg-white transition-all
             ${error ? "border-rose-600" : "border-gray-300 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-200/50"}`}
         />
 
-        {/* Floating Label */}
         <label
           htmlFor={id}
           className={`absolute left-3 top-1/2 -translate-y-1/2 bg-white text-gray-600 px-1 transition-all duration-200
@@ -42,7 +38,6 @@ const FloatingInput = ({ id, label, type = "text", value, onChange, error }) => 
           {label}
         </label>
 
-        {/* Toggle password visibility */}
         {type === "password" && (
           <button
             type="button"
@@ -85,7 +80,6 @@ const FloatingInput = ({ id, label, type = "text", value, onChange, error }) => 
         )}
       </div>
 
-      {/* Error text */}
       {error && <p className="text-rose-600 text-sm mt-1">{error}</p>}
     </div>
   );
@@ -95,7 +89,7 @@ FloatingInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   type: PropTypes.string,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
   error: PropTypes.string,
 };

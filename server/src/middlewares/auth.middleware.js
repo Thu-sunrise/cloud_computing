@@ -22,7 +22,7 @@ export const requireAuth = async (req, res, next) => {
         const { newSessionToken, payload } = await TokenService.rotateSessionToken(doc.userId);
 
         if (!newSessionToken) {
-          return res.status(401).json({ message: "User not found" });
+          return res.status(401).json({ message: "User not foun1d" });
         }
 
         res.cookie("session", newSessionToken, {
