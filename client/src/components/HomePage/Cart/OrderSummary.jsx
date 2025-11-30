@@ -18,7 +18,7 @@ export default function OrderSummary({listPrice }) {
   const grandTotal = totalPrice + shippingFee;
 
   return (
-    <div className="bg-[#CFDDC6] mx-auto border border-black rounded-lg p-8">
+    <div className="bg-[#CFDDC6] mx-auto rounded-lg p-8">
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-['Roboto'] font-bold text-xl text-black">
           Order Summary

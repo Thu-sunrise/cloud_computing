@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { ChevronRight } from "lucide-react";
-
+// import { Chevron} from "lucide-react";
 export default function Breadcrumb({ items = [] }) {
   if (!items.length) return null;
 
@@ -24,11 +24,17 @@ export default function Breadcrumb({ items = [] }) {
                 {item.label}
               </a>
 
-              {!isLast && (
-                <ChevronRight
-                  className="w-4 h-6 text-[#4E4E4E] opacity-75"
-                  aria-hidden="true"
-                />
+              {!isLast && (<div className="flex items-center gap-0" aria-hidden   ="true">
+                {/*<ChevronRight*/}
+                {/*  className="w-4 h-6 text-[#4E4E4E] opacity-75 ml-0"*/}
+                {/*  aria-hidden="true"*/}
+                {/*/>*/}
+                {/*<ChevronRight*/}
+                {/*className="w-4 h-6 text-[#4E4E4E] opacity-75 mr-0"*/}
+                {/*aria-hidden="true"*/}
+                {/*/>*/}
+                  {">>"}
+                </div>
               )}
             </li>
           );

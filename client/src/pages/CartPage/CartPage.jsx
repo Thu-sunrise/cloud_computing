@@ -93,7 +93,7 @@ export default function CartPage() {
 
         <div className="flex flex-col lg:flex-row gap-8 mt-6 items-start">
 
-          <div className="flex-1 w-full bg-[#CFDDC6] border border-black rounded-lg p-4 sm:p-8">
+          <div className="flex-1 w-full bg-[#CFDDC6] rounded-lg p-4 sm:p-8">
             <div className="flex items-center justify-between mb-6">
               <h1 className="font-['Montserrat'] font-bold text-3xl sm:text-[42px] text-[#283645]">
                 MY CART

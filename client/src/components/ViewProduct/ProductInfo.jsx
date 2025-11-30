@@ -7,7 +7,7 @@ export default function ProductInfo() {
       <h1 className="text-2xl font-semibold">Asgaard sofa</h1>
 
       <div className="flex items-center gap-4">
-        <div className="text-xl font-bold">$100</div>
+        <div className="text-xl font-bold">100 Points</div>
       </div>
 
       <p className="text-sm text-gray-600 leading-relaxed">
