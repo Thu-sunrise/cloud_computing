@@ -1,3 +1,7 @@
+// fix undefined (hạn chế undefined)
+// fix url bằng cách sử dụng hàm sinh url
+// gộp (Paging countTotalProduct và pagingTotalProduct) thành 1 service trả 2 tham số
+
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ProductService } from "../services/product.service.js";
 import { CloudinaryService } from "../services/cloudinary.service.js";
@@ -34,8 +38,9 @@ export const createProduct = asyncHandler(async (req, res) => {
     for (const file of req.files) {
       try {
         const uploadResult = await CloudinaryService.uploadFile(file, "products");
+        const url = CloudinaryService.generateSignedUrl(uploadResult.public_id);
         images.push({
-          url: uploadResult.secure_url,
+          url: url,
           publicId: uploadResult.public_id,
           resource_type: uploadResult.resource_type,
         });

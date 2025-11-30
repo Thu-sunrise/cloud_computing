@@ -55,7 +55,31 @@ export const CloudinaryService = {
   },
 
   async deleteFile(publicId) {
-    return cloudinary.uploader.destroy(publicId);
+    if (!publicId) return null;
+
+    // Infer resource type from stored publicId path when possible
+    let resourceType = "image";
+    const lower = publicId.toLowerCase();
+    if (lower.startsWith("videos/") || lower.includes("/videos/")) resourceType = "video";
+    if (lower.startsWith("documents/") || lower.includes("/documents/")) resourceType = "raw";
+
+    try {
+      const result = await cloudinary.uploader.destroy(publicId, {
+        resource_type: resourceType,
+        type: "private",
+      });
+
+      // Cloudinary returns { result: 'ok' } on success, 'not found' when not present
+      if (!result || (result.result !== "ok" && result.result !== "not found")) {
+        logger.error("[Cloudinary] destroy unexpected result:", result);
+        throw new AppError("Failed to delete file", 500);
+      }
+
+      return result;
+    } catch (err) {
+      logger.error("[Cloudinary] deleteFile error:", err);
+      throw new AppError("Failed to delete file", 500);
+    }
   },
 
   _getFolder(mime) {
