@@ -1,23 +1,19 @@
 import React from "react";
 import AppRouter from "./routes/AppRouter";
+// import CategoryCard from "./components/HomePage/Category/CategoryCard";
+// import CategoryGrid from "./components/HomePage/Category/CategoryGrid";
+// import HeroSection from "./components/HomePage/HeroSection";
+// import ViewProductPage from "./pages/ViewProductPage/ViewProductPage";
+// import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import "./App.css";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <>
       <AppRouter />
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      {/* <ProfilePage></ProfilePage> */}
+      {/* <ViewProductPage></ViewProductPage> */}
+      {/* <HeroSection></HeroSection> */}
+      {/* <CategoryGrid></CategoryGrid> */}
     </>
   );
 }

@@ -5,55 +5,60 @@ import FloatingInput from "../../components/AuthLayout/FloatingInput";
 import { authApi } from "@/api/authApi";
 import { CheckCircle, XCircle } from "lucide-react";
 
-const OtpPage = () => {
+const ResetPasswordPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { mail, token: initialToken } = location.state || {};
+  const { mail } = location.state || {};
 
-  const [otp, setOtp] = useState("");
-  const [token, setToken] = useState(initialToken || null);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Nếu không có email hoặc token → quay lại forgot-password
-    if (!mail || !token) {
+    if (!mail) {
       navigate("/forgot-password");
     }
-  }, [mail, token, navigate]);
+  }, [mail, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setError("");
     setSuccess("");
 
-    if (!otp.trim()) {
-      setError("Please enter OTP");
+    if (!newPassword.trim() || !confirmPassword.trim()) {
+      setError("Please fill in all fields!");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match!");
       return;
     }
 
     setLoading(true);
     try {
-      // Gọi API verify OTP
-      const res = await authApi.verifyOtp("forgot-password", token, otp);
+      const res = await authApi.forgotPassword(mail, newPassword);
 
-      // Nếu status 2xx → OTP đúng
+      // ✅ Kiểm tra đúng theo response server
       if (res.status >= 200 && res.status < 300) {
-        setSuccess("🎉 OTP verified successfully! Redirecting...");
-        setTimeout(() => navigate("/reset-password", { state: { mail } }), 2000);
+        setSuccess("🎉 Password updated successfully! Redirecting to login...");
+        setTimeout(() => navigate("/login"), 2000);
+      } else {
+        setError(res.data?.message || "Password reset failed");
       }
     } catch (err) {
-      console.error("❌ OTP verification error:", err);
-      // Chỉ hiển thị lỗi một chỗ
-      setError(err.response?.data?.message || err.message || "OTP verification failed");
+      console.error("❌ Reset password error:", err);
+      setError(err.response?.data?.message || err.message || "Password reset failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <AuthLayout title="Verify OTP">
+    <AuthLayout title="Reset Password">
       <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto">
         {/* ERROR BOX */}
         {error && (
@@ -71,15 +76,25 @@ const OtpPage = () => {
           </div>
         )}
 
-        {/* FORM INPUT */}
+        {/* FORM INPUTS */}
+        <FloatingInput id="mail" label="Email" type="email" value={mail} disabled />
+
         <FloatingInput
-          id="otp"
-          label="OTP"
-          type="text"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          autoComplete="one-time-code"
-          autoFocus
+          id="newPassword"
+          label="New Password"
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          autoComplete="new-password"
+        />
+
+        <FloatingInput
+          id="confirmPassword"
+          label="Confirm Password"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          autoComplete="new-password"
         />
 
         {/* SUBMIT BUTTON */}
@@ -88,11 +103,11 @@ const OtpPage = () => {
           disabled={loading}
           className="w-full bg-[#7fa88d] hover:bg-[#6b9478] text-white font-semibold py-3 rounded-lg transition-all disabled:opacity-60"
         >
-          {loading ? "Verifying..." : "Verify OTP"}
+          {loading ? "Resetting..." : "Reset Password"}
         </button>
       </form>
     </AuthLayout>
   );
 };
 
-export default OtpPage;
+export default ResetPasswordPage;
