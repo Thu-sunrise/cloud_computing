@@ -30,20 +30,19 @@ export const AuthService = {
 
   async changePassword(userId, oldPassword, newPassword) {
     const user = await User.findById(userId);
-    // check if the user not exists
+
     if (!user) {
       throw new AppError("User not found", 404);
     }
-    // check if the currentPassword is not correct
-    const isMatch = await user.comparePassword(oldPassword);
-    if (!isMatch) {
+
+    if (await user.comparePassword(oldPassword)) {
       throw new AppError("Incorrect current password", 401);
     }
-    // set newPassword and save in database if the currentPassword is correct
+
     user.password = newPassword;
     await user.save();
   },
-  async updatePassword(mail, newPassword) {
+  async forgotPassword(mail, newPassword) {
     const user = await User.findOne({ mail });
     // check if the user not exists
     if (!user) {

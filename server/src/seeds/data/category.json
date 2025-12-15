@@ -1,62 +1,62 @@
 [
   {
-    "name": "Electronics",
-    "description": "Used electronic devices"
+    "name": "Mobile Devices",
+    "description": "Second-hand phones, tablets, and related accessories",
+    "imagePublicId": "mobile_st6omg"
   },
   {
-    "name": "Phones & Accessories",
-    "description": "Second-hand phones and accessories"
-  },
-  {
-    "name": "Computers & Laptops",
-    "description": "Used computers and laptops"
+    "name": "Computers",
+    "description": "Used computers, laptops, and peripherals",
+    "imagePublicId": "computer_ddasf9"
   },
   {
     "name": "Cameras",
-    "description": "Used cameras and photography equipment"
+    "description": "Used cameras and photography equipment",
+    "imagePublicId": "camera_ywatfa"
   },
   {
-    "name": "Furniture",
-    "description": "Used home furniture"
+    "name": "Home Furniture",
+    "description": "Used furniture for home and office",
+    "imagePublicId": "furniture_aaftlx"
   },
   {
     "name": "Home Appliances",
-    "description": "Used household appliances"
+    "description": "Used household appliances and kitchen gadgets",
+    "imagePublicId": "appliances_r453ha"
   },
   {
     "name": "Books",
-    "description": "Second-hand books"
+    "description": "Second-hand books and educational materials",
+    "imagePublicId": "book_tlhwdz"
   },
   {
-    "name": "Clothes",
-    "description": "Used clothes for men and women"
+    "name": "Clothing",
+    "description": "Used clothes for men, women, and children",
+    "imagePublicId": "cloth_vmsomo"
   },
   {
-    "name": "Shoes",
-    "description": "Used shoes"
+    "name": "Footwear",
+    "description": "Used shoes, boots, and sandals",
+    "imagePublicId": "footwear_c9oxei"
   },
   {
-    "name": "Bags & Accessories",
-    "description": "Tote bags, backpacks, and other accessories"
+    "name": "Sports Equipment",
+    "description": "Used sports gear, fitness equipment, and outdoor items",
+    "imagePublicId": "sport_v5zx40"
   },
   {
-    "name": "Sports & Outdoors",
-    "description": "Used sports equipment and outdoor gear"
-  },
-  {
-    "name": "Toys & Games",
-    "description": "Second-hand toys and games"
-  },
-  {
-    "name": "Musical Instruments",
-    "description": "Used musical instruments"
+    "name": "Toys and Games",
+    "description": "Second-hand toys, board games, and puzzles",
+    "imagePublicId": "toy_arwnqi"
   },
   {
     "name": "Vehicles",
-    "description": "Used cars, bikes, and scooters"
+    "description": "Used cars, bikes, scooters, and other vehicles",
+    "imagePublicId": "vehicle_ixp2oo"
   },
   {
     "name": "Collectibles",
-    "description": "Collectible items and antiques"
+    "description": "Collectible items, antiques, and memorabilia",
+    "imagePublicId": "collec_qsobqk"
   }
 ]
