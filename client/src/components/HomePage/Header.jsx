@@ -1,9 +1,24 @@
-import React from "react";
-import { ShoppingCart, MessageCircle, Bell, User, Search, Menu } from "lucide-react";
+import {React, useState} from "react";
+import { ShoppingCart, MessageCircle, Bell, Search, Menu } from "lucide-react";
 import logo from "../../assets/images/logo.png";
-import { Link } from "react-router-dom";//link to href
+import { Link, useNavigate } from "react-router-dom";//link to href
 
 function Header() {
+  const navigate = useNavigate();
+  const User = "https://i.pravatar.cc/200";
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearch = () => {
+    if (searchValue.trim()) {
+      navigate(`/home/result?search=${encodeURIComponent(searchValue)}`);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   const navItems = [
     { icon: ShoppingCart, path: "/home/cart" },
@@ -14,75 +29,76 @@ function Header() {
 
   return (
     <header className="w-full">
-      {/* ==== TOP HEADER ==== */}
       <div className="flex items-center justify-between bg-[#7dac8c] px-5 h-[70px]">
-        {/* Logo */}
         <div className="h-auto w-auto">
+          <Link
+            to ="/home"
+          >
           <img
             src={logo}
-            alt="Logo"
-            className="h-[70px] object-contain" // nhỏ hơn đúng trong ảnh
-            href = "/home"
-          />
+            alt="logo"
+            className="hidden lg:block h-[70px] object-contain" />
+            </Link>
         </div>
 
-        {/* Search Bar */}
-        <div className="relative w-[25%] flex items-center">
+        <div className="relative flex items-center w-full max-w-md h-[45px] rounded-lg focus-within:shadow-lg bg-[#f2f4f3] overflow-hidden border border-gray-300">
+
+          <button className="grid place-items-center h-full w-[50px] text-gray-500 hover:bg-gray-200 transition">
+            <Menu size={20} />
+          </button>
+
           <input
             type="text"
-            placeholder="Search"
-            className="w-full h-[40px] pl-4 pr-12 bg-[#f2f4f3] 
-                 rounded-lg text-[16px] text-gray-800 outline-none 
-                 border border-gray-300"
+            placeholder="Search for products,..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            className="peer h-full w-full pr-2 text-gray-700 outline-none bg-transparent"
           />
 
-          {/* Search icon style giống hình: nền vuông bo góc, màu navy */}
-          <button
-            className="absolute right-1 top-1/2 -translate-y-1/2 
-                w-8 h-8 bg-[#2f3b40] rounded-md 
-                flex items-center justify-center 
-                text-white hover:bg-[#3b4b52] transition"
-          >
-            <Search size={22} />
-          </button>
+          <div className="h-full pr-1 grid place-items-center">
+            <button onClick={handleSearch}
+                    className="w-8 h-8 rounded bg-[#2f3b40] text-white flex items-center justify-center hover:bg-[#3b4b52] transition">
+              <Search size={18} />
+            </button>
+          </div>
+
         </div>
 
         {/* Icons Right */}
         <div className="flex items-center gap-6 p-10">
           {navItems.map((item, idx) => {
             const Icon = item.icon;
-
-            return (
+            if (item.path !== "/profile")
+              return (
               <Link
                 key={idx}
                 to={item.path}
-                className="bg-white w-10 h-10 rounded-full flex items-center justify-center
+                className="bg-white w-12 h-12
+                rounded-full flex items-center justify-center
                  cursor-pointer hover:bg-gray-200 hover:scale-105 transition shadow text-black"
               >
-                <Icon size={20} />
+                <Icon size={25} />
               </Link>
             );
+            else return (
+              <Link
+                key={idx}
+                to={item.path}
+                className="group relative flex items-center justify-center w-12 h-12 bg-white rounded-full
+             shadow-sm border border-gray-100 overflow-hidden
+             hover:shadow-md hover:scale-110 active:scale-95
+             transition-all duration-200 ease-out"
+              >
+                {/* Image needs sizing constraints to stay inside the circle */}
+                <img
+                  src={item.icon}
+                  alt="nav-icon"
+                  className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+                />
+              </Link>);
           })}
         </div>
-      </div>
-
-      {/* ==== NAV BAR SECOND LINE ==== */}
-      <div className="w-full bg-[#d4e2d8] h-[55px] flex items-center px-6 shadow-sm">
-        {/* All Category Button */}
-        <div
-          className="flex items-center gap-2 px-4 py-1 border rounded-lg bg-white cursor-pointer 
-                        hover:bg-gray-100 transition text-gray-700 font-medium shadow-sm"
-        >
-          <Menu size={20} />
-          <span>All Category</span>
-        </div>
-
-        {/* Nav Links */}
-        <nav className="flex items-center gap-10 ml-10 text-gray-700 font-medium text-[16px]">
-          <button className="hover:text-black transition">Home</button>
-          <button className="hover:text-black transition">About</button>
-          <button className="hover:text-black transition">Contact</button>
-        </nav>
       </div>
     </header>
   );

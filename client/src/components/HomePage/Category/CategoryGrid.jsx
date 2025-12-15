@@ -9,7 +9,7 @@ const categories = Array.from({ length: 12 }).map((_, i) => ({
 
 export default function CategoryGrid() {
   return (
-    <section className="w-full mt-12">
+    <section className="w-full mb-12 ">
       {/* Banner full width */}
       <div
         className="w-full h-24 flex items-center justify-center mb-6 bg-cover bg-center text-4xl text-[#283645] font-semibold"

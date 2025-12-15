@@ -11,7 +11,7 @@ const HomePage = () => {
       <Header></Header>
       <HeroSection></HeroSection>
       <CategoryGrid></CategoryGrid>
-      <ProductGrid></ProductGrid>
+      <ProductGrid headerTitle={"Today's Picks"}></ProductGrid>
       <InfoApp></InfoApp>
       <Footer></Footer>
     </>

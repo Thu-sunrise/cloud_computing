@@ -1,56 +1,81 @@
 import React, { useState } from "react";
-import Header from "../../components/HomePage/Header";
-import InfoApp from "../../components/HomePage/InfoApp";
-import Footer from "../../components/HomePage/Footer";
-import ProductGrid from "../../components/HomePage/TodayPick/ProductGrid";
+import PropTypes from "prop-types";
 
+// Components
+import Header from "../../components/HomePage/Header";
+import Footer from "../../components/HomePage/Footer";
+import InfoApp from "../../components/HomePage/InfoApp";
+import ProductGrid from "../../components/HomePage/TodayPick/ProductGrid";
 import ProductImages from "../../components/ViewProduct/ProductImages";
 import ProductInfo from "../../components/ViewProduct/ProductInfo";
 import ShopOwnerCard from "../../components/ViewProduct/ShopOwnerCard";
 import ProductDescription from "../../components/ViewProduct/ProductDescription";
 import ProductReviews from "../../components/ViewProduct/ProductReviews";
 
+//Data
+// import mockProductsData from "./mockProductsData.js.js";
+
+// 1. Define static data outside the component (or move to a constants file)
+const PRODUCT_IMAGES = [
+  "https://picsum.photos/600/500?random=1",
+  "https://picsum.photos/600/500?random=2",
+  "https://picsum.photos/600/500?random=3",
+];
+
+// 2. Small layout wrapper to keep the main code clean
+const PageContainer = ({ children, className = "" }) => (
+  <div className={`w-full flex flex-col items-center bg-white ${className}`}>
+    <div className="max-w-[1080px] w-full px-4 mt-10 mb-20">{children}</div>
+  </div>
+);
+
+PageContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
+
 export default function ViewProductPage() {
-  const productImages = [
-    "https://picsum.photos/600/500?random=1",
-    "https://picsum.photos/600/500?random=2",
-    "https://picsum.photos/600/500?random=3",
-  ];
-  const [mainImage, setMainImage] = useState(productImages[0]);
+  const [activeImage, setActiveImage] = useState(PRODUCT_IMAGES[0]);
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="w-full flex flex-col items-center bg-white">
-        <div className="max-w-[1080px] w-full px-4 mt-10">
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-12 md:col-span-6">
+
+      <main className="flex-grow">
+        <PageContainer>
+          {/* Top Section: Gallery & Info */}
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="w-full">
               <ProductImages
-                images={productImages}
-                mainImage={mainImage}
-                setMainImage={setMainImage}
+                images={PRODUCT_IMAGES}
+                mainImage={activeImage}
+                setMainImage={setActiveImage}
               />
             </div>
-            <div className="col-span-12 md:col-span-6">
+            <div className="w-full">
               <ProductInfo />
             </div>
-          </div>
+          </section>
 
-          <div className="w-full h-px bg-gray-200 my-10"></div>
+          {/* Divider */}
+          <hr className="border-gray-200 my-10" />
 
-          <ProductDescription />
+          {/* Bottom Section: Details, Shop, Reviews */}
+          <section className="flex flex-col gap-8">
+            <ProductDescription />
+            <ShopOwnerCard />
+            <ProductReviews />
+          </section>
+        </PageContainer>
 
-          <ShopOwnerCard />
+        {/* Recommendations Section */}
+        <section className="bg-gray-50 py-10">
+          <ProductGrid headerTitle={"You may also like..."} mode={"carousel"} />
+        </section>
+      </main>
 
-          <ProductReviews />
-
-          <div className="h-20"></div>
-        </div>
-      </div>
-
-      <ProductGrid />
-      {/* <InfoApp /> */}
+      <InfoApp />
       <Footer />
-    </>
+    </div>
   );
 }

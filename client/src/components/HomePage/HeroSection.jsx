@@ -43,7 +43,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto mt-6 overflow-hidden relative h-[400px] md:h-[500px] lg:h-[550px]">
+    <div className="w-full max-w-[1600px] mx-auto overflow-hidden relative h-[400px] md:h-[500px] lg:h-[550px]">
       {/* SLIDE ITEMS */}
       {slides.map((slide, index) => (
         <div

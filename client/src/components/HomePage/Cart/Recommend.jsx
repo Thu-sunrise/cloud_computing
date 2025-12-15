@@ -16,7 +16,7 @@ export default function Recommend({ recommendations }) {
   };
 
   return (
-    <div className="bg-[#CFDDC6] border border-black rounded-lg p-6 sm:p-8 mt-8">
+    <div className="bg-[#CFDDC6] rounded-lg p-6 sm:p-8 mt-8">
       {/* Header & Controls */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-['Roboto'] font-semibold text-xl sm:text-[27px] text-black">

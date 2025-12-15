@@ -34,10 +34,7 @@ export default function CartItem({ item, onToggle, onRemove }) {
       <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 mt-2 sm:mt-0">
         <div className="text-left sm:text-right">
           <div className="font-['Roboto'] text-xl sm:text-2xl text-black font-bold">
-            {item.price}
-          </div>
-          <div className="font-['Roboto'] text-sm sm:text-[23px] text-black">
-            Points
+            {item.price} Points
           </div>
         </div>
 
