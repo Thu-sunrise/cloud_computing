@@ -34,12 +34,7 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    avatar: {
-      publicId: {
-        type: String,
-      },
-    },
-    // last login, created at, updated at will be handled by timestamps
+    avatarPublicId: { type: String, default: "avtdf_kvmacl" },
   },
   { timestamps: true, discriminatorKey: "role" }
 );

@@ -1,0 +1,1433 @@
+[
+  {
+    "name": "iPhone 15 Pro Max Titanium",
+    "description": "The ultimate iPhone with a titanium design, A17 Pro chip, and the most powerful camera system yet.",
+    "price": 1199,
+    "imagePublicId": "ip15pro_qwcyyj",
+    "status": "active",
+    "createdBy": "thu@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "MacBook Air M2 15-inch",
+    "description": "Supercharged by M2 chip. Impressively big, impossibly thin. Up to 18 hours of battery life.",
+    "price": 1299,
+    "imagePublicId": "macm215_uuoy50",
+    "status": "active",
+    "createdBy": "tkiet@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Sony WH-1000XM5 Headphones",
+    "description": "Industry-leading noise canceling headphones with exceptional sound quality and 30-hour battery life.",
+    "price": 348,
+    "imagePublicId": "sonywh100_oeodle",
+    "status": "active",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Dell XPS 13 Plus",
+    "description": "Minimalist and modern design with zero-lattice keyboard and capacitive touch function row.",
+    "price": 1450,
+    "imagePublicId": "dellxps_dfzhnw",
+    "status": "active",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "CR7 Signed Football Boots",
+    "description": "Exclusive limited edition Nike Mercurial boots signed by Cristiano Ronaldo himself.",
+    "price": 5000,
+    "imagePublicId": "cr7boot_pwpeyj",
+    "status": "active",
+    "createdBy": "ronaldo@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "Inter Miami Home Jersey 2024",
+    "description": "Authentic pink home jersey of Inter Miami CF, number 10 Messi printed on the back.",
+    "price": 180,
+    "imagePublicId": "intermm_grnhqd",
+    "status": "active",
+    "createdBy": "messi@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "Eras Tour VIP Merchandise Box",
+    "description": "Special edition collector's box including a tote bag, poster, and exclusive tour photos.",
+    "price": 250,
+    "imagePublicId": "erast_t7toj0",
+    "status": "active",
+    "createdBy": "taylorswift@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "Sky Tour Official Lightstick",
+    "description": "Official lightstick for MTP Sky Tour 2024. Connects via Bluetooth for synchronized light effects.",
+    "price": 45,
+    "imagePublicId": "skytour_mve0pn",
+    "status": "active",
+    "createdBy": "sontung@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "Drew House Smiley Hoodie",
+    "description": "Oversized yellow hoodie from Drew House featuring the iconic smiley face logo.",
+    "price": 140,
+    "imagePublicId": "drewh_bmfrng",
+    "status": "active",
+    "createdBy": "justinbieber@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Logitech MX Master 3S Mouse",
+    "description": "High-precision wireless mouse with quiet clicks and an 8K DPI sensor for any surface.",
+    "price": 99,
+    "imagePublicId": "logit_fkedh9",
+    "status": "active",
+    "createdBy": "thu@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Samsung Odyssey G9 Monitor",
+    "description": "49-inch curved gaming monitor with 240Hz refresh rate and 1ms response time.",
+    "price": 1100,
+    "imagePublicId": "odyssey_kt9prz",
+    "status": "active",
+    "createdBy": "tkiet@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Kindle Paperwhite Signature Ed",
+    "description": "32GB e-reader with wireless charging and auto-adjusting front light.",
+    "price": 189,
+    "imagePublicId": "papsied_vhlheb",
+    "status": "active",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "Dyson V15 Detect Vacuum",
+    "description": "Powerful cordless vacuum with laser illumination to reveal microscopic dust.",
+    "price": 749,
+    "imagePublicId": "dysonv15_ly3lds",
+    "status": "active",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "Adidas X Crazyfast Boots",
+    "description": "Lightweight speed boots designed for ultimate agility on firm ground.",
+    "price": 220,
+    "imagePublicId": "adixc_k0cayz",
+    "status": "active",
+    "createdBy": "messi@example.com",
+    "categoryName": "Footwear"
+  },
+  {
+    "name": "1989 (Taylor's Version) Vinyl",
+    "description": "Crystal skies blue vinyl edition of the re-recorded 1989 album.",
+    "price": 35,
+    "imagePublicId": "189viny_pzjooy",
+    "status": "active",
+    "createdBy": "taylorswift@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "MTP Talent Hoodie Limited",
+    "description": "Exclusive black hoodie released for the MTP Talent anniversary.",
+    "price": 60,
+    "imagePublicId": "mtphol_or67kd",
+    "status": "active",
+    "createdBy": "sontung@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Peaches Cap",
+    "description": "Simple baseball cap inspired by the hit single Peaches.",
+    "price": 30,
+    "imagePublicId": "peacea_scn2ay",
+    "status": "active",
+    "createdBy": "justinbieber@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Herman Miller Aeron Chair",
+    "description": "Ergonomic office chair with breathable mesh and fully adjustable arms.",
+    "price": 1600,
+    "imagePublicId": "hetma_tntqnp",
+    "status": "active",
+    "createdBy": "thu@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Fujifilm X100VI Camera",
+    "description": "Premium compact digital camera with a 40MP sensor and classic retro design.",
+    "price": 1599,
+    "imagePublicId": "fya113_gctqpv",
+    "status": "active",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "iPhone 13 Pro Max - Like New",
+    "description": "Used iPhone 13 Pro Max 256GB, battery health 92%, minor scratches on screen, includes original box and charger.",
+    "price": 750,
+    "imagePublicId": "ip13pm_ibylo1",
+    "status": "active",
+    "createdBy": "thu@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "MacBook Air 2020 M1 - Good Condition",
+    "description": "Second-hand MacBook Air M1 8GB/256GB, slight wear on keyboard, excellent battery life, perfect for students.",
+    "price": 650,
+    "imagePublicId": "ma129_wvtfwc",
+    "status": "active",
+    "createdBy": "tkiet@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Samsung Galaxy S21 FE",
+    "description": "Used Samsung Galaxy S21 FE 128GB, 6 months old, comes with protective case and screen protector installed.",
+    "price": 320,
+    "imagePublicId": "sagla_mw0hxn",
+    "status": "active",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "Sony Alpha A6000 Camera Kit",
+    "description": "Second-hand Sony A6000 mirrorless camera with 16-50mm lens, shutter count 12,000, great for beginners.",
+    "price": 380,
+    "imagePublicId": "sonlaa_mddqqe",
+    "status": "active",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "Nike Air Force 1 '07 - Size 9",
+    "description": "Pre-owned Nike Air Force 1 white, worn 3 times, clean condition, includes original box.",
+    "price": 60,
+    "imagePublicId": "jeqt_awxanl",
+    "status": "active",
+    "createdBy": "neymar@example.com",
+    "categoryName": "Footwear"
+  },
+  {
+    "name": "IKEA MALM Bed Frame - Queen Size",
+    "description": "Used IKEA MALM bed frame in black-brown, good condition, some minor scratches, disassembled for pickup.",
+    "price": 120,
+    "imagePublicId": "21gjwq_i7o3mx",
+    "status": "active",
+    "createdBy": "minhchau@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Harry Potter Complete Book Set",
+    "description": "Second-hand Harry Potter 7-book collection, paperback edition, good condition, no torn pages.",
+    "price": 45,
+    "imagePublicId": "13oa2_ddtcve",
+    "status": "active",
+    "createdBy": "hoanganh@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "Zara Winter Coat - Size M",
+    "description": "Used Zara wool-blend coat in navy blue, worn one season, clean and well-maintained.",
+    "price": 35,
+    "imagePublicId": "324po_fq0ejf",
+    "status": "active",
+    "createdBy": "ngoclinh@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Electric Rice Cooker Panasonic 1.8L",
+    "description": "Second-hand Panasonic rice cooker, works perfectly, includes measuring cup and rice paddle.",
+    "price": 25,
+    "imagePublicId": "dj304_xssdf5",
+    "status": "active",
+    "createdBy": "quanghuy@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "Yamaha Acoustic Guitar",
+    "description": "Used Yamaha F310 acoustic guitar for beginners, includes soft case and extra strings.",
+    "price": 85,
+    "imagePublicId": "f034s_qefl8h",
+    "status": "active",
+    "createdBy": "thanhha@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "Xiaomi Redmi Note 11",
+    "description": "Used Xiaomi Redmi Note 11 128GB, 6 months warranty remaining, slight scratch on back cover.",
+    "price": 180,
+    "imagePublicId": "adfnf_t54y9d",
+    "status": "active",
+    "createdBy": "thu@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "Dell Latitude Laptop i5 8th Gen",
+    "description": "Second-hand Dell Latitude laptop, 8GB RAM, 256GB SSD, good condition for office work.",
+    "price": 320,
+    "imagePublicId": "rrkg1_jqznc6",
+    "status": "active",
+    "createdBy": "tkiet@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Canon EOS 200D DSLR Kit",
+    "description": "Used Canon 200D with 18-55mm lens, great condition for photography enthusiasts.",
+    "price": 420,
+    "imagePublicId": "ckaq2_spm9vg",
+    "status": "active",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "Adidas Ultraboost Running Shoes - Size 10",
+    "description": "Pre-owned Adidas Ultraboost 21, comfortable for running, moderate wear on outsole.",
+    "price": 55,
+    "imagePublicId": "1je45_nlhtig",
+    "status": "active",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Footwear"
+  },
+  {
+    "name": "Wooden Study Desk with Drawer",
+    "description": "Second-hand wooden desk, dimensions 120x60cm, some scratches but sturdy.",
+    "price": 45,
+    "imagePublicId": "q4kxo_em4ohn",
+    "status": "active",
+    "createdBy": "neymar@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "The Alchemist - Paulo Coelho",
+    "description": "Used paperback edition of The Alchemist, good condition, perfect gift.",
+    "price": 8,
+    "imagePublicId": "2kwif_mfzm8a",
+    "status": "active",
+    "createdBy": "minhchau@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "Uniqlo Fleece Jacket - Size L",
+    "description": "Second-hand Uniqlo fleece jacket in gray, warm and comfortable, like new.",
+    "price": 18,
+    "imagePublicId": "1od0c_f4oq06",
+    "status": "active",
+    "createdBy": "hoanganh@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Philips Air Fryer XXL",
+    "description": "Used Philips air fryer 4.1L capacity, works perfectly, includes recipe book.",
+    "price": 65,
+    "imagePublicId": "k2410_m73m02",
+    "status": "active",
+    "createdBy": "ngoclinh@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "Vintage Vinyl Records Collection",
+    "description": "Collection of 15 vintage vinyl records from 70s-80s, various artists, good condition.",
+    "price": 120,
+    "imagePublicId": "ekd9c_cran6z",
+    "status": "active",
+    "createdBy": "quanghuy@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "Wilson Tennis Racket",
+    "description": "Used Wilson tennis racket, good condition, great for beginners, includes cover.",
+    "price": 30,
+    "imagePublicId": "riaoz_ntxaod",
+    "status": "active",
+    "createdBy": "thanhha@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "Samsung Galaxy Tab S7 FE",
+    "description": "Used Samsung tablet 12.4 inch, 128GB storage, includes S Pen, perfect for students and artists.",
+    "price": 420,
+    "imagePublicId": "images/1765868473739_3sdyhd",
+    "status": "active",
+    "createdBy": "hieupham@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "Lenovo ThinkPad T480 Business Laptop",
+    "description": "Second-hand Lenovo ThinkPad, i5 8th gen, 16GB RAM, 512GB SSD, excellent condition for work.",
+    "price": 380,
+    "imagePublicId": "images/1765868477066_ahbzky",
+    "status": "active",
+    "createdBy": "kimanh@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "GoPro Hero 9 Black Action Camera",
+    "description": "Used GoPro Hero 9, includes 3 mounts and 2 batteries, waterproof case included.",
+    "price": 280,
+    "imagePublicId": "images/1765868477742_b5cwp9",
+    "status": "active",
+    "createdBy": "alexnguyen@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "IKEA POANG Armchair",
+    "description": "Second-hand IKEA armchair with beige fabric, comfortable and stylish, minor wear on arms.",
+    "price": 75,
+    "imagePublicId": "images/1765868478661_1hrm06",
+    "status": "active",
+    "createdBy": "emilyclark@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "LG Inverter Washing Machine 8kg",
+    "description": "Used LG washing machine, inverter technology, energy efficient, works perfectly.",
+    "price": 220,
+    "imagePublicId": "images/1765868480027_5a25ho",
+    "status": "active",
+    "createdBy": "kevinlee@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "To Kill a Mockingbird - Harper Lee",
+    "description": "Classic novel in good condition, 50th anniversary edition, no highlighting or writing inside.",
+    "price": 12,
+    "imagePublicId": "images/1765868481601_kow5kt",
+    "status": "active",
+    "createdBy": "lananh@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "Levi's 501 Original Jeans - Size 32",
+    "description": "Used Levi's jeans, classic fit, authentic denim, slight fading at knees.",
+    "price": 28,
+    "imagePublicId": "images/1765868485332_4odb12",
+    "status": "active",
+    "createdBy": "vietcuong@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Converse Chuck Taylor All Star - Size 8",
+    "description": "Pre-owned Converse shoes in black, comfortable canvas, good condition with original laces.",
+    "price": 25,
+    "imagePublicId": "images/1765868486430_l37mlb",
+    "status": "active",
+    "createdBy": "nguyenha@example.com",
+    "categoryName": "Footwear"
+  },
+  {
+    "name": "Decathlon Exercise Bike",
+    "description": "Second-hand exercise bike, 8 resistance levels, LCD display, great for home workouts.",
+    "price": 120,
+    "imagePublicId": "images/1765868487501_pe6evo",
+    "status": "active",
+    "createdBy": "minhtien@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "Monopoly Classic Board Game",
+    "description": "Used Monopoly game, complete set with all pieces and cards, box shows wear.",
+    "price": 15,
+    "imagePublicId": "images/1765868489534_0bmgf2",
+    "status": "active",
+    "createdBy": "hoangnam@example.com",
+    "categoryName": "Toys and Games"
+  },
+  {
+    "name": "Honda Wave Alpha 110cc",
+    "description": "Second-hand motorcycle, 2020 model, 15,000 km, well-maintained with service records.",
+    "price": 950,
+    "imagePublicId": "images/1765868490813_f3vvzi",
+    "status": "active",
+    "createdBy": "phuonglinh@example.com",
+    "categoryName": "Vehicles"
+  },
+  {
+    "name": "Vintage Coca-Cola Bottle Collection",
+    "description": "Collection of 10 vintage Coca-Cola bottles from 1970s-1990s, various designs.",
+    "price": 85,
+    "imagePublicId": "images/1765868492383_zdq8rd",
+    "status": "active",
+    "createdBy": "danielng@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "OnePlus 9 Pro 5G",
+    "description": "Used OnePlus 9 Pro 256GB, Hasselblad camera, fast charging, includes original case.",
+    "price": 450,
+    "imagePublicId": "images/1765868494997_8d0zjy",
+    "status": "active",
+    "createdBy": "hieupham@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "HP Pavilion Gaming Laptop",
+    "description": "Second-hand gaming laptop, GTX 1650 graphics, 16GB RAM, 512GB SSD, good for light gaming.",
+    "price": 520,
+    "imagePublicId": "images/1765868497139_gha0cq",
+    "status": "active",
+    "createdBy": "kimanh@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Nikon D3500 DSLR Kit",
+    "description": "Used Nikon D3500 with 18-55mm VR lens, perfect for beginners, includes camera bag.",
+    "price": 320,
+    "imagePublicId": "images/1765868498212_uverp3",
+    "status": "active",
+    "createdBy": "alexnguyen@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "Wooden Bookshelf 5-Tier",
+    "description": "Second-hand bookshelf, dimensions 150x80x30cm, sturdy construction, some scratches.",
+    "price": 65,
+    "imagePublicId": "images/1765868499432_5ierq9",
+    "status": "active",
+    "createdBy": "emilyclark@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Toshiba Microwave Oven 25L",
+    "description": "Used microwave oven, multiple cooking modes, defrost function, works perfectly.",
+    "price": 45,
+    "imagePublicId": "images/1765868500174_gid5ia",
+    "status": "active",
+    "createdBy": "kevinlee@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "Stephen King's 'IT' Hardcover",
+    "description": "Used hardcover edition of IT by Stephen King, good condition, no torn pages.",
+    "price": 18,
+    "imagePublicId": "images/1765868500809_a5w926",
+    "status": "active",
+    "createdBy": "lananh@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "H&M Winter Sweater - Size M",
+    "description": "Second-hand H&M knit sweater in burgundy, warm and cozy, excellent condition.",
+    "price": 14,
+    "imagePublicId": "images/1765868501988_3at8ax",
+    "status": "active",
+    "createdBy": "vietcuong@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Vans Old Skool Sneakers - Size 9.5",
+    "description": "Pre-owned Vans sneakers in classic black/white, moderate wear, authentic and comfortable.",
+    "price": 32,
+    "imagePublicId": "images/1765868504161_qoyrg4",
+    "status": "active",
+    "createdBy": "nguyenha@example.com",
+    "categoryName": "Footwear"
+  },
+  {
+    "name": "iPhone 12 - 64GB",
+    "description": "Sold iPhone 12 in good condition, battery health 85%, includes charger and case",
+    "price": 450,
+    "imagePublicId": "images/1765869679485_plr8k3",
+    "status": "sold",
+    "createdBy": "thu@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "MacBook Pro 2019 13-inch",
+    "description": "Sold MacBook Pro with Touch Bar, 8GB RAM, 256GB SSD, used for 2 years",
+    "price": 750,
+    "imagePublicId": "images/1765869681670_lpqsef",
+    "status": "sold",
+    "createdBy": "tkiet@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Samsung Galaxy Watch 4",
+    "description": "Sold smartwatch, good condition, includes charging cable",
+    "price": 120,
+    "imagePublicId": "images/1765869683191_fsejxa",
+    "status": "sold",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "Canon PowerShot SX620",
+    "description": "Sold compact digital camera, 20.2MP, used for travel photography",
+    "price": 150,
+    "imagePublicId": "images/1765869684344_yjnhwn",
+    "status": "sold",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "CR7 Training Jersey",
+    "description": "Sold official training jersey signed by Cristiano Ronaldo",
+    "price": 200,
+    "imagePublicId": "images/1765869685176_1zkv50",
+    "status": "sold",
+    "createdBy": "ronaldo@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "Barcelona 2021 Home Jersey",
+    "description": "Sold authentic Barcelona jersey worn during Messi's final season",
+    "price": 95,
+    "imagePublicId": "images/1765869686369_muitz4",
+    "status": "sold",
+    "createdBy": "messi@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "Folklore Album Vinyl",
+    "description": "Sold limited edition Folklore vinyl, includes signed booklet",
+    "price": 120,
+    "imagePublicId": "images/1765869687873_igp28p",
+    "status": "sold",
+    "createdBy": "taylorswift@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "MTP Official Tour Jacket",
+    "description": "Sold official Sky Tour jacket, limited edition, size L",
+    "price": 85,
+    "imagePublicId": "images/1765869688942_jsk93x",
+    "status": "sold",
+    "createdBy": "sontung@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Purpose Tour Hoodie",
+    "description": "Sold official Purpose Tour merchandise hoodie, black color",
+    "price": 65,
+    "imagePublicId": "images/1765869689954_n8knz6",
+    "status": "sold",
+    "createdBy": "justinbieber@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Sweetener Tour T-Shirt",
+    "description": "Sold official Sweetener Tour t-shirt, size M, good condition",
+    "price": 35,
+    "imagePublicId": "images/1765869690747_n8uyrs",
+    "status": "sold",
+    "createdBy": "arianagrande@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Neymar Jr PSG Jersey 2022",
+    "description": "Sold PSG home jersey with Neymar name and number 10",
+    "price": 110,
+    "imagePublicId": "images/1765869693140_l958jw",
+    "status": "sold",
+    "createdBy": "neymar@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "LV Neverfull Handbag",
+    "description": "Sold pre-owned Louis Vuitton Neverfull MM, good condition with minor wear",
+    "price": 950,
+    "imagePublicId": "images/1765869694146_p7irum",
+    "status": "sold",
+    "createdBy": "minhchau@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "Gaming PC RTX 3060",
+    "description": "Sold custom gaming PC, RTX 3060, i5-11400F, 16GB RAM",
+    "price": 850,
+    "imagePublicId": "images/1765869695195_sas5yv",
+    "status": "sold",
+    "createdBy": "hoanganh@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Sony WH-1000XM4",
+    "description": "Sold noise-cancelling headphones, excellent sound quality",
+    "price": 220,
+    "imagePublicId": "images/1765869696531_6thpas",
+    "status": "sold",
+    "createdBy": "ngoclinh@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "PlayStation 5 Digital Edition",
+    "description": "Sold PS5 with 2 controllers and 3 games, lightly used",
+    "price": 420,
+    "imagePublicId": "images/1765869697208_8nxei9",
+    "status": "sold",
+    "createdBy": "quanghuy@example.com",
+    "categoryName": "Toys and Games"
+  },
+  {
+    "name": "Designer Evening Dress",
+    "description": "Sold designer dress for special occasions, worn once",
+    "price": 180,
+    "imagePublicId": "images/1765869698181_knivye",
+    "status": "sold",
+    "createdBy": "thanhha@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "DJI Mavic Air 2 Drone",
+    "description": "Sold drone with 4K camera, 3 batteries, carrying case",
+    "price": 650,
+    "imagePublicId": "images/1765869698950_jgycmt",
+    "status": "sold",
+    "createdBy": "ducmanh@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "Apple Watch Series 6",
+    "description": "Sold Apple Watch GPS 44mm, aluminum case, good condition",
+    "price": 280,
+    "imagePublicId": "images/1765869700040_nbce1h",
+    "status": "sold",
+    "createdBy": "linhchi@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "Team Wang Design Hoodie",
+    "description": "Sold limited edition Team Wang collection hoodie",
+    "price": 150,
+    "imagePublicId": "images/1765869701297_vi0wsr",
+    "status": "sold",
+    "createdBy": "jacksonwang@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "iPad Air 4th Generation",
+    "description": "Sold iPad Air 64GB with Apple Pencil 2nd gen, like new",
+    "price": 520,
+    "imagePublicId": "images/1765869701935_o7tly7",
+    "status": "sold",
+    "createdBy": "thu@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "Dell XPS 15 9500",
+    "description": "Sold high-end laptop for video editing, 4K display, 32GB RAM",
+    "price": 1200,
+    "imagePublicId": "images/1765869702850_2mbny7",
+    "status": "sold",
+    "createdBy": "tkiet@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Fujifilm Instax Mini 11",
+    "description": "Sold instant camera with 10 film packs included",
+    "price": 70,
+    "imagePublicId": "images/1765869704093_9pn1h3",
+    "status": "sold",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "IKEA KIVIK Sofa",
+    "description": "Sold 3-seater sofa in dark gray, good condition, cleaned regularly",
+    "price": 300,
+    "imagePublicId": "images/1765869705068_3e3g4s",
+    "status": "sold",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Nike Mercurial Vapor 14",
+    "description": "Sold football boots worn by Ronaldo in 2021 season",
+    "price": 350,
+    "imagePublicId": "images/1765869705811_ekb0u7",
+    "status": "sold",
+    "createdBy": "ronaldo@example.com",
+    "categoryName": "Footwear"
+  },
+  {
+    "name": "Lover Album Box Set",
+    "description": "Sold deluxe box set of Lover album with exclusive merch",
+    "price": 180,
+    "imagePublicId": "images/1765869706847_mvza7h",
+    "status": "sold",
+    "createdBy": "taylorswift@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "Electric Scooter Xiaomi Pro 2",
+    "description": "Sold electric scooter, range 45km, used for 6 months",
+    "price": 320,
+    "imagePublicId": "images/1765869707868_5yuv1s",
+    "status": "sold",
+    "createdBy": "justinbieber@example.com",
+    "categoryName": "Vehicles"
+  },
+  {
+    "name": "Professional Makeup Kit",
+    "description": "Sold complete makeup set with high-end brands, lightly used",
+    "price": 280,
+    "imagePublicId": "images/1765869708433_f9e41g",
+    "status": "sold",
+    "createdBy": "arianagrande@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "Adidas Predator Football",
+    "description": "Sold official match football, signed by Neymar",
+    "price": 250,
+    "imagePublicId": "images/1765869709502_4wgb05",
+    "status": "sold",
+    "createdBy": "neymar@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "Designer Sunglasses Gucci",
+    "description": "Sold authentic Gucci sunglasses with original case",
+    "price": 220,
+    "imagePublicId": "images/1765869710185_7u2wmc",
+    "status": "sold",
+    "createdBy": "minhchau@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Nintendo Switch OLED",
+    "description": "Sold Nintendo Switch with 5 games and pro controller",
+    "price": 320,
+    "imagePublicId": "images/1765869711235_obwv39",
+    "status": "sold",
+    "createdBy": "hoanganh@example.com",
+    "categoryName": "Toys and Games"
+  },
+  {
+    "name": "Premium Leather Sofa Set (3+2+1)",
+    "description": "Sold complete Italian leather sofa set in excellent condition, professionally cleaned",
+    "price": 600,
+    "imagePublicId": "images/1765870945409_0nto6g",
+    "status": "sold",
+    "createdBy": "thu@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Antique Oak Dining Table Set",
+    "description": "Sold solid oak dining table with 6 matching chairs, vintage 1950s, restored condition",
+    "price": 567,
+    "imagePublicId": "images/1765870948173_pto3fq",
+    "status": "sold",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Samsung Family Hub Refrigerator",
+    "description": "Sold smart refrigerator with touch screen, 4-door, like new condition with warranty",
+    "price": 781,
+    "imagePublicId": "images/1765870949182_y713hd",
+    "status": "sold",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "Limited Edition Art Book Collection",
+    "description": "Sold complete collection of TASCHEN art books, 15 volumes, mint condition",
+    "price": 599,
+    "imagePublicId": "images/1765870949918_gyyqif",
+    "status": "sold",
+    "createdBy": "messi@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "Italian Marble Coffee Table",
+    "description": "Sold imported Carrara marble coffee table with brass legs, designer piece",
+    "price": 239,
+    "imagePublicId": "images/1765870950825_yl7u9o",
+    "status": "sold",
+    "createdBy": "thu@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Miele Complete Kitchen Package",
+    "description": "Sold premium German kitchen appliances set (oven, dishwasher, cooktop, hood)",
+    "price": 800,
+    "imagePublicId": "images/1765870952896_80vtes",
+    "status": "sold",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "First Edition Harry Potter Collection",
+    "description": "Sold complete UK first edition Harry Potter books 1-7, hardcover with dust jackets",
+    "price": 1780,
+    "imagePublicId": "images/1765870953709_df47i1",
+    "status": "sold",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "Handcrafted Teak Bedroom Set",
+    "description": "Sold solid teak wood bedroom furniture (king bed, 2 nightstands, dresser, wardrobe)",
+    "price": 982,
+    "imagePublicId": "images/1765870954463_pq7ktx",
+    "status": "sold",
+    "createdBy": "messi@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Professional Espresso Machine",
+    "description": "Sold La Marzocco Linea Mini espresso machine, commercial grade, barely used",
+    "price": 2310,
+    "imagePublicId": "images/1765870955180_dg2a40",
+    "status": "sold",
+    "createdBy": "thu@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "Rare Manuscript Collection 18th Century",
+    "description": "Sold collection of 12 rare historical manuscripts from 1700s, professionally preserved",
+    "price": 1269,
+    "imagePublicId": "images/1765870955741_veg2uj",
+    "status": "sold",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "iPhone 11 64GB - Screen Cracked",
+    "description": "iPhone 11 with cracked screen but fully functional, battery 78%, needs screen replacement",
+    "price": 420,
+    "imagePublicId": "images/1765871869897_uatemg",
+    "status": "pending",
+    "createdBy": "thu@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "Dell Inspiron Laptop i3 10th Gen",
+    "description": "Basic laptop for office work, 8GB RAM, 256GB SSD, minor scratches on cover",
+    "price": 280,
+    "imagePublicId": "images/1765871873021_bbmuni",
+    "status": "pending",
+    "createdBy": "tkiet@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Canon EOS 600D with Kit Lens",
+    "description": "Older DSLR model but still works well, includes 18-55mm lens, shutter count 25k",
+    "price": 350,
+    "imagePublicId": "images/1765871874211_m6oho9",
+    "status": "pending",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "IKEA BILLY Bookcase White",
+    "description": "Standard bookcase, some wear on shelves, needs minor assembly adjustments",
+    "price": 35,
+    "imagePublicId": "images/1765871874996_4huyrd",
+    "status": "pending",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Philips Blender HR2095",
+    "description": "Basic blender for smoothies, works fine but shows signs of use",
+    "price": 0,
+    "imagePublicId": "images/1765871875885_olo1fv",
+    "status": "pending",
+    "createdBy": "ronaldo@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "Stephen King's The Shining - Paperback",
+    "description": "Used paperback edition, pages slightly yellowed but readable",
+    "price": 50,
+    "imagePublicId": "images/1765871876580_gykhfy",
+    "status": "pending",
+    "createdBy": "messi@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "Zara Denim Jacket - Size L",
+    "description": "Lightly worn denim jacket, faded color, small tear in lining",
+    "price": 45,
+    "imagePublicId": "images/1765871877848_pc9rrp",
+    "status": "pending",
+    "createdBy": "taylorswift@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Nike Running Shoes - Size 9.5",
+    "description": "Old running shoes, sole worn out but uppers still good",
+    "price": 89,
+    "imagePublicId": "images/1765871878549_liwokl",
+    "status": "pending",
+    "createdBy": "sontung@example.com",
+    "categoryName": "Footwear"
+  },
+  {
+    "name": "Yoga Mat & Block Set",
+    "description": "Used yoga accessories, mat shows wear, blocks in good condition",
+    "price": 120,
+    "imagePublicId": "images/1765871879394_wj2n5d",
+    "status": "pending",
+    "createdBy": "thu@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "Chess Set Wooden",
+    "description": "Traditional wooden chess set, some pieces missing paint",
+    "price": 340,
+    "imagePublicId": "images/1765871880038_em9c9n",
+    "status": "pending",
+    "createdBy": "tkiet@example.com",
+    "categoryName": "Toys and Games"
+  },
+  {
+    "name": "Vespa Scooter 125cc - 2015",
+    "description": "Needs engine tune-up, body has scratches, registration expired",
+    "price": 450,
+    "imagePublicId": "images/1765871880855_ecag97",
+    "status": "pending",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Vehicles"
+  },
+  {
+    "name": "Vintage Postcard Collection 1970s",
+    "description": "Collection of 50 vintage postcards, some water damage on edges",
+    "price": 108,
+    "imagePublicId": "images/1765871881683_j3lh6m",
+    "status": "pending",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "Samsung Galaxy A32 5G",
+    "description": "Budget phone, screen has minor scratches, battery needs replacement soon",
+    "price": 430,
+    "imagePublicId": "images/1765871882862_f1fcbp",
+    "status": "pending",
+    "createdBy": "ronaldo@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "HP All-in-One PC",
+    "description": "Older all-in-one computer, slow performance, good for basic tasks",
+    "price": 850,
+    "imagePublicId": "images/1765871883623_nnan7t",
+    "status": "pending",
+    "createdBy": "messi@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Kodak Film Camera Vintage",
+    "description": "Film camera from 1980s, unsure if fully functional, for collectors",
+    "price": 160,
+    "imagePublicId": "images/1765871884736_j103qq",
+    "status": "pending",
+    "createdBy": "taylorswift@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "Coffee Table Glass Top",
+    "description": "Glass top has small chip on edge, metal frame shows rust spots",
+    "price": 420,
+    "imagePublicId": "images/1765871885664_5c2era",
+    "status": "pending",
+    "createdBy": "sontung@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Toaster Oven 4-Slice",
+    "description": "Works but thermostat inconsistent, needs cleaning",
+    "price": 900,
+    "imagePublicId": "images/1765871887464_fx7vnl",
+    "status": "pending",
+    "createdBy": "thu@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "University Physics Textbook",
+    "description": "5th edition, heavily highlighted and annotated by previous student",
+    "price": 10,
+    "imagePublicId": "images/1765871888563_oya60v",
+    "status": "pending",
+    "createdBy": "tkiet@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "Leather Belt Various Sizes",
+    "description": "Collection of 3 leather belts, showing wear and scratches",
+    "price": 10,
+    "imagePublicId": "images/1765871889310_gwwfzp",
+    "status": "pending",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Badminton Racket Pair",
+    "description": "Two rackets with broken strings, needs restringing to be usable",
+    "price": 100,
+    "imagePublicId": "images/1765871890003_65yete",
+    "status": "pending",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "Samsung Galaxy S22 Ultra - Water Damaged",
+    "description": "Phone shows signs of water damage, screen flickers occasionally, not turning on reliably",
+    "price": 250,
+    "imagePublicId": "images/1765872646127_n14hmq",
+    "status": "rejected",
+    "createdBy": "thu@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "MacBook Pro 2020 - Logic Board Issue",
+    "description": "Randomly shuts down, diagnosed with logic board problem, expensive to repair",
+    "price": 450,
+    "imagePublicId": "images/1765872648875_3uynpv",
+    "status": "rejected",
+    "createdBy": "tkiet@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Sony A7 III - Shutter Error",
+    "description": "Professional camera shows ERR shutter message, needs professional repair",
+    "price": 600,
+    "imagePublicId": "images/1765872650614_todejy",
+    "status": "rejected",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "Leather Recliner - Strong Odor",
+    "description": "Comfortable chair but has strong cigarette smell that won't come out",
+    "price": 120,
+    "imagePublicId": "images/1765872652060_fmygtk",
+    "status": "rejected",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "LG Refrigerator - Cooling Issues",
+    "description": "Freezer works but fridge section doesn't cool properly, needs compressor repair",
+    "price": 280,
+    "imagePublicId": "images/1765872653196_9z4bqc",
+    "status": "rejected",
+    "createdBy": "ronaldo@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "Antique Book Collection - Mold Damage",
+    "description": "1900s book collection shows mold spots and water damage on pages",
+    "price": 220,
+    "imagePublicId": "images/1765872653865_nowxtx",
+    "status": "rejected",
+    "createdBy": "messi@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "Designer Suit - Moth Holes",
+    "description": "High-end suit with multiple moth holes in jacket and trousers",
+    "price": 180,
+    "imagePublicId": "images/1765872655158_is19v3",
+    "status": "rejected",
+    "createdBy": "taylorswift@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Air Jordan 1 - Counterfeit",
+    "description": "Suspected fake shoes, poor stitching quality, wrong materials used",
+    "price": 90,
+    "imagePublicId": "images/1765872656464_41mxbi",
+    "status": "rejected",
+    "createdBy": "sontung@example.com",
+    "categoryName": "Footwear"
+  },
+  {
+    "name": "Treadmill - Motor Failure",
+    "description": "Commercial treadmill, motor makes loud noise and stops under load",
+    "price": 320,
+    "imagePublicId": "images/1765872657110_z434ts",
+    "status": "rejected",
+    "createdBy": "thu@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "Vintage Pinball Machine - Not Working",
+    "description": "1978 pinball machine, lights up but no gameplay mechanics functional",
+    "price": 550,
+    "imagePublicId": "images/1765872657909_bu1zbc",
+    "status": "rejected",
+    "createdBy": "tkiet@example.com",
+    "categoryName": "Toys and Games"
+  },
+  {
+    "name": "Honda Civic 2010 - Transmission Problems",
+    "description": "Car slips between gears, needs transmission rebuild, engine check light on",
+    "price": 850,
+    "imagePublicId": "images/1765872658760_x0dvr3",
+    "status": "rejected",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Vehicles"
+  },
+  {
+    "name": "Ancient Coin Collection - Authentication Failed",
+    "description": "Claimed to be Roman era coins, but expert authentication suggests replicas",
+    "price": 420,
+    "imagePublicId": "images/1765872659574_nhrria",
+    "status": "rejected",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "iPad Pro 12.9 - Dead Pixels",
+    "description": "Multiple dead pixels on display, touch screen unresponsive in some areas",
+    "price": 380,
+    "imagePublicId": "images/1765872660264_qh0j1c",
+    "status": "rejected",
+    "createdBy": "ronaldo@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "Gaming PC - Overheating Issue",
+    "description": "RTX 3080, i7-12700K but constantly overheats and crashes during gaming",
+    "price": 750,
+    "imagePublicId": "images/1765872660985_ijvhkj",
+    "status": "rejected",
+    "createdBy": "messi@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Professional Video Camera - Lens Fungus",
+    "description": "Canon XF405, fungus growth inside lens affecting image quality",
+    "price": 680,
+    "imagePublicId": "images/1765872662311_yyj4sb",
+    "status": "rejected",
+    "createdBy": "taylorswift@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "Antique Wardrobe - Woodworm Infestation",
+    "description": "Beautiful 1920s wardrobe but active woodworm infestation found",
+    "price": 310,
+    "imagePublicId": "images/1765872663241_umhv9z",
+    "status": "rejected",
+    "createdBy": "sontung@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Washing Machine - Leaking Water",
+    "description": "Samsung front loader, leaks water during spin cycle, motor sounds strained",
+    "price": 190,
+    "imagePublicId": "images/1765872664370_vwawgj",
+    "status": "rejected",
+    "createdBy": "thu@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "Rare First Editions - Missing Pages",
+    "description": "Collection of rare books but several volumes have torn out pages",
+    "price": 350,
+    "imagePublicId": "images/1765872665034_fauo2b",
+    "status": "rejected",
+    "createdBy": "tkiet@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "Leather Jacket - Paint Stains",
+    "description": "Genuine leather but covered in unremovable paint splatters",
+    "price": 95,
+    "imagePublicId": "images/1765872665830_wxmd4u",
+    "status": "rejected",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Mountain Bike - Cracked Frame",
+    "description": "Carbon fiber frame has visible crack near seat post, unsafe to ride",
+    "price": 240,
+    "imagePublicId": "images/1765872666453_ypwfi4",
+    "status": "rejected",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "iPhone XS Max - Stolen Report",
+    "description": "Item reported stolen, removed from marketplace for investigation",
+    "price": 350,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "Gaming Laptop - Fraudulent Listing",
+    "description": "Listing removed due to suspected fraud, price too good to be true",
+    "price": 450,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Canon 5D Mark IV - Seller Retracted",
+    "description": "Seller decided to keep item after listing, removed by user request",
+    "price": 1200,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "ronaldo@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "Leather Sofa - Sold Off-Platform",
+    "description": "Item sold through another platform, duplicate listing removed",
+    "price": 280,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "messi@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Smart Fridge - Item Damaged",
+    "description": "Item damaged during storage before sale, listing cancelled",
+    "price": 650,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "taylorswift@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "Rare Book Collection - Copyright Issue",
+    "description": "Removed due to potential copyright infringement concerns",
+    "price": 380,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "sontung@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "Designer Dress - Counterfeit Product",
+    "description": "Confirmed counterfeit goods, removed by platform policy",
+    "price": 150,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "justinbieber@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Yeezy Boost 350 - Unauthorized Resale",
+    "description": "Removed due to violation of brand's resale policy",
+    "price": 220,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "arianagrande@example.com",
+    "categoryName": "Footwear"
+  },
+  {
+    "name": "Home Gym Set - Safety Recall",
+    "description": "Product subject to manufacturer safety recall notice",
+    "price": 520,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Sports Equipment"
+  },
+  {
+    "name": "Vintage Arcade Machine - Missing Parts",
+    "description": "Critical parts missing not disclosed in original listing",
+    "price": 780,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Toys and Games"
+  },
+  {
+    "name": "Motorcycle - VIN Mismatch",
+    "description": "Vehicle identification number doesn't match paperwork",
+    "price": 2200,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "ronaldo@example.com",
+    "categoryName": "Vehicles"
+  },
+  {
+    "name": "Ancient Artifact - Export Restrictions",
+    "description": "Cultural heritage item with legal export restrictions",
+    "price": 950,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "messi@example.com",
+    "categoryName": "Collectibles"
+  },
+  {
+    "name": "Samsung Fold 4 - Multiple Complaints",
+    "description": "Multiple buyers reported receiving different item than described",
+    "price": 680,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "taylorswift@example.com",
+    "categoryName": "Mobile Devices"
+  },
+  {
+    "name": "Custom PC - Misleading Specifications",
+    "description": "Specifications falsely advertised, multiple component mismatches",
+    "price": 850,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "sontung@example.com",
+    "categoryName": "Computers"
+  },
+  {
+    "name": "Drone with Camera - Flight Restricted",
+    "description": "Model prohibited for civilian use in current location",
+    "price": 420,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "justinbieber@example.com",
+    "categoryName": "Cameras"
+  },
+  {
+    "name": "Antique Desk - Asbestos Warning",
+    "description": "Contains hazardous materials requiring professional removal",
+    "price": 310,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "arianagrande@example.com",
+    "categoryName": "Home Furniture"
+  },
+  {
+    "name": "Industrial Microwave - Voltage Issues",
+    "description": "Requires special electrical setup not suitable for residential use",
+    "price": 280,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "qkiet@example.com",
+    "categoryName": "Home Appliances"
+  },
+  {
+    "name": "Signed First Edition - Provenance Doubt",
+    "description": "Authenticity of signature cannot be verified",
+    "price": 560,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "hkien@example.com",
+    "categoryName": "Books"
+  },
+  {
+    "name": "Luxury Watch - Serial Number Removed",
+    "description": "Tampered serial number suggests stolen property",
+    "price": 1200,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "ronaldo@example.com",
+    "categoryName": "Clothing"
+  },
+  {
+    "name": "Electric Scooter - Battery Recall",
+    "description": "Battery model under manufacturer recall for fire risk",
+    "price": 320,
+    "imagePublicId": "delpro_ctxldz",
+    "status": "deleted",
+    "createdBy": "messi@example.com",
+    "categoryName": "Vehicles"
+  }
+]
