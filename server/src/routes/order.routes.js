@@ -8,6 +8,6 @@ export const router = Router();
 // if query params not provided, use default values in controller (remcommended)
 router.post("/", requireAuth, createOrder);
 
-router.get("/order-history/:customerId", requireAuth, getOrderHistory);
+router.get("/order-history", requireAuth, getOrderHistory);
 
-router.post("/list", requireAuth, requireRole("admin"), getOrderList);
+router.get("/list", requireAuth, requireRole("admin"), getOrderList);

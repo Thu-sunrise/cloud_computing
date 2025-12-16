@@ -19,7 +19,7 @@ export const addToCart = asyncHandler(async (req, res) => {
   const ownerDoc = req.user;
   // Extract User info
   const customerId = ownerDoc.sub;
-  const user = await UserService.getUserById(customerId);
+  const user = await UserService.getById(customerId);
   if (!user) return res.status(404).json({ message: "No specified User found." });
 
   // Add products to user's cart
@@ -29,7 +29,6 @@ export const addToCart = asyncHandler(async (req, res) => {
 
 export const removeOne = asyncHandler(async (req, res) => {
   const thisUserId = req.user.sub;
-  console.log(thisUserId);
   const { productId } = req.params;
   const cart = await CartService.removeOne(thisUserId, productId);
   if (cart) return res.status(200).json({ data: cart });

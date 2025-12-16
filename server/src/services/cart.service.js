@@ -30,10 +30,7 @@ export const CartService = {
     }
 
     cart.products.push({ id: productId });
-    for (const x of cart.products) {
-      console.log(x);
-    }
-    cart.save();
+    await cart.save();
     return cart;
   },
 

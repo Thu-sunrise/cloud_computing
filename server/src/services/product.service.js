@@ -9,11 +9,6 @@ export const ProductService = {
     if (!product) {
       throw new AppError("Product not found", 404);
     }
-    // console.log(product);
-    const uid = product.createdBy;
-    // console.log(uid);
-    const cus = await User.findById(uid);
-    // console.log(cus);
     return product;
   },
 

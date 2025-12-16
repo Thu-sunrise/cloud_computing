@@ -10,18 +10,10 @@ export const OrderService = {
     if (!product) {
       throw new AppError("Product not found", 404);
     }
-    // console.log(product);
     const uid = product.createdBy;
-    // console.log(uid);
     const cus = await User.findById(uid);
-    // console.log(cus);
     return product;
   },
-
-  // await Cart.updateMany(
-  // { "products.id": { $in: [CCTV, Sony] } },
-  // { $pull: { products: { id: { $in: [CCTV, Sony] } } } }
-  //   );
 
   async groupProductsBySeller(products) {
     const grouped = {};
@@ -44,50 +36,65 @@ export const OrderService = {
     return grouped;
   },
 
-  async createOrder(grouped, thisUserCart) {
+  async createOrder(
+    grouped,
+    thisUserCart,
+    providerId,
+    pickupAddress,
+    deliveryAddress,
+    expectedDeliveryDate,
+    actualDeliveryDate,
+    thisUserId
+  ) {
     // Extracting Product IDs for setting status
+
     const allProductIds = [];
     Object.values(grouped).forEach((products) => {
       products.forEach((p) => allProductIds.push(p.productId));
     });
     await Product.updateMany(
       { _id: { $in: allProductIds }, status: "active" },
-      { $set: { status: "ordered" } }
+      { $set: { status: "sold" } }
     );
-    console.log(allProductIds);
 
     // create Order for each seller
     const orders = [];
-
-    // const testOrder = await Order.create({
-    //   products: [{ id: "69404c89af2f36ee1ee93295" }],
-    //   status: "pending",
-    //   notes: "test",
-    // });
-    // console.log(testOrder);
-
     for (const sellerId of Object.keys(grouped)) {
       const productsForSeller = grouped[sellerId];
-      console.log(productsForSeller);
-      console.log(productsForSeller.map((p) => ({ id: p.productId, type: typeof p.productId })));
       const newOrder = await Order.create({
+        ownerId: thisUserId,
+        shipping: {
+          providerId,
+          pickupAddress,
+          deliveryAddress,
+          expectedDeliveryDate,
+          actualDeliveryDate,
+        },
         products: productsForSeller.map((p) => ({ id: p.productId.toString() })),
         status: "pending",
-        // shipping: {
-        //   deliveryAddress: "NEWYOrk",
-        //   pickupAddress: "Shop Address",
-        //   fee: 0,
-        // },
-        notes: "",
       });
-
       orders.push(newOrder);
-      console.log(orders);
     }
 
     thisUserCart.products = [];
     await thisUserCart.save();
-    console.log(thisUserCart);
+
+    return orders;
+  },
+
+  async getOrdersByUserId(thisUserId) {
+    const orders = await Order.find({ ownerId: thisUserId }).populate(
+      "products.id",
+      "name description price imagePublicId"
+    );
+    return orders;
+  },
+
+  async getAllOrders() {
+    const orders = await Order.find().populate(
+      "products.id",
+      "name description price imagePublicId"
+    );
     return orders;
   },
 };

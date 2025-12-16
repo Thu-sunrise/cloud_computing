@@ -17,6 +17,15 @@ export const getCart = asyncHandler(async (req, res) => {
 
 export const createOrder = asyncHandler(async (req, res) => {
   const thisUserId = req.user.sub;
+  const {
+    providerId,
+    pickupAddress,
+    deliveryAddress,
+    expectedDeliveryDate,
+    actualDeliveryDate,
+    fee,
+  } = req.body;
+
   const thisUserCart = await CartService.getCart(thisUserId);
   if (!thisUserCart || thisUserCart.products.length === 0) {
     return res.status(400).json({ message: "Cart is empty" });
@@ -24,10 +33,29 @@ export const createOrder = asyncHandler(async (req, res) => {
 
   const group = await OrderService.groupProductsBySeller(thisUserCart.products);
 
-  const orders = await OrderService.createOrder(group, thisUserCart);
+  const orders = await OrderService.createOrder(
+    group,
+    thisUserCart,
+    providerId,
+    pickupAddress,
+    deliveryAddress,
+    expectedDeliveryDate,
+    actualDeliveryDate,
+    fee,
+    thisUserId
+  );
   return res.status(200).json({ data: orders });
 });
 
-export const getOrderHistory = asyncHandler(async (req, res) => {});
+export const getOrderHistory = asyncHandler(async (req, res) => {
+  const thisUserId = req.user.sub;
 
-export const getOrderList = asyncHandler(async (req, res) => {});
+  const orders = await OrderService.getOrdersByUserId(thisUserId);
+
+  return res.status(200).json({ data: orders });
+});
+
+export const getOrderList = asyncHandler(async (req, res) => {
+  const orders = await OrderService.getAllOrders();
+  return res.status(200).json({ data: orders });
+});

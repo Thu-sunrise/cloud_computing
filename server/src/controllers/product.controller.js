@@ -32,7 +32,6 @@ export const createProduct = asyncHandler(async (req, res) => {
     salePrice = Number(salePrice);
   }
   const createdBy = req.user.sub;
-  console.log(req.user);
   // Handle image uploads to Cloudinary
   let images = [];
   if (req.files.length !== 0) {
