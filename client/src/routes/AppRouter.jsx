@@ -14,9 +14,12 @@ import CheckOutPage from "@/pages/CartPage/CheckOutPage/CheckOutPage.jsx";
 import ResetPasswordPage from "../pages/AuthPage/ResetPasswordPage";
 // import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 // import CategoryCard from "../components/HomePage/Category/CategoryCard";
-import MyListing  from "@/pages/ProfilePage/MyListing";
+import MyListing from "@/pages/ProfilePage/MyListing";
 import AddProduct from "@/pages/ProfilePage/AddProduct.jsx";
 import ListProducts from "@/pages/HomePage/ListPorducts.jsx";
+import ProfileHistoryPage from "@/pages/ProfilePage/ProfileHistoryPage";
+import ShopDetailPage from "../pages/ShopDetailPage/ShopDetailPage";
+import AdminPage from "../pages/AdminPage/AdminPage";
 
 function TitleUpdater() {
   const location = useLocation();
@@ -64,7 +67,10 @@ export default function AppRouter() {
         <Route path="/home/cart/checkout" element={<CheckOutPage />} />
         <Route path="/my-listing" element={<MyListing />} />
         <Route path="/my-listing/addproduct" element={<AddProduct />} />
-        <Route path="/home/result" element={<ListProducts />} />
+        <Route path="/home/result" element={<ListProducts />} />s
+        <Route path="/orders" element={<ProfileHistoryPage />} />
+        <Route path="/detail-shop" element={<ShopDetailPage />} />
+        <Route path="/admin" element={<AdminPage />} />
         {/*<Route path="*" element={<Navigate to="/notfound" replace />} />*/}
       </Routes>
     </BrowserRouter>

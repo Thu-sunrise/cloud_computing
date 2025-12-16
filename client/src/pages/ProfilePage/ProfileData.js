@@ -1,6 +1,6 @@
 let mockProfileData = {
   fullName: "Nguyen Trung An",
-  email: "",
+  email: "an@gmail.com",
   phone: "(+84) 111111111",
   currentPassword: "",
   newPassword: "",
