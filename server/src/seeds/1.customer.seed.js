@@ -7,6 +7,7 @@ import { logger } from "../utils/logger.js";
 export const seed = async () => {
   try {
     await Customer.deleteMany();
+    await Wallet.deleteMany();
 
     for (const customer of seedCustomers) {
       const c = await Customer.create({ ...customer });
