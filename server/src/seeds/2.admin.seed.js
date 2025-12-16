@@ -1,4 +1,3 @@
-/* eslint n/no-process-exit: "off" */
 import { Admin } from "../models/admin.model.js";
 
 import seedAdmins from "./data/admin.json" with { type: "json" };

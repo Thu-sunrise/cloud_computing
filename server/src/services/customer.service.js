@@ -126,6 +126,63 @@ export const CustomerService = {
     };
   },
 
+  async getTopSelling(top = 10) {
+    const result = await Customer.aggregate([
+      {
+        // join product
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "createdBy",
+          as: "products",
+        },
+      },
+      {
+        // where status = sold
+        $addFields: {
+          soldProducts: {
+            $filter: {
+              input: "$products",
+              as: "p",
+              cond: { $eq: ["$$p.status", "sold"] },
+            },
+          },
+        },
+      },
+      {
+        // sum and count
+        $addFields: {
+          totalRevenue: {
+            $sum: "$soldProducts.price",
+          },
+          soldCount: {
+            $size: "$soldProducts",
+          },
+        },
+      },
+      {
+        // sort by revenue
+        $sort: {
+          totalRevenue: -1,
+        },
+      },
+
+      {
+        $limit: top,
+      },
+
+      {
+        $project: {
+          products: 0,
+          soldProducts: 0,
+          password: 0,
+          failedLoginAttempts: 0,
+        },
+      },
+    ]);
+    return result;
+  },
+
   async getById(id) {
     const customer = await Customer.findById(id).select("-password -failedLoginAttempts");
     if (!customer) throw new AppError("Customer not found", 404);

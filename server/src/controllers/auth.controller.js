@@ -5,6 +5,7 @@ import { MailService } from "../services/mail.service.js";
 import { RedisService } from "../services/redis.service.js";
 import { UserService } from "../services/user.service.js";
 import { CustomerService } from "../services/customer.service.js";
+import { WalletService } from "../services/wallet.service.js";
 
 import { env } from "../config/env.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -70,6 +71,7 @@ export const register = asyncHandler(async (req, res) => {
   }
 
   const { id, role } = await CustomerService.create(value.mail, value.password);
+  await WalletService.create(id);
 
   const accessToken = signToken({ sub: id, role: role });
 

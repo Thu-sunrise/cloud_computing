@@ -32,3 +32,12 @@ export const updateCustomer = asyncHandler(async (req, res) => {
     data: updateUser,
   });
 });
+
+export const getTopSellingCustomers = asyncHandler(async (req, res) => {
+  const result = await CustomerService.getTopSelling();
+
+  return res.status(200).json({
+    message: "Get top selling customers successfully.",
+    data: result,
+  });
+});

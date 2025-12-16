@@ -2,8 +2,6 @@
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
-
-import mongoose from "mongoose";
 import { connectDB, disconnectDB } from "../config/db.js";
 import { logger } from "../utils/logger.js";
 
@@ -27,7 +25,10 @@ async function main() {
   if (shouldRunAll) {
     seedFiles = fs.readdirSync(__dirname).filter((f) => f.endsWith(".seed.js"));
   } else {
-    seedFiles = args.filter((a) => a !== "d").map((name) => `${name}.seed.js`);
+    const allSeedFiles = fs.readdirSync(__dirname);
+    seedFiles = allSeedFiles.filter((file) =>
+      args.filter((a) => a !== "d").some((name) => file.endsWith(`${name}.seed.js`))
+    );
   }
 
   for (const file of seedFiles) {
@@ -42,10 +43,7 @@ async function main() {
 
     try {
       const seedModule = await import(`./${file}`);
-
-      if (typeof seedModule.default === "function") {
-        await seedModule.default();
-      } else if (typeof seedModule.seed === "function") {
+      if (typeof seedModule.seed === "function") {
         await seedModule.seed();
       } else {
         logger.warn(`[SEED] ${file} has no valid export`);

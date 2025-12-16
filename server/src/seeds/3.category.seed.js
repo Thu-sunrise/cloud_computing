@@ -1,4 +1,3 @@
-/* eslint n/no-process-exit: "off" */
 import { Category } from "../models/category.model.js";
 
 import seedCategories from "./data/category.json" with { type: "json" };

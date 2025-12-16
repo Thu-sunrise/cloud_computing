@@ -29,10 +29,11 @@ const productSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-    images: { type: String, required: true },
+    imagePublicId: { type: String, required: true },
+
     status: {
       type: String,
-      enum: ["active", "pending", "rejected", "deleted"],
+      enum: ["active", "pending", "sold", "rejected", "deleted"],
       default: "pending",
     },
   },
