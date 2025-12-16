@@ -73,10 +73,15 @@ export const createProduct = asyncHandler(async (req, res) => {
  *       - keepImages along with updatedImages will be updated to the product
  */
 export const updateProduct = asyncHandler(async (req, res) => {
+  const thisUserRole = req.user.role;
   const id = req.params.id;
   const product = await ProductService.getProductById(id);
-  const { name, description, price } = req.body;
-  const getPrice = Number(price);
+  const { name, description, price, status } = req.body;
+  let getPrice;
+  if (price) getPrice = Number(price);
+  if (status && thisUserRole != "admin") {
+    return res.status(403).json({ message: "Action not allowed" });
+  }
 
   // Parse deleted images
   let getDeletedImages = [];
@@ -102,13 +107,18 @@ export const updateProduct = asyncHandler(async (req, res) => {
       });
     }
   }
-  const updateProduct = await ProductService.updateProduct(product, {
-    name,
-    description,
-    price: getPrice,
-    salePrice: req.body.salePrice || undefined,
-    images: updatedImages,
-  });
+  const updateProduct = await ProductService.updateProduct(
+    product,
+    {
+      name,
+      description,
+      price: getPrice,
+      salePrice: req.body.salePrice || undefined,
+      images: updatedImages,
+    },
+    thisUserRole,
+    status
+  );
 
   return res.json({
     message: "Product updated successfully",
@@ -167,7 +177,7 @@ export const getListProducts = asyncHandler(async (req, res) => {
   // Fetch products with pagination and sorting
   const pagingProduct = await ProductService.pagingTotalProduct(filter, sortOrder, skip, limit);
 
-  res.status(200).json({
+  return res.status(200).json({
     page,
     limit,
     totalProducts,
