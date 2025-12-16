@@ -20,7 +20,6 @@ export const requireAuth = async (req, res, next) => {
 
         // Rotate Session Token inside Persistent Token Condition
         const { newSessionToken, payload } = await TokenService.rotateSessionToken(doc.userId);
-
         if (!newSessionToken) {
           return res.status(401).json({ message: "User not found" });
         }
@@ -55,9 +54,8 @@ export const requireAuth = async (req, res, next) => {
   if (!doc) {
     return res.status(401).json({ message: "Invalid persistent token" });
   }
-
-  const { newSessionToken, payload } = await TokenService.rotateSessionToken(doc.userId);
-
+  const { token, payload } = await TokenService.rotateSessionToken(doc.userId);
+  const newSessionToken = token;
   if (!newSessionToken) {
     return res.status(401).json({ message: "User not found" });
   }

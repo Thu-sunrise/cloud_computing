@@ -101,6 +101,6 @@ export const TokenService = {
     }
     const payload = { sub: user._id, role: user.role };
     const token = TokenService.createSessionToken(payload);
-    return token;
+    return { token, payload };
   },
 };

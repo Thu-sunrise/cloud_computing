@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema(
     createdBy: {
       // FK
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Customer",
+      ref: "customer",
       required: true,
     },
     // categoryId: {
@@ -45,7 +45,7 @@ const productSchema = new mongoose.Schema(
     ],
     status: {
       type: String,
-      enum: ["active", "pending", "rejected", "deleted"],
+      enum: ["active", "pending", "rejected", "deleted", "ordered", "sold"],
       default: "pending",
     },
   },
