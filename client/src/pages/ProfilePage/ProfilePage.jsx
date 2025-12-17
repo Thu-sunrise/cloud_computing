@@ -50,7 +50,7 @@ export default function ProfilePage() {
     navigate("/profile");
     console.log("Profile updated successfully! (Changes are temporary in this session)");
   };
-
+  window.scrollTo(0, 0);
   return (
     <>
       <Header />

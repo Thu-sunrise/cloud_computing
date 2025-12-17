@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 export default function CheckoutForm({ onSubmit }) {
   const [formData, setFormData] = useState({
-    fullName: 'The blackest nigga you ever seen',
+    fullName: 'The blackest nigga',
     phone: '000000000',
     district: 'Nigga Hill',
     specificAddress: 'Left Right Right Left',
@@ -16,9 +16,9 @@ export default function CheckoutForm({ onSubmit }) {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleTypeChange = (type) => {
-    setFormData(prev => ({ ...prev, addressType: type }));
-  };
+  // const handleTypeChange = (type) => {
+  //   setFormData(prev => ({ ...prev, addressType: type }));
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -88,45 +88,45 @@ export default function CheckoutForm({ onSubmit }) {
           />
         </div>
 
-        <div className="w-full h-36 border border-slate-400 rounded-lg bg-slate-50 relative overflow-hidden flex items-center justify-center group cursor-pointer hover:border-slate-500 transition-colors">
-          <div className="absolute inset-0 opacity-10"
-               style={{ backgroundImage: 'radial-gradient(#cbd5e1 2px, transparent 2px)', backgroundSize: '20px 20px' }}>
-          </div>
-          <button type="button" className="relative z-10 bg-white border border-slate-300 px-4 py-2 rounded shadow-sm flex items-center gap-2 text-sm text-slate-500 group-hover:bg-slate-50 transition-colors">
-            <Plus className="w-4 h-4" />
-            Add an Address
-          </button>
-        </div>
+        {/*<div className="w-full h-36 border border-slate-400 rounded-lg bg-slate-50 relative overflow-hidden flex items-center justify-center group cursor-pointer hover:border-slate-500 transition-colors">*/}
+        {/*  <div className="absolute inset-0 opacity-10"*/}
+        {/*       style={{ backgroundImage: 'radial-gradient(#cbd5e1 2px, transparent 2px)', backgroundSize: '20px 20px' }}>*/}
+        {/*  </div>*/}
+        {/*  <button type="button" className="relative z-10 bg-white border border-slate-300 px-4 py-2 rounded shadow-sm flex items-center gap-2 text-sm text-slate-500 group-hover:bg-slate-50 transition-colors">*/}
+        {/*    <Plus className="w-4 h-4" />*/}
+        {/*    Add an Address*/}
+        {/*  </button>*/}
+        {/*</div>*/}
 
-        <div className="flex flex-col mt-2">
-          <span className="text-sm font-medium text-slate-800 mb-2">Address Type</span>
-          <div className="flex gap-4">
-            {['Private House', 'Office'].map((type) => (
-              <button
-                key={type}
-                type="button"
-                onClick={() => handleTypeChange(type)}
-                className={`px-6 py-2.5 rounded-[4px] text-sm font-medium transition-colors border ${
-                  formData.addressType === type
-                    ? 'bg-[#7ca78c] border-[#7ca78c] text-white'
-                    : 'bg-white border-slate-300 text-slate-600 hover:bg-gray-50'
-                }`}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
-        </div>
+        {/*<div className="flex flex-col mt-2">*/}
+        {/*  <span className="text-sm font-medium text-slate-800 mb-2">Address Type</span>*/}
+        {/*  <div className="flex gap-4">*/}
+        {/*    {['Private House', 'Office'].map((type) => (*/}
+        {/*      <button*/}
+        {/*        key={type}*/}
+        {/*        type="button"*/}
+        {/*        onClick={() => handleTypeChange(type)}*/}
+        {/*        className={`px-6 py-2.5 rounded-[4px] text-sm font-medium transition-colors border ${*/}
+        {/*          formData.addressType === type*/}
+        {/*            ? 'bg-[#7ca78c] border-[#7ca78c] text-white'*/}
+        {/*            : 'bg-white border-slate-300 text-slate-600 hover:bg-gray-50'*/}
+        {/*        }`}*/}
+        {/*      >*/}
+        {/*        {type}*/}
+        {/*      </button>*/}
+        {/*    ))}*/}
+        {/*  </div>*/}
+        {/*</div>*/}
 
-        <div className="pt-4">
-          <button
-            type="submit"
-            className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors group"
-          >
-            <Bookmark className="w-5 h-5 group-hover:fill-current" />
-            <span className="underline text-sm">Save this address</span>
-          </button>
-        </div>
+        {/*<div className="pt-4">*/}
+        {/*  <button*/}
+        {/*    type="submit"*/}
+        {/*    className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors group"*/}
+        {/*  >*/}
+        {/*    <Bookmark className="w-5 h-5 group-hover:fill-current" />*/}
+        {/*    <span className="underline text-sm">Save this address</span>*/}
+        {/*  </button>*/}
+        {/*</div>*/}
       </form>
     </div>
   );

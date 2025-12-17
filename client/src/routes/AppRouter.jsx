@@ -31,7 +31,7 @@ function TitleUpdater() {
       "/home": "Home | SecondHandLand",
       "/view-product": "View Product | SecondHandLand",
       "/home/cart": "Cart | SecondHandLand",
-      "/home/checkout": "CheckOutPage | SecondHandLand",
+      "/checkout": "CheckOutPage | SecondHandLand",
       profile: "Profile | SecondHandLand",
       "/my-listing": "My Listing | SecondHandLand",
       "/my-listing/add-product": "Add Product | SecondHandLand",
@@ -61,7 +61,7 @@ export default function AppRouter() {
         <Route path="/home/cart" element={<CartPage />} />
         <Route path="/view-product" element={<ViewProductPage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/home/cart/checkout" element={<CheckOutPage />} />
+        <Route path="/checkout" element={<CheckOutPage />} />
         <Route path="/my-listing" element={<MyListing />} />
         <Route path="/my-listing/addproduct" element={<AddProduct />} />
         <Route path="/home/result" element={<ListProducts />} />

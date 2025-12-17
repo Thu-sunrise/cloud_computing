@@ -7,7 +7,7 @@ export default function CheckOutSummary({listPrice }) {
 
   const shippingFee = itemCount > 0 ? 2 : 0; // tempted to use change later when have API :v
   const grandTotal = totalPrice + shippingFee;
-
+  window.scroll(0,0);
   return (
     <div className="bg-[#CFDDC6] mx-auto rounded-lg p-8">
       <div className="flex items-center justify-between mb-6">
@@ -38,18 +38,18 @@ export default function CheckOutSummary({listPrice }) {
           </span>
         </div>
 
-        <button
-          className="w-full bg-[#7DAC8C] hover:bg-[#7DAC70] text-white rounded-lg p-4 flex items-center justify-between transition-colors group"
-        >
-          <div className="flex items-center gap-3">
-            <CreditCard className="w-6 h-6 text-white transition-transform" />
-            <span className="font-['Roboto'] text-lg font-medium">Coupon</span>
-          </div>
+        {/*<button*/}
+        {/*  className="w-full bg-[#7DAC8C] hover:bg-[#7DAC70] text-white rounded-lg p-4 flex items-center justify-between transition-colors group"*/}
+        {/*>*/}
+        {/*  <div className="flex items-center gap-3">*/}
+        {/*    <CreditCard className="w-6 h-6 text-white transition-transform" />*/}
+        {/*    <span className="font-['Roboto'] text-lg font-medium">Coupon</span>*/}
+        {/*  </div>*/}
 
-          <span className="font-['Roboto'] text-sm underline font-thin ">
-            Add coupon
-          </span>
-        </button>
+        {/*  <span className="font-['Roboto'] text-sm underline font-thin ">*/}
+        {/*    Add coupon*/}
+        {/*  </span>*/}
+        {/*</button>*/}
 
 
         <div className="flex items-center justify-between">

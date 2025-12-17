@@ -33,11 +33,8 @@ export default function CartItem({ item, onToggle, onRemove }) {
       {/* Price & Checkbox */}
       <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 mt-2 sm:mt-0">
         <div className="text-left sm:text-right">
-          <div className="font-['Roboto'] text-xl sm:text-2xl text-black font-bold">
+          <div className="font-['Roboto'] text-xl sm:text-2xl flex flex-row items-center text-black font-bold">
             {item.price} Points
-          </div>
-        </div>
-
         <button
           onClick={() => onToggle(item.id)}
           className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 focus:outline-none"
@@ -57,6 +54,8 @@ export default function CartItem({ item, onToggle, onRemove }) {
             />
           )}
         </button>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ export default function OrderSummary({listPrice }) {
     if (listPrice.length === 0) {
       return;
     }
-    navigate('/home/cart/checkout', { state: { listItem: listPrice } });
+    navigate('/checkout', { state: { listItem: listPrice } });
   };
   const totalPrice = listPrice.reduce((acc, curr) => acc + curr, 0);
   const itemCount = listPrice.length;
@@ -59,11 +59,12 @@ export default function OrderSummary({listPrice }) {
       </div>
 
       <button onClick={handleCheckout}
-        className="w-full bg-[#283645] hover:bg-[#1a242f] text-white
-      rounded-xl p-4 flex items-center transition-colors group"
+              className={`w-full  p-4 flex items-center transition-colors group rounded-xl ${
+                listPrice.length === 0 ? 'bg-gray-500 text-gray-300 cursor-not-allowed' : 'bg-[#283645] hover:bg-[#1a242f]  text-white '
+              }`}
       >
         <div className="flex items-center gap-3">
-          <CreditCard className="w-6 h-6 text-white" />
+          <CreditCard className="w-6 h-6" />
           <span className="font-['Roboto'] text-lg font-medium">Checkout</span>
         </div>
       </button>

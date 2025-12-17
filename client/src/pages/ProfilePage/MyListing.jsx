@@ -12,7 +12,7 @@ import mockProducts from "./mockProducts.js";
 import Breadcrumb from "@/components/Breadcrumb/Breadcrumb.jsx";
 
 export default function MyListing() {
-
+  window.scrollTo(0, 0);
   return (
     <div className="bg-[#F3F7ED] min-w-full">
       <Header />

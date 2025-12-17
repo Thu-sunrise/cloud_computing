@@ -72,6 +72,8 @@ export default function AddProduct() {
     return (<div>Cancelled</div>);
   };
 
+  window.scrollTo(0, 0);
+
   return (
     <div className="bg-[#F3F7ED] min-w-full">
       <Header />
