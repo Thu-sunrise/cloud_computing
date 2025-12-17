@@ -1,82 +1,93 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-// Components
+// Layout
 import Header from "../../components/HomePage/Header";
 import Footer from "../../components/HomePage/Footer";
-import InfoApp from "../../components/HomePage/InfoApp";
-import ProductGrid from "../../components/HomePage/TodayPick/ProductGrid";
+
+// Product components
 import ProductImages from "../../components/ViewProduct/ProductImages";
 import ProductInfo from "../../components/ViewProduct/ProductInfo";
 import ShopOwnerCard from "../../components/ViewProduct/ShopOwnerCard";
-import ProductDescription from "../../components/ViewProduct/ProductDescription";
+// import ProductDescription from "../../components/ViewProduct/ProductDescription";
 import ProductReviews from "../../components/ViewProduct/ProductReviews";
 
-//Data
-// import mockProductsData from "./mockProductsData.js.js";
-
-// 1. Define static data outside the component (or move to a constants file)
-const PRODUCT_IMAGES = [
-  "https://picsum.photos/600/500?random=1",
-  "https://picsum.photos/600/500?random=2",
-  "https://picsum.photos/600/500?random=3",
-];
-
-// 2. Small layout wrapper to keep the main code clean
-const PageContainer = ({ children, className = "" }) => (
-  <div className={`w-full flex flex-col items-center bg-white ${className}`}>
-    <div className="max-w-[1080px] w-full px-4 mt-10 mb-20">
-      {children}
-    </div>
-  </div>
-);
-
-PageContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-  className: PropTypes.string,
-};
-
 export default function ViewProductPage() {
-  const [activeImage, setActiveImage] = useState(PRODUCT_IMAGES[0]);
+  const { id } = useParams();
+
+  // =========================
+  // MOCK API DATA (SAU ĐỔI = AXIOS)
+  // =========================
+  const mockProduct = {
+    id,
+    name: "Second-hand Wooden House",
+    price: 120,
+    description:
+      "This second-hand wooden house is well preserved and suitable for small families. Quiet neighborhood, easy access to city center.",
+    address: "Quận 7, TP. Hồ Chí Minh",
+    image: "https://picsum.photos/900/600?random=5",
+    category: "Real Estate",
+  };
+
+  const mockReviews = [
+    {
+      id: 1,
+      name: "Nguyễn Văn A",
+      avatar: "https://picsum.photos/100?random=21",
+      rating: 5,
+      comment: "Nhà rất đẹp, đúng mô tả, chủ nhà hỗ trợ nhiệt tình.",
+    },
+    {
+      id: 2,
+      name: "Trần Thị B",
+      avatar: "https://picsum.photos/100?random=22",
+      rating: 4,
+      comment: "Giá hợp lý, giao dịch nhanh gọn.",
+    },
+  ];
+
+  const [product, setProduct] = useState(null);
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    // giả lập call api
+    setProduct(mockProduct);
+    setReviews(mockReviews);
+  }, [id]);
+
+  if (!product) return null;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header />
 
       <main className="flex-grow">
-        <PageContainer>
-          {/* Top Section: Gallery & Info */}
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="w-full">
-              <ProductImages
-                images={PRODUCT_IMAGES}
-                mainImage={activeImage}
-                setMainImage={setActiveImage}
-              />
-            </div>
-            <div className="w-full">
-              <ProductInfo />
-            </div>
+        <div className="max-w-7xl mx-auto px-[50px] py-12">
+          {/* =========================
+              TOP: IMAGE + INFO
+          ========================= */}
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+            <ProductImages image={product.image} />
+            <ProductInfo product={product} />
           </section>
 
-          {/* Divider */}
-          <hr className="border-gray-200 my-10" />
+          {/* =========================
+              SHOP OWNER
+          ========================= */}
+          <ShopOwnerCard />
 
-          {/* Bottom Section: Details, Shop, Reviews */}
-          <section className="flex flex-col gap-8">
-            <ProductDescription />
-            <ShopOwnerCard />
-            <ProductReviews />
-          </section>
-        </PageContainer>
+          {/* =========================
+              DESCRIPTION
+          ========================= */}
+          {/* <ProductDescription description={product.description} /> */}
 
-        {/* Recommendations Section */}
-        <section className="bg-gray-50 py-10">
-          <ProductGrid headerTitle={"You may also like..."} mode={"carousel"}/>
-        </section>
+          {/* =========================
+              REVIEWS
+          ========================= */}
+          <ProductReviews reviews={reviews} />
+        </div>
       </main>
 
-      <InfoApp />
       <Footer />
     </div>
   );

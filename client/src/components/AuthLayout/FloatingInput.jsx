@@ -18,7 +18,7 @@ const FloatingInput = ({ id, label, type = "text", value, onChange, error }) => 
       <div className="relative w-full">
         <input
           id={id}
-          name={id}
+          name={id} // ✅ Thêm name để useForm hoạt động chuẩn
           type={inputType}
           value={value}
           onChange={onChange}

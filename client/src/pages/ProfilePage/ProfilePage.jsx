@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 import {
   User,
   CreditCard,
@@ -66,12 +65,10 @@ export default function ProfilePage() {
         {/*</div>*/}
         <ProfileHeader profileData={mockProfileData} />
         <div className="flex flex-col md:flex-row">
-          <SideBar onLogout={()=>{}}/>
+          <SideBar onLogout={() => {}} />
           <div className="flex-1 px-4 md:px-6 py-8">
-
             <div className="w-full max-w-5xl mx-auto mb-8">
               <div className="flex items-center border-b border-gray-300">
-
                 <button
                   onClick={() => setActiveTab("profile")}
                   className="relative flex-1 md:flex-none md:px-10 py-4 group"
@@ -138,7 +135,6 @@ export default function ProfilePage() {
             </div>
 
             <div className="w-full max-w-5xl mx-auto bg-white p-6 md:p-10 rounded-xl shadow-sm border border-gray-100 min-h-[500px]">
-
               {activeTab === "profile" && (
                 <form onSubmit={(e) => e.preventDefault()} className="animate-fadeIn">
                   <div className="flex items-center justify-between mb-8">
@@ -148,10 +144,11 @@ export default function ProfilePage() {
                       disabled={!hasChanges} // Disable nút nếu không có thay đổi
                       className={`
                           px-6 py-2.5 rounded-lg flex items-center gap-2 font-medium transition shadow-sm
-                          ${hasChanges
-                        ? "bg-[#7dac8c] hover:bg-[#6b967a] text-white cursor-pointer" // Style khi CÓ thay đổi (Xanh)
-                        : "bg-gray-300 text-gray-500 cursor-not-allowed" // Style khi KHÔNG thay đổi (Xám)
-                      }
+                          ${
+                            hasChanges
+                              ? "bg-[#7dac8c] hover:bg-[#6b967a] text-white cursor-pointer" // Style khi CÓ thay đổi (Xanh)
+                              : "bg-gray-300 text-gray-500 cursor-not-allowed" // Style khi KHÔNG thay đổi (Xám)
+                          }
                         `}
                     >
                       <Save size={18} /> Save Changes
@@ -159,13 +156,13 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-10">
-
                     <div className="flex flex-col gap-1.5">
-                      <span className="text-sm font-semibold text-gray-700">
-                        Full Name
-                      </span>
+                      <span className="text-sm font-semibold text-gray-700">Full Name</span>
                       <div className="relative">
-                        <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <User
+                          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                          size={18}
+                        />
                         <input
                           type="text"
                           name="fullName"
@@ -177,11 +174,12 @@ export default function ProfilePage() {
                     </div>
 
                     <div className="flex flex-col gap-1.5">
-                      <span className="text-sm font-semibold text-gray-700">
-                        Phone Number
-                      </span>
+                      <span className="text-sm font-semibold text-gray-700">Phone Number</span>
                       <div className="relative">
-                        <Smartphone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <Smartphone
+                          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                          size={18}
+                        />
                         <input
                           type="text"
                           name="phone"
@@ -193,11 +191,12 @@ export default function ProfilePage() {
                     </div>
 
                     <div className="flex flex-col gap-1.5 md:col-span-2">
-                      <span className="text-sm font-semibold text-gray-700">
-                        Email Address
-                      </span>
+                      <span className="text-sm font-semibold text-gray-700">Email Address</span>
                       <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <Mail
+                          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                          size={18}
+                        />
                         <input
                           type="email"
                           name="email"
@@ -212,14 +211,12 @@ export default function ProfilePage() {
                   <hr className="border-gray-200 my-8" />
 
                   <h2 className="text-xl font-bold text-[#374151] mb-6 flex items-center gap-2">
-                    <Lock size={20} className="text-green-600"/> Security & Password
+                    <Lock size={20} className="text-green-600" /> Security & Password
                   </h2>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                     <div className="flex flex-col gap-1.5">
-                      <span className="text-sm font-semibold text-gray-700">
-                        Current Password
-                      </span>
+                      <span className="text-sm font-semibold text-gray-700">Current Password</span>
                       <div className="relative">
                         <input
                           type={showCurrentPass ? "text" : "password"}
@@ -242,9 +239,7 @@ export default function ProfilePage() {
                     <div className="hidden md:block"></div>
 
                     <div className="flex flex-col gap-1.5">
-                      <span className="text-sm font-semibold text-gray-700">
-                        New Password
-                      </span>
+                      <span className="text-sm font-semibold text-gray-700">New Password</span>
                       <div className="relative">
                         <input
                           type={showNewPass ? "text" : "password"}
@@ -311,15 +306,21 @@ export default function ProfilePage() {
                         )}
                         {i !== 1 && (
                           <span className="inline-block mt-3 px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded">
-                           Pickup Address
-                         </span>
+                            Pickup Address
+                          </span>
                         )}
                       </div>
 
                       <div className="flex flex-row md:flex-col justify-end md:justify-between items-center md:items-end gap-3">
                         <div className="flex gap-4">
-                          <button className="text-green-700 font-medium hover:underline">Update</button>
-                          {i !== 1 && <button className="text-red-500 font-medium hover:underline">Delete</button>}
+                          <button className="text-green-700 font-medium hover:underline">
+                            Update
+                          </button>
+                          {i !== 1 && (
+                            <button className="text-red-500 font-medium hover:underline">
+                              Delete
+                            </button>
+                          )}
                         </div>
 
                         {i !== 1 && (
@@ -339,7 +340,9 @@ export default function ProfilePage() {
                     <CreditCard size={48} className="text-gray-400" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-700">No Payment Methods</h3>
-                  <p className="text-gray-500 mt-2 max-w-sm">You haven&apos;t saved any payment methods yet. Add a card to checkout faster.</p>
+                  <p className="text-gray-500 mt-2 max-w-sm">
+                    You haven&apos;t saved any payment methods yet. Add a card to checkout faster.
+                  </p>
                   <button className="mt-6 bg-[#7dac8c] text-white px-6 py-2 rounded-lg flex items-center gap-2">
                     <Plus size={18} /> Add Payment Method
                   </button>

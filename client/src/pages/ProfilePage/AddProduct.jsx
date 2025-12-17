@@ -19,13 +19,24 @@ export default function AddProduct() {
   const [taxEnabled, setTaxEnabled] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const categories = ["Women", "Men", "T-Shirt", "Hoodie", "Dress"];
+  const categories = [
+    "Mobile Devices",
+    "Computers",
+    "Cameras",
+    "Home Furniture",
+    "Home Appliances",
+    "Books",
+    "Clothing",
+    "Footwear",
+    "Sports Equipment",
+    "Toys and Games",
+    "Vehicles",
+    "Collectibles",
+  ];
 
   const handleCategoryToggle = (category) => {
     setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     );
   };
 
@@ -34,8 +45,8 @@ export default function AddProduct() {
       alert("Please fill in all required fields");
       return;
     }
-    const dateOptions = { month: 'short', day: 'numeric', year: 'numeric' };
-    const today = new Date().toLocaleDateString('en-US', dateOptions);
+    const dateOptions = { month: "short", day: "numeric", year: "numeric" };
+    const today = new Date().toLocaleDateString("en-US", dateOptions);
 
     const newProduct = {
       id: mockProducts.length + 1,
@@ -55,8 +66,8 @@ export default function AddProduct() {
         weight,
         country,
         taxEnabled,
-        categories: selectedCategories
-      }
+        categories: selectedCategories,
+      },
     };
 
     mockProducts.push(newProduct);
@@ -69,7 +80,7 @@ export default function AddProduct() {
 
   const handleCancel = () => {
     console.log("Cancelled");
-    return (<div>Cancelled</div>);
+    return <div>Cancelled</div>;
   };
 
   window.scrollTo(0, 0);
@@ -82,9 +93,7 @@ export default function AddProduct() {
         <div className="flex flex-col md:flex-row">
           <SideBar onLogout={() => {}} />
           <div className="max-w-[1440px] min-w-screen pt-10 flex-row mx-auto mb-8">
-            <h1 className="font-roboto text-2xl font-bold text-gray-900 mb-8">
-              Add Product
-            </h1>
+            <h1 className="font-roboto text-2xl font-bold text-gray-900 mb-8">Add Product</h1>
 
             <div className="flex gap-8">
               <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200">
@@ -124,18 +133,14 @@ export default function AddProduct() {
                 <div className="border-t border-gray-200" />
 
                 <div className="p-7">
-                  <h2 className="font-roboto text-base font-bold text-gray-900 mb-6">
-                    Images
-                  </h2>
+                  <h2 className="font-roboto text-base font-bold text-gray-900 mb-6">Images</h2>
 
                   <div className="border-2 border-dashed border-gray-400 rounded h-[168px] flex items-center justify-center">
                     <div className="text-center">
                       <button className="px-6 py-2 rounded border border-gray-300 bg-white text-blue-600 font-inter text-base hover:bg-gray-50 transition-colors mb-3">
                         Add File
                       </button>
-                      <p className="font-inter text-sm text-gray-600">
-                        Or drag and drop files
-                      </p>
+                      <p className="font-inter text-sm text-gray-600">Or drag and drop files</p>
                     </div>
                   </div>
                 </div>
@@ -143,9 +148,7 @@ export default function AddProduct() {
                 <div className="border-t border-gray-200" />
 
                 <div className="p-7">
-                  <h2 className="font-inter text-base font-bold text-gray-900 mb-6">
-                    Price
-                  </h2>
+                  <h2 className="font-inter text-base font-bold text-gray-900 mb-6">Price</h2>
 
                   <div className="grid grid-cols-2 gap-6 mb-6">
                     <div>
@@ -160,109 +163,30 @@ export default function AddProduct() {
                         className="w-full h-10 px-4 rounded border border-gray-300 font-inter text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green-light"
                       />
                     </div>
-
-                    <div>
-                      <span className="block font-inter text-sm text-gray-600 mb-2">
-                        Discount Price
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="Price at Discount"
-                        value={discountPrice}
-                        onChange={(e) => setDiscountPrice(e.target.value)}
-                        className="w-full h-10 px-4 rounded border border-gray-300 font-inter text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green-light"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => setTaxEnabled(!taxEnabled)}
-                      className={`w-11 h-6 rounded-full transition-colors ${
-                        taxEnabled ? "bg-blue-200" : "bg-gray-300"
-                      }`}
-                    >
-                      <div
-                        className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${
-                          taxEnabled ? "translate-x-6" : "translate-x-1"
-                        }`}
-                      />
-                    </button>
-                    <span className="font-inter text-base text-gray-900">
-                  Add tax for this product
-                </span>
                   </div>
                 </div>
 
                 <div className="border-t border-gray-200" />
-
-                <div className="p-7">
-                  <h2 className="font-inter text-base font-bold text-gray-900 mb-6">
-                    Shipping
-                  </h2>
-
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <span className="block font-inter text-sm text-gray-600 mb-2">
-                        Weight
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="Enter Weight"
-                        value={weight}
-                        onChange={(e) => setWeight(e.target.value)}
-                        className="w-full h-10 px-4 rounded border border-gray-300 font-inter text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green-light"
-                      />
-                    </div>
-
-                    <div>
-                      <span className="block font-inter text-sm text-gray-600 mb-2">
-                        Country
-                      </span>
-                      <select
-                        value={country}
-                        onChange={(e) => setCountry(e.target.value)}
-                        className="w-full h-10 px-4 rounded border border-gray-300 font-inter text-base text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green-light appearance-none bg-white"
-                      >
-                        <option value="">Select Country</option>
-                        <option value="vietnam">Vietnam</option>
-                        <option value="usa">USA</option>
-                        <option value="uk">UK</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               {/* Categories Sidebar */}
               <div className="w-[350px]">
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-7 mb-6">
-                  <h2 className="font-inter text-base font-bold text-gray-900 mb-6">
-                    Categories
-                  </h2>
+                  <h2 className="font-inter text-base font-bold text-gray-900 mb-6">Categories</h2>
 
                   <div className="space-y-3">
                     {categories.map((category) => (
-                      <span
-                        key={category}
-                        className="flex items-center gap-3 cursor-pointer"
-                      >
+                      <span key={category} className="flex items-center gap-3 cursor-pointer">
                         <input
                           type="checkbox"
                           checked={selectedCategories.includes(category)}
                           onChange={() => handleCategoryToggle(category)}
                           className="w-5 h-5 rounded border-gray-300 text-brand-green-light focus:ring-brand-green-light"
                         />
-                        <span className="font-inter text-base text-gray-900">
-                      {category}
-                    </span>
+                        <span className="font-inter text-base text-gray-900">{category}</span>
                       </span>
                     ))}
                   </div>
-
-                  <button className="mt-6 text-blue-600 font-inter text-base hover:underline">
-                    More
-                  </button>
                 </div>
 
                 {/* Action Buttons */}
@@ -279,15 +203,14 @@ export default function AddProduct() {
                   >
                     Cancel
                   </button>
-
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <InfoApp/>
-      <Footer/>
+
+      <Footer />
     </div>
   );
-        }
+}

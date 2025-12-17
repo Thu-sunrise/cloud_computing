@@ -14,7 +14,7 @@ import CheckOutPage from "@/pages/CartPage/CheckOutPage/CheckOutPage.jsx";
 import ResetPasswordPage from "../pages/AuthPage/ResetPasswordPage";
 // import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 // import CategoryCard from "../components/HomePage/Category/CategoryCard";
-import MyListing  from "@/pages/ProfilePage/MyListing";
+import MyListing from "@/pages/ProfilePage/MyListing";
 import AddProduct from "@/pages/ProfilePage/AddProduct.jsx";
 import ListProducts from "@/pages/HomePage/ListPorducts.jsx";
 
@@ -59,7 +59,7 @@ export default function AppRouter() {
         <Route path="/verify-otp" element={<OtpPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/home/cart" element={<CartPage />} />
-        <Route path="/view-product" element={<ViewProductPage />} />
+        <Route path="/product/:id" element={<ViewProductPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/checkout" element={<CheckOutPage />} />
         <Route path="/my-listing" element={<MyListing />} />

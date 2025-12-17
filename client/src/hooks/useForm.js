@@ -9,17 +9,27 @@ export const useForm = ({
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    const { id, value, type, checked } = e.target;
+    const { id, name, type, value, checked } = e.target;
+
+    const key = name || id; // Ưu tiên name, fallback id
+
     setForm((prev) => {
-      const next = { ...prev, [id]: type === "checkbox" ? checked : value };
-      const validationErrors = validate(next);
+      const updated = {
+        ...prev,
+        [key]: type === "checkbox" ? checked : value,
+      };
+
+      // realtime validation
+      const validationErrors = validate(updated);
       setErrors(validationErrors);
-      return next;
+
+      return updated;
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validationErrors = validate(form);
     setErrors(validationErrors);
 
@@ -28,5 +38,12 @@ export const useForm = ({
     await onSubmit(form);
   };
 
-  return { form, setForm, errors, setErrors, handleChange, handleSubmit };
+  return {
+    form,
+    setForm,
+    errors,
+    setErrors,
+    handleChange,
+    handleSubmit,
+  };
 };
