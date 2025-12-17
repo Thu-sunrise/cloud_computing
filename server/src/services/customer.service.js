@@ -1,186 +1,191 @@
+import mongoose from "mongoose";
 import { Customer } from "../models/customer.model.js";
-import { User } from "../models/user.model.js";
 import { AppError } from "../utils/AppError.js";
+import { CloudinaryService } from "./cloudinary.service.js";
 
 export const CustomerService = {
-  async getAllCustomers(query) {
-    const searchFields = ["name.firstName", "name.lastName"];
-
-    const allowedFields = [
-      "name.firstName",
-      "name.lastName",
-      "role",
-      "status",
-      "gender",
-      "dateOfBirth",
-      "address",
-      "createdAt",
-      "updatedAt",
-      "avatar",
-    ];
-
-    const { page = 1, limit = 10, sort = "-createdAt", fields, search, ...filter } = query;
-
-    if (search) {
-      filter.$or = searchFields.map((field) => ({
-        [field]: { $regex: search, $options: "i" },
-      }));
-    }
-
-    const pageNumber = parseInt(page);
-    const limitNumber = parseInt(limit);
-    const skip = (pageNumber - 1) * limitNumber;
-
-    let selectStr = "";
-
-    if (fields) {
-      const requestedFields = fields.split(",");
-      const finalFields = requestedFields.filter((field) => allowedFields.includes(field));
-      selectStr = finalFields.length > 0 ? finalFields.join(" ") : allowedFields.join(" ");
-    } else {
-      selectStr = allowedFields.join(" ");
-    }
-
-    const [items, total] = await Promise.all([
-      Customer.find(filter).sort(sort).skip(skip).limit(limitNumber).select(selectStr), // Truyền chuỗi select đã xử lý kỹ càng vào đây
-      Customer.countDocuments(filter),
-    ]);
-
-    return {
-      page: pageNumber,
-      limit: limitNumber,
-      total,
-      totalPages: Math.ceil(total / limitNumber),
-      items,
-    };
-  },
-
-  async createCustomer(mail, password) {
+  async create(mail, password) {
     const exist = await Customer.findOne({ mail });
 
     if (exist) {
       throw new AppError("Email already exists", 401);
     }
-    const user = await User.create({ mail, password });
+    const user = await Customer.create({ mail, password });
     return { id: user._id, role: user.role };
   },
 
-  async updateMyInfo(id, data) {
-    const allowedFields = [
-      "firstName",
-      "lastName",
-      "avatar",
-      "mail",
-      "gender",
-      "dateOfBirth",
-      "phone",
-    ];
+  async getList(page, limit, search) {
+    const skip = (page - 1) * limit;
+    let filter = { role: "customer" };
 
-    const updateData = {};
+    if (search && search.trim() !== "") {
+      const keyword = search.trim();
 
-    Object.keys(data).forEach((field) => {
-      if (allowedFields.includes(field)) {
-        if (field === "firstName") {
-          updateData["name.firstName"] = data[field];
-        } else if (field === "lastName") {
-          updateData["name.lastName"] = data[field];
-        } else {
-          updateData[field] = data[field];
+      if (mongoose.Types.ObjectId.isValid(keyword)) {
+        const byId = await Customer.findOne({
+          _id: keyword,
+          role: "customer",
+        })
+          .select("-password")
+          .lean();
+
+        if (byId) {
+          return {
+            data: [byId],
+            pagination: {
+              page: 1,
+              limit: 1,
+              total: 1,
+              totalPages: 1,
+            },
+          };
         }
       }
-    });
 
-    if (Object.keys(updateData).length === 0) {
-      throw new AppError("No valid fields to update", 400);
-    }
-
-    const doc = await Customer.findByIdAndUpdate(id, updateData, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!doc) throw new AppError("No document found with that ID", 404);
-    return doc;
-  },
-
-  async getCustomerById(id) {
-    const selectedFields = "mail name role avatar gender dateOfBirth phone address";
-    const doc = await User.findById(id).select(selectedFields);
-    if (!doc) throw new AppError("No document found with that ID", 404);
-    return doc;
-  },
-
-  async getAddresses(userId, addressId) {
-    const customer = await Customer.findById(userId).select("address");
-    if (!customer) throw new AppError("Customer not found", 404);
-
-    const addressSubDoc = customer.address.id(addressId);
-    if (!addressSubDoc) throw new AppError("Address not found", 404);
-    // sort -> isDefault on top
-    return addressSubDoc;
-  },
-
-  async getListAddresses(id) {
-    const customer = await Customer.findById(id).select("address");
-    if (!customer) throw new AppError("Customer not found", 404);
-    // sort -> isDefault on top
-    return customer.address.sort((a, b) => b.isDefault - a.isDefault);
-  },
-
-  async addAddress(id, addressData) {
-    const finalData = addressData.address ? addressData.address : addressData;
-    const customer = await Customer.findById(id);
-    if (!customer) throw new AppError("Customer not found", 404);
-
-    if (customer.address.length === 0) {
-      finalData.isDefault = true;
-    }
-
-    if (finalData.isDefault) {
-      customer.address.forEach((addr) => (addr.isDefault = false));
-    }
-
-    customer.address.push(finalData);
-    await customer.save();
-    return customer.address;
-  },
-
-  async updateAddress(userId, addressId, data) {
-    const customer = await Customer.findById(userId);
-    if (!customer) throw new AppError("Customer not found", 404);
-
-    const addressSubDoc = customer.address.id(addressId);
-    if (!addressSubDoc) throw new AppError("Address not found", 404);
-
-    const finalData = data.address || data;
-
-    if (finalData.isDefault === true) {
-      customer.address.forEach((addr) => {
-        if (addr._id.toString() !== addressId) {
-          addr.isDefault = false;
-        }
+      const byMailCount = await Customer.countDocuments({
+        role: "customer",
+        mail: { $regex: keyword, $options: "i" },
       });
+
+      if (byMailCount > 0) {
+        filter.mail = { $regex: keyword, $options: "i" };
+      } else {
+        filter.$or = [
+          { "name.firstName": { $regex: keyword, $options: "i" } },
+          { "name.lastName": { $regex: keyword, $options: "i" } },
+        ];
+      }
     }
-    addressSubDoc.set(finalData);
-    await customer.save();
-    return customer.address;
+
+    const [customers, total] = await Promise.all([
+      Customer.find(filter)
+        .select("-password")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+
+      Customer.countDocuments(filter),
+    ]);
+
+    return {
+      data: customers,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   },
 
-  async deleteAddress(userId, addressId) {
+  async update(userId, payload, image = null) {
     const customer = await Customer.findById(userId);
-    if (!customer) throw new AppError("Customer not found");
 
-    const addressSubDoc = customer.address.id(addressId);
-    if (!addressSubDoc) throw new AppError("Address not found");
-
-    const wasDefault = addressSubDoc.isDefault;
-    addressSubDoc.deleteOne();
-
-    if (wasDefault && customer.address.length > 0) {
-      customer.address[0].isDefault = true;
+    if (!customer) {
+      throw new AppError("Customer not found", 404);
     }
 
-    await customer.save();
-    return customer.address;
+    let updateData = {};
+
+    if (payload.firstName || payload.lastName) {
+      updateData.name = {
+        firstName: payload.firstName ?? customer.name?.firstName,
+        lastName: payload.lastName ?? customer.name?.lastName,
+      };
+    }
+
+    if (payload.phone) updateData.phone = payload.phone;
+
+    if (payload.dateOfBirth) updateData.dateOfBirth = payload.dateOfBirth;
+
+    if (payload.gender) updateData.gender = payload.gender;
+    if (payload.address) updateData.address = payload.address;
+
+    if (image) {
+      const uploadResult = await CloudinaryService.uploadFile(image, "avatars");
+
+      if (customer.avatarPublicId && customer.avatarPublicId !== "avtdf_kvmacl") {
+        await CloudinaryService.deleteFile(customer.avatarPublicId);
+      }
+      updateData.avatarPublicId = uploadResult.public_id;
+    }
+    const updatedCustomer = await Customer.findByIdAndUpdate(
+      userId,
+      { $set: updateData },
+      {
+        new: true,
+        runValidators: true,
+        select: "-password -failedLoginAttempts",
+      }
+    ).lean();
+
+    return {
+      ...updatedCustomer,
+      avatarUrl: CloudinaryService.generateSignedUrl(updatedCustomer.avatarPublicId),
+    };
+  },
+
+  async getTopSelling(top = 10) {
+    const result = await Customer.aggregate([
+      {
+        // join product
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "createdBy",
+          as: "products",
+        },
+      },
+      {
+        // where status = sold
+        $addFields: {
+          soldProducts: {
+            $filter: {
+              input: "$products",
+              as: "p",
+              cond: { $eq: ["$$p.status", "sold"] },
+            },
+          },
+        },
+      },
+      {
+        // sum and count
+        $addFields: {
+          totalRevenue: {
+            $sum: "$soldProducts.price",
+          },
+          soldCount: {
+            $size: "$soldProducts",
+          },
+        },
+      },
+      {
+        // sort by revenue
+        $sort: {
+          totalRevenue: -1,
+        },
+      },
+
+      {
+        $limit: top,
+      },
+
+      {
+        $project: {
+          products: 0,
+          soldProducts: 0,
+          password: 0,
+          failedLoginAttempts: 0,
+        },
+      },
+    ]);
+    return result;
+  },
+
+  async getById(id) {
+    const customer = await Customer.findById(id).select("-password -failedLoginAttempts");
+    if (!customer) throw new AppError("Customer not found", 404);
+    return customer;
   },
 };

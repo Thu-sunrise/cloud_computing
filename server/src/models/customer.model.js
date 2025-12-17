@@ -12,17 +12,7 @@ const customerSchema = new mongoose.Schema({
     type: String,
     enum: ["male", "female"],
   },
-  address: [
-    {
-      text: {
-        type: String,
-      },
-      isDefault: {
-        type: Boolean,
-        default: false,
-      },
-    },
-  ],
+  address: { type: String },
 });
 
 export const Customer = User.discriminator("customer", customerSchema);

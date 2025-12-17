@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
   {
+    ownerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
+      required: true,
+    },
     products: [
       {
         id: {
@@ -13,7 +18,7 @@ const orderSchema = new mongoose.Schema(
     ],
     status: {
       type: String,
-      enum: ["created", "confirmed", "shipping", "completed", "cancelled", "refunded"],
+      enum: ["created", "confirmed", "shipping", "completed", "cancelled", "refunded", "pending"],
       default: "pending",
     },
     shipping: {
@@ -40,9 +45,6 @@ const orderSchema = new mongoose.Schema(
         min: 0,
         default: 0,
       },
-    },
-    notes: {
-      type: String,
     },
   },
   { timestamps: true }

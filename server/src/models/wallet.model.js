@@ -14,20 +14,20 @@ const walletSchema = new moongoose.Schema(
       min: 0,
     },
     // future implementation
-    paymentMethods: [
-      {
-        type: {
-          type: String,
-          enum: ["credit_card", "paypal", "bank_transfer"],
-          required: true,
-        },
-        bankName: String,
-        isDefault: {
-          type: Boolean,
-          default: false,
-        },
-      },
-    ],
+    // paymentMethods: [
+    //   {
+    //     type: {
+    //       type: String,
+    //       enum: ["credit_card", "paypal", "bank_transfer"],
+    //       required: true,
+    //     },
+    //     bankName: String,
+    //     isDefault: {
+    //       type: Boolean,
+    //       default: false,
+    //     },
+    //   },
+    // ],
   },
   { timestamps: true }
 );

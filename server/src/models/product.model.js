@@ -5,15 +5,15 @@ const productSchema = new mongoose.Schema(
     createdBy: {
       // FK
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Customer",
+      ref: "customer",
       required: true,
     },
-    // categoryId: {
-    //   // FK
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Category",
-    //   required: true,
-    // },
+    categoryId: {
+      // FK
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -29,23 +29,11 @@ const productSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-    salePrice: {
-      type: Number,
-      min: 0,
-    },
-    images: [
-      {
-        // publicId: {
-        //   type: String,
-        // },
-        publicId: { type: String, required: true },
-        url: { type: String, required: true },
-        resource_type: { type: String, default: "image" },
-      },
-    ],
+    imagePublicId: { type: String, required: true },
+
     status: {
       type: String,
-      enum: ["active", "pending", "rejected", "deleted"],
+      enum: ["active", "pending", "sold", "rejected", "deleted"],
       default: "pending",
     },
   },

@@ -1,0 +1,282 @@
+[
+  {
+    "productName": "iPhone 12 - 64GB",
+    "productOwnerEmail": "thu@example.com",
+    "reviewerEmail": "tkiet@example.com",
+    "rating": 4,
+    "comment": "The phone works perfectly as described. Battery life is decent and the included accessories were helpful. Minor scratches on the back but overall good condition."
+  },
+  {
+    "productName": "MacBook Pro 2019 13-inch",
+    "productOwnerEmail": "tkiet@example.com",
+    "reviewerEmail": "hkien@example.com",
+    "rating": 5,
+    "comment": "Excellent laptop! Performance is smooth and the Touch Bar works perfectly. Exactly as described."
+  },
+  {
+    "productName": "Samsung Galaxy Watch 4",
+    "productOwnerEmail": "qkiet@example.com",
+    "reviewerEmail": "taylorswift@example.com",
+    "rating": 4,
+    "comment": "Great smartwatch with accurate health tracking. Battery lasts a full day as promised. Good value."
+  },
+  {
+    "productName": "Canon PowerShot SX620",
+    "productOwnerEmail": "hkien@example.com",
+    "reviewerEmail": "ronaldo@example.com",
+    "rating": 3,
+    "comment": "Camera works fine but has more scratches than shown in photos. Image quality is decent for the price."
+  },
+  {
+    "productName": "CR7 Training Jersey",
+    "productOwnerEmail": "ronaldo@example.com",
+    "reviewerEmail": "messi@example.com",
+    "rating": 5,
+    "comment": "Authentic signed jersey! The signature is genuine and the jersey quality is top-notch. Very happy with this purchase."
+  },
+  {
+    "productName": "Barcelona 2021 Home Jersey",
+    "productOwnerEmail": "messi@example.com",
+    "reviewerEmail": "taylorswift@example.com",
+    "rating": 4,
+    "comment": "Beautiful jersey in good condition. Authentic material and stitching. Minor fading on the logo but overall great."
+  },
+  {
+    "productName": "Folklore Album Vinyl",
+    "productOwnerEmail": "taylorswift@example.com",
+    "reviewerEmail": "justinbieber@example.com",
+    "rating": 5,
+    "comment": "Perfect collector's item! The signed booklet is authentic and the vinyl sounds amazing. Packaged with care."
+  },
+  {
+    "productName": "MTP Official Tour Jacket",
+    "productOwnerEmail": "sontung@example.com",
+    "reviewerEmail": "minhchau@example.com",
+    "rating": 4,
+    "comment": "Cool jacket and fits well. Limited edition details are impressive. Good condition as described."
+  },
+  {
+    "productName": "Purpose Tour Hoodie",
+    "productOwnerEmail": "justinbieber@example.com",
+    "reviewerEmail": "arianagrande@example.com",
+    "rating": 3,
+    "comment": "Comfortable hoodie but the print is starting to crack in some areas. Still wearable and warm."
+  },
+  {
+    "productName": "Sweetener Tour T-Shirt",
+    "productOwnerEmail": "arianagrande@example.com",
+    "reviewerEmail": "sontung@example.com",
+    "rating": 5,
+    "comment": "Love this tour merch! Great quality cotton and the design is still vibrant. Fits true to size."
+  },
+  {
+    "productName": "Neymar Jr PSG Jersey 2022",
+    "productOwnerEmail": "neymar@example.com",
+    "reviewerEmail": "ronaldo@example.com",
+    "rating": 4,
+    "comment": "Authentic PSG jersey with correct details. Good condition and fast shipping. Would recommend this seller."
+  },
+  {
+    "productName": "LV Neverfull Handbag",
+    "productOwnerEmail": "minhchau@example.com",
+    "reviewerEmail": "hoanganh@example.com",
+    "rating": 5,
+    "comment": "Authentic LV bag in excellent condition! Minor wear is barely noticeable. Very happy with this luxury purchase."
+  },
+  {
+    "productName": "Gaming PC RTX 3060",
+    "productOwnerEmail": "hoanganh@example.com",
+    "reviewerEmail": "ngoclinh@example.com",
+    "rating": 4,
+    "comment": "Powerful gaming PC runs all modern games smoothly. Setup was easy and all components work perfectly."
+  },
+  {
+    "productName": "Sony WH-1000XM4",
+    "productOwnerEmail": "ngoclinh@example.com",
+    "reviewerEmail": "quanghuy@example.com",
+    "rating": 5,
+    "comment": "Best noise-cancelling headphones I've owned! Sound quality is amazing and battery life lasts for days."
+  },
+  {
+    "productName": "PlayStation 5 Digital Edition",
+    "productOwnerEmail": "quanghuy@example.com",
+    "reviewerEmail": "thanhha@example.com",
+    "rating": 4,
+    "comment": "PS5 works flawlessly! All included games run perfectly. Controllers are like new. Great deal!"
+  },
+  {
+    "productName": "Designer Evening Dress",
+    "productOwnerEmail": "thanhha@example.com",
+    "reviewerEmail": "ducmanh@example.com",
+    "rating": 5,
+    "comment": "Stunning dress! Looks even better in person. Perfect condition as described. Highly recommended seller."
+  },
+  {
+    "productName": "DJI Mavic Air 2 Drone",
+    "productOwnerEmail": "ducmanh@example.com",
+    "reviewerEmail": "linhchi@example.com",
+    "rating": 4,
+    "comment": "Excellent drone with amazing 4K video quality. Batteries hold charge well. Great for aerial photography."
+  },
+  {
+    "productName": "Apple Watch Series 6",
+    "productOwnerEmail": "linhchi@example.com",
+    "reviewerEmail": "jacksonwang@example.com",
+    "rating": 5,
+    "comment": "Watch works perfectly! Battery health is still excellent. All features function as they should."
+  },
+  {
+    "productName": "Team Wang Design Hoodie",
+    "productOwnerEmail": "jacksonwang@example.com",
+    "reviewerEmail": "thu@example.com",
+    "rating": 4,
+    "comment": "Cool limited edition hoodie! Material is high quality and design is unique. Fits true to size."
+  },
+  {
+    "productName": "iPad Air 4th Generation",
+    "productOwnerEmail": "thu@example.com",
+    "reviewerEmail": "tkiet@example.com",
+    "rating": 5,
+    "comment": "iPad is in perfect condition! Apple Pencil works flawlessly. Looks and feels brand new. Great value!"
+  },
+  {
+    "productName": "Dell XPS 15 9500",
+    "productOwnerEmail": "tkiet@example.com",
+    "reviewerEmail": "qkiet@example.com",
+    "rating": 5,
+    "comment": "Professional-grade laptop! 4K display is stunning and performance is exceptional for video editing."
+  },
+  {
+    "productName": "Fujifilm Instax Mini 11",
+    "productOwnerEmail": "qkiet@example.com",
+    "reviewerEmail": "hkien@example.com",
+    "rating": 4,
+    "comment": "Fun instant camera! Works perfectly and includes plenty of film. Great for parties and events."
+  },
+  {
+    "productName": "IKEA KIVIK Sofa",
+    "productOwnerEmail": "hkien@example.com",
+    "reviewerEmail": "minhchau@example.com",
+    "rating": 3,
+    "comment": "Comfortable sofa but has more stains than shown in photos. Still decent for the price though."
+  },
+  {
+    "productName": "Nike Mercurial Vapor 14",
+    "productOwnerEmail": "ronaldo@example.com",
+    "reviewerEmail": "messi@example.com",
+    "rating": 5,
+    "comment": "Authentic match-worn boots! Excellent condition and genuine Ronaldo signature. Great collector's item."
+  },
+  {
+    "productName": "Lover Album Box Set",
+    "productOwnerEmail": "taylorswift@example.com",
+    "reviewerEmail": "justinbieber@example.com",
+    "rating": 5,
+    "comment": "Perfect deluxe edition! All exclusive merch included and in mint condition. Packaged with care."
+  },
+  {
+    "productName": "Electric Scooter Xiaomi Pro 2",
+    "productOwnerEmail": "justinbieber@example.com",
+    "reviewerEmail": "arianagrande@example.com",
+    "rating": 4,
+    "comment": "Great scooter for daily commute! Battery holds charge well and speed is consistent. Minor scratches but works perfectly."
+  },
+  {
+    "productName": "Professional Makeup Kit",
+    "productOwnerEmail": "arianagrande@example.com",
+    "reviewerEmail": "neymar@example.com",
+    "rating": 5,
+    "comment": "High-quality makeup collection! All products are authentic and barely used. Great value for professional brands."
+  },
+  {
+    "productName": "Adidas Predator Football",
+    "productOwnerEmail": "neymar@example.com",
+    "reviewerEmail": "ronaldo@example.com",
+    "rating": 4,
+    "comment": "Official match ball with genuine signature. Good condition with minor scuff marks from use."
+  },
+  {
+    "productName": "Designer Sunglasses Gucci",
+    "productOwnerEmail": "minhchau@example.com",
+    "reviewerEmail": "hoanganh@example.com",
+    "rating": 5,
+    "comment": "Authentic Gucci sunglasses with original case! No scratches on lenses. Perfect condition."
+  },
+  {
+    "productName": "Nintendo Switch OLED",
+    "productOwnerEmail": "hoanganh@example.com",
+    "reviewerEmail": "ngoclinh@example.com",
+    "rating": 5,
+    "comment": "Complete set with all games and accessories! Switch works perfectly and OLED screen is stunning."
+  },
+  {
+    "productName": "Premium Leather Sofa Set (3+2+1)",
+    "productOwnerEmail": "thu@example.com",
+    "reviewerEmail": "qkiet@example.com",
+    "rating": 4,
+    "comment": "Beautiful leather sofa set! Professional cleaning was done well. Minor wear on armrests but overall excellent."
+  },
+  {
+    "productName": "Antique Oak Dining Table Set",
+    "productOwnerEmail": "qkiet@example.com",
+    "reviewerEmail": "hkien@example.com",
+    "rating": 5,
+    "comment": "Stunning vintage set! Restoration was done professionally. Solid oak wood and chairs are comfortable."
+  },
+  {
+    "productName": "Samsung Family Hub Refrigerator",
+    "productOwnerEmail": "hkien@example.com",
+    "reviewerEmail": "messi@example.com",
+    "rating": 5,
+    "comment": "Smart fridge works flawlessly! Touch screen is responsive and all features function perfectly. Like new condition."
+  },
+  {
+    "productName": "Limited Edition Art Book Collection",
+    "productOwnerEmail": "messi@example.com",
+    "reviewerEmail": "thu@example.com",
+    "rating": 5,
+    "comment": "Amazing TASCHEN collection! All volumes in mint condition as described. Perfect for art enthusiasts."
+  },
+  {
+    "productName": "Italian Marble Coffee Table",
+    "productOwnerEmail": "thu@example.com",
+    "reviewerEmail": "qkiet@example.com",
+    "rating": 4,
+    "comment": "Beautiful marble table! Design is elegant. Minor chip on one corner but barely noticeable."
+  },
+  {
+    "productName": "Miele Complete Kitchen Package",
+    "productOwnerEmail": "qkiet@example.com",
+    "reviewerEmail": "hkien@example.com",
+    "rating": 5,
+    "comment": "Premium German appliances all in working order! Installation was smooth. High quality as expected from Miele."
+  },
+  {
+    "productName": "First Edition Harry Potter Collection",
+    "productOwnerEmail": "hkien@example.com",
+    "reviewerEmail": "messi@example.com",
+    "rating": 5,
+    "comment": "Incredible collector's item! All first editions with dust jackets in excellent condition. Pristine collection."
+  },
+  {
+    "productName": "Handcrafted Teak Bedroom Set",
+    "productOwnerEmail": "messi@example.com",
+    "reviewerEmail": "thu@example.com",
+    "rating": 4,
+    "comment": "Beautiful solid teak furniture! Craftsmanship is excellent. Minor scratches on dresser but overall great condition."
+  },
+  {
+    "productName": "Professional Espresso Machine",
+    "productOwnerEmail": "thu@example.com",
+    "reviewerEmail": "qkiet@example.com",
+    "rating": 5,
+    "comment": "Commercial-grade espresso machine! Works perfectly and produces cafe-quality coffee. Barely used as described."
+  },
+  {
+    "productName": "Rare Manuscript Collection 18th Century",
+    "productOwnerEmail": "qkiet@example.com",
+    "reviewerEmail": "hkien@example.com",
+    "rating": 5,
+    "comment": "Fascinating historical collection! Professionally preserved and authenticated. Perfect for serious collectors."
+  }
+]

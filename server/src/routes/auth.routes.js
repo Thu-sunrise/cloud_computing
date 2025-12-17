@@ -4,7 +4,6 @@ import {
   sendOTP,
   forgotPassword,
   logout,
-  refreshToken,
   register,
   verifyOtp,
   changePassword,
@@ -25,7 +24,5 @@ router.post("/login", login);
 router.post("/change-password", requireAuth, changePassword);
 
 router.post("/forgot-password", forgotPassword);
-
-router.post("/refresh-token", refreshToken);
 
 router.post("/logout", logout);

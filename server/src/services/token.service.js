@@ -80,7 +80,7 @@ export const TokenService = {
   /*
    * SESSION TOKEN METHODS
    */
-  createSessionToken(payload, expiresIn = "15s") {
+  createSessionToken(payload, expiresIn = "40s") {
     return jwt.sign(payload, env.JWT_SECRET, { expiresIn });
   },
 
@@ -95,12 +95,12 @@ export const TokenService = {
   },
 
   async rotateSessionToken(userId) {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).lean();
     if (!user || user.status === "inactive") {
       return null;
     }
     const payload = { sub: user._id, role: user.role };
-    const newSessionToken = TokenService.createSessionToken(payload);
-    return { newSessionToken, payload };
+    const token = TokenService.createSessionToken(payload);
+    return { token, payload };
   },
 };

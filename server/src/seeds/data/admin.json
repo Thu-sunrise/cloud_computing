@@ -1,0 +1,79 @@
+[
+  {
+    "mail": "trung4n@example.com",
+    "name": { "firstName": "An", "lastName": "Nguyen Trung" },
+    "password": "111",
+    "status": "active",
+    "role": "admin"
+  },
+  {
+    "mail": "admin_system@example.com",
+    "name": { "firstName": "System", "lastName": "Admin" },
+    "password": "SystemAdmin@123",
+    "status": "active",
+    "role": "admin"
+  },
+  {
+    "mail": "admin_finance@example.com",
+    "name": { "firstName": "Tien", "lastName": "Nguyen" },
+    "password": "FinancePass#456",
+    "status": "active",
+    "role": "admin"
+  },
+  {
+    "mail": "admin_hr@example.com",
+    "name": { "firstName": "Hanh", "lastName": "Le" },
+    "password": "HRManager!789",
+    "status": "active",
+    "role": "admin"
+  },
+  {
+    "mail": "admin_support@example.com",
+    "name": { "firstName": "Minh", "lastName": "Tran" },
+    "password": "SupportRocKs123",
+    "status": "active",
+    "role": "admin"
+  },
+  {
+    "mail": "admin_developer@example.com",
+    "name": { "firstName": "Hung", "lastName": "Pham" },
+    "password": "DevOps@Pass",
+    "status": "active",
+    "role": "admin"
+  },
+  {
+    "mail": "admin_marketing@example.com",
+    "name": { "firstName": "Mai", "lastName": "Do" },
+    "password": "Mark3ting!Pass",
+    "status": "active",
+    "role": "admin"
+  },
+  {
+    "mail": "admin_sales@example.com",
+    "name": { "firstName": "Kiet", "lastName": "Vu" },
+    "password": "Sales@StrongPW",
+    "status": "active",
+    "role": "admin"
+  },
+  {
+    "mail": "admin_security@example.com",
+    "name": { "firstName": "Son", "lastName": "Hoang" },
+    "password": "S3cUr!tyAdmin",
+    "status": "active",
+    "role": "admin"
+  },
+  {
+    "mail": "admin_content@example.com",
+    "name": { "firstName": "Thao", "lastName": "Duong" },
+    "password": "ContentM@nager",
+    "status": "active",
+    "role": "admin"
+  },
+  {
+    "mail": "admin_tester@example.com",
+    "name": { "firstName": "Quang", "lastName": "Cao" },
+    "password": "T3stAcc0unt!",
+    "status": "active",
+    "role": "admin"
+  }
+]
