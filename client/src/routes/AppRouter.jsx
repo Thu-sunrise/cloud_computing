@@ -59,7 +59,7 @@ export default function AppRouter() {
         <Route path="/verify-otp" element={<OtpPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/home/cart" element={<CartPage />} />
-        <Route path="/view-product" element={<ViewProductPage />} />
+        <Route path="/product/:id" element={<ViewProductPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/home/cart/checkout" element={<CheckOutPage />} />
         <Route path="/my-listing" element={<MyListing />} />
