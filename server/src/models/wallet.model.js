@@ -4,7 +4,7 @@ const walletSchema = new moongoose.Schema(
   {
     userId: {
       type: moongoose.Schema.Types.ObjectId,
-      ref: "Customer",
+      ref: "User",
       required: true,
       unique: true,
     },

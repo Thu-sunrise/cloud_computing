@@ -20,7 +20,7 @@ export const sendOTP = asyncHandler(async (req, res) => {
 
   const key = `otp:${token}`;
   let value;
-  const isExisted = await UserService.getUserByMail(mail);
+  const isExisted = await UserService.getByMail(mail);
   if (type === "register") {
     const { password } = req.body;
 
