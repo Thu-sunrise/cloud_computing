@@ -41,3 +41,13 @@ export const getTopSellingCustomers = asyncHandler(async (req, res) => {
     data: result,
   });
 });
+
+export const getMe = asyncHandler(async (req, res) => {
+  const id = req.user.sub;
+  console.log(id);
+  const result = await CustomerService.getById(id);
+  return res.status(200).json({
+    message: "Get profile successfully",
+    data: result,
+  });
+});

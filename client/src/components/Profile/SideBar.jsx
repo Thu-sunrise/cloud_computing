@@ -1,11 +1,13 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { User, List, Heart, Bell, LogOut, CreditCard } from "lucide-react";
-import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
-const Sidebar = ({ onLogout }) => {
+const Sidebar = () => {
 
   const location = useLocation();
+
+  const navigate = useNavigate();
 
   const menuItems = [
     {
@@ -47,6 +49,7 @@ const Sidebar = ({ onLogout }) => {
           <li key={item.id}>
             <NavLink
               to={item.path}
+              onClick={() => window.scrollTo(0, 0)}
               className={({ isActive }) => {
                 const isActiveLink = isActive ||
                   (item.activeIncludes && item.activeIncludes.some(path => location.pathname.startsWith(path)));
@@ -70,7 +73,7 @@ const Sidebar = ({ onLogout }) => {
       <ul>
         <li>
           <button
-            onClick={onLogout}
+            onClick={()=>{localStorage.removeItem("accessToken"); navigate("/login");}}
             className="w-full flex  items-center gap-3 text-xl text-red-600 hover:bg-red-50 pl-5 rounded-md transition"
           >
             <LogOut size={20} /> Log out
@@ -80,9 +83,5 @@ const Sidebar = ({ onLogout }) => {
     </aside>
   );
 };
-
-Sidebar.propTypes = {
-  onLogout: PropTypes.func.isRequired,
-}
 
 export default Sidebar;

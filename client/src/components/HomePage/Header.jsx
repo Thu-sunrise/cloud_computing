@@ -1,11 +1,10 @@
 import {React, useState} from "react";
-import { ShoppingCart, MessageCircle, Bell, Search, Menu } from "lucide-react";
+import {User, ShoppingCart, MessageCircle, Bell, Search, Menu } from "lucide-react";
 import logo from "../../assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";//link to href
 
 function Header() {
   const navigate = useNavigate();
-  const User = "https://i.pravatar.cc/200";
   const [searchValue, setSearchValue] = useState("");
 
   const handleSearch = () => {
@@ -69,7 +68,7 @@ function Header() {
         <div className="flex items-center gap-6 p-10">
           {navItems.map((item, idx) => {
             const Icon = item.icon;
-            if (item.path !== "/profile")
+            // if (item.path !== "/profile")
               return (
               <Link
                 key={idx}
@@ -81,22 +80,22 @@ function Header() {
                 <Icon size={25} />
               </Link>
             );
-            else return (
-              <Link
-                key={idx}
-                to={item.path}
-                className="group relative flex items-center justify-center w-12 h-12 bg-white rounded-full
-             shadow-sm border border-gray-100 overflow-hidden
-             hover:shadow-md hover:scale-110 active:scale-95
-             transition-all duration-200 ease-out"
-              >
-                {/* Image needs sizing constraints to stay inside the circle */}
-                <img
-                  src={item.icon}
-                  alt="nav-icon"
-                  className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity"
-                />
-              </Link>);
+            // else return (
+            //   <Link
+            //     key={idx}
+            //     to={item.path}
+            //     className="group relative flex items-center justify-center w-12 h-12 bg-white rounded-full
+            //  shadow-sm border border-gray-100 overflow-hidden
+            //  hover:shadow-md hover:scale-110 active:scale-95
+            //  transition-all duration-200 ease-out"
+            //   >
+            //     {/* Image needs sizing constraints to stay inside the circle */}
+            //     <img
+            //       src={item.icon}
+            //       alt="nav-icon"
+            //       className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+            //     />
+            //   </Link>);
           })}
         </div>
       </div>

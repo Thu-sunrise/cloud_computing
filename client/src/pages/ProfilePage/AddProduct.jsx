@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import Header from "@/components/HomePage/Header.jsx";
 import ProfileHeader from "@/components/Profile/ProfileHeader.jsx";
-import mockProfileData from "@/pages/ProfilePage/ProfileData.js";
 import SideBar from "@/components/Profile/SideBar.jsx";
-import mockProducts from "@/pages/ProfilePage/mockProducts.js";
 import { useNavigate } from "react-router-dom";
 import Footer from "@/components/HomePage/Footer.jsx";
-import InfoApp from "@/components/HomePage/InfoApp.jsx";
+import axios from "axios";
 
 export default function AddProduct() {
   const navigate = useNavigate();
+
+  // Form State
   const [productName, setProductName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [discountPrice, setDiscountPrice] = useState("");
-  const [weight, setWeight] = useState("");
-  const [country, setCountry] = useState("");
-  const [taxEnabled, setTaxEnabled] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
+
+  // File State
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState([]);
 
   const categories = [
     "Mobile Devices",
@@ -35,96 +35,97 @@ export default function AddProduct() {
   ];
 
   const handleCategoryToggle = (category) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
-    );
+    setSelectedCategories([category]);
+
+
   };
 
-  const handleSave = () => {
-    if (!productName || !description || !price || !weight || !country) {
-      alert("Please fill in all required fields");
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const files = Array.from(e.target.files);
+      setSelectedFiles((prev) => [...prev, ...files]);
+      const newPreviews = files.map(file => URL.createObjectURL(file));
+      setPreviewUrls((prev) => [...prev, ...newPreviews]);
+    }
+  };
+
+  const handleSave = async () => {
+    // 1. Validation
+    if (!productName || !description || !price || selectedCategories.length === 0) {
+      alert("Please fill in: Name, Description, Price and one Category");
       return;
     }
-    const dateOptions = { month: "short", day: "numeric", year: "numeric" };
-    const today = new Date().toLocaleDateString("en-US", dateOptions);
 
-    const newProduct = {
-      id: mockProducts.length + 1,
-      title: productName,
-      points: Number(price),
-      image: "https://api.builder.io/api/v1/image/assets/TEMP/placeholder?width=336",
-      shippingVia: "Standard Shipping",
-      trackingId: `TRK-${Math.floor(Math.random() * 1000000)}`,
-      status: "Processing",
-      eta: "Calculating...",
-      lastUpdate: `(${today}) Order Created`,
-      state: "new",
+    try {
 
-      details: {
-        description,
-        discountPrice,
-        weight,
-        country,
-        taxEnabled,
-        categories: selectedCategories,
-      },
-    };
+      const formData = new FormData();
+      formData.append("name", productName);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("status", "active");
 
-    mockProducts.push(newProduct);
+      formData.append("categoryName", selectedCategories[0]);
 
-    console.log("New Product Added:", newProduct);
-    console.log("Updated List:", mockProducts);
+      selectedFiles.forEach((file) => {
+        formData.append("file", file);
+      });
 
-    navigate("/my-listing");
+      await axios.post("/api/product/", formData);
+
+      alert("Product created successfully!");
+      navigate("/my-listing");
+
+    } catch (error) {
+      console.error("Error creating product:", error);
+      alert(error.response?.data?.message || "Failed to create product");
+    }
   };
 
   const handleCancel = () => {
-    console.log("Cancelled");
-    return <div>Cancelled</div>;
+    navigate("/my-listing");
   };
-
-  window.scrollTo(0, 0);
 
   return (
     <div className="bg-[#F3F7ED] min-w-full">
       <Header />
       <div className="min-h-screen min-w-full bg-[#F3F7ED]">
-        <ProfileHeader profileData={mockProfileData} />
+        <ProfileHeader />
+
         <div className="flex flex-col md:flex-row">
-          <SideBar onLogout={() => {}} />
-          <div className="max-w-[1440px] min-w-screen pt-10 flex-row mx-auto mb-8">
+          <SideBar/>
+
+          <div className="max-w-[1440px] w-full pt-10 px-4 md:px-10 flex flex-col mx-auto mb-8">
             <h1 className="font-roboto text-2xl font-bold text-gray-900 mb-8">Add Product</h1>
 
-            <div className="flex gap-8">
+            <div className="flex flex-col lg:flex-row gap-8">
               <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200">
-                <div className="p-7">
-                  <h2 className="font-roboto text-base font-bold text-gray-900 mb-6">
-                    Information
-                  </h2>
 
+                {/* Information Section */}
+                <div className="p-7">
+                  <h2 className="font-roboto text-base font-bold text-gray-900 mb-6">Information</h2>
                   <div className="space-y-6">
                     <div>
                       <span className="block font-roboto text-sm text-gray-600 mb-2">
-                        Product Name
+                        Product Name <span className="text-red-500">*</span>
                       </span>
                       <input
                         type="text"
-                        placeholder="Summer T-Shirt"
+                        placeholder="e.g. MacBook Air M2"
                         value={productName}
                         onChange={(e) => setProductName(e.target.value)}
-                        className="w-full h-10 px-4 rounded border border-gray-300 font-inter text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green-light"
+                        className="w-full h-10 px-4 rounded border border-gray-300 focus:ring-2 focus:ring-green-500 outline-none"
                       />
                     </div>
 
                     <div>
                       <span className="block font-roboto text-sm text-gray-600 mb-2">
-                        Product Description
+                        Product Description <span className="text-red-500">*</span>
                       </span>
                       <textarea
-                        placeholder="Product description"
+                        placeholder="Describe your product..."
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        className="w-full h-24 px-4 py-3 rounded border border-gray-300 font-inter text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green-light resize-none"
+                        className="w-full h-24 px-4 py-3 rounded border border-gray-300 focus:ring-2 focus:ring-green-500 outline-none resize-none"
                       />
                     </div>
                   </div>
@@ -132,76 +133,93 @@ export default function AddProduct() {
 
                 <div className="border-t border-gray-200" />
 
+                {/* Images Section */}
                 <div className="p-7">
                   <h2 className="font-roboto text-base font-bold text-gray-900 mb-6">Images</h2>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 flex flex-col items-center justify-center bg-gray-50">
+                    <input
+                      type="file"
+                      id="file-upload"
+                      multiple
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                    <label
+                      htmlFor="file-upload"
+                      className="cursor-pointer bg-white px-6 py-2 border rounded-md text-blue-600 hover:bg-gray-50 mb-2"
+                    >
+                      Choose Images
+                    </label>
+                    <p className="text-xs text-gray-500">PNG, JPG, JPEG up to 5MB</p>
 
-                  <div className="border-2 border-dashed border-gray-400 rounded h-[168px] flex items-center justify-center">
-                    <div className="text-center">
-                      <button className="px-6 py-2 rounded border border-gray-300 bg-white text-blue-600 font-inter text-base hover:bg-gray-50 transition-colors mb-3">
-                        Add File
-                      </button>
-                      <p className="font-inter text-sm text-gray-600">Or drag and drop files</p>
-                    </div>
+                    {previewUrls.length > 0 && (
+                      <div className="flex gap-3 mt-6 flex-wrap">
+                        {previewUrls.map((url, idx) => (
+                          <div key={idx} className="relative group">
+                            <img src={url} alt="preview" className="h-20 w-20 object-cover rounded-lg border-2 border-white shadow-md" />
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 <div className="border-t border-gray-200" />
 
+                {/* Price Section */}
                 <div className="p-7">
-                  <h2 className="font-inter text-base font-bold text-gray-900 mb-6">Price</h2>
-
-                  <div className="grid grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <span className="block font-inter text-sm text-gray-600 mb-2">
-                        Product Price
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="Enter price"
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                        className="w-full h-10 px-4 rounded border border-gray-300 font-inter text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green-light"
-                      />
-                    </div>
+                  <h2 className="font-inter text-base font-bold text-gray-900 mb-6">Pricing</h2>
+                  <div className="max-w-xs">
+                    <span className="block font-inter text-sm text-gray-600 mb-2">
+                      Price ($) <span className="text-red-500">*</span>
+                    </span>
+                    <input
+                      type="number"
+                      placeholder="0.00"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                      className="w-full h-10 px-4 rounded border border-gray-300 focus:ring-2 focus:ring-green-500 outline-none"
+                    />
                   </div>
                 </div>
-
-                <div className="border-t border-gray-200" />
               </div>
 
-              {/* Categories Sidebar */}
-              <div className="w-[350px]">
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-7 mb-6">
-                  <h2 className="font-inter text-base font-bold text-gray-900 mb-6">Categories</h2>
-
-                  <div className="space-y-3">
+              {/* Sidebar Right */}
+              <div className="lg:w-[350px] flex flex-col gap-6">
+                {/* Categories */}
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-7">
+                  <h2 className="font-inter text-base font-bold text-gray-900 mb-6">Category <span className="text-red-500">*</span></h2>
+                  <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
                     {categories.map((category) => (
-                      <span key={category} className="flex items-center gap-3 cursor-pointer">
+                      <label key={category} className="flex items-center gap-3 cursor-pointer group">
                         <input
                           type="checkbox"
                           checked={selectedCategories.includes(category)}
                           onChange={() => handleCategoryToggle(category)}
-                          className="w-5 h-5 rounded border-gray-300 text-brand-green-light focus:ring-brand-green-light"
+                          className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
                         />
-                        <span className="font-inter text-base text-gray-900">{category}</span>
-                      </span>
+                        <span className="text-sm text-gray-700 group-hover:text-green-600 transition-colors">
+                          {category}
+                        </span>
+                      </label>
                     ))}
                   </div>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-3 flex-row ">
+                <div className="flex gap-3">
                   <button
                     onClick={handleSave}
-                    className="flex-1 h-10 rounded border border-gray-300 bg-white text-brand-green-light font-inter text-base hover:bg-gray-50 transition-colors"
+                    className="flex-1 h-12 rounded-lg bg-[#8DCE76] text-white font-bold hover:bg-[#7bc063] transition-all shadow-md"
                   >
-                    Save
+                    Publish Product
                   </button>
                   <button
                     onClick={handleCancel}
-                    className="flex-1 h-10 rounded border border-gray-300 bg-white text-brand-green-light font-inter text-base hover:bg-gray-50 transition-colors"
+                    className="flex-1 h-12 rounded-lg bg-white border border-gray-300 text-gray-700 font-bold hover:bg-gray-50 transition-all"
                   >
-                    Cancel
+                    Discard
                   </button>
                 </div>
               </div>
@@ -209,7 +227,6 @@ export default function AddProduct() {
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );

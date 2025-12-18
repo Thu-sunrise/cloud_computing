@@ -35,11 +35,12 @@ function TitleUpdater() {
       "/view-product": "View Product | SecondHandLand",
       "/home/cart": "Cart | SecondHandLand",
       "/checkout": "CheckOutPage | SecondHandLand",
-      profile: "Profile | SecondHandLand",
+      "/profile": "Profile | SecondHandLand",
       "/my-listing": "My Listing | SecondHandLand",
       "/my-listing/add-product": "Add Product | SecondHandLand",
       "/notfound": "Page Not Found | SecondHandLand",
       "/home/result": "Search Result | SecondHandLand",
+      "/orders": "Orders | SecondHandLand",
     };
 
     document.title = pathTitleMap[location.pathname] || "SecondHandLand";

@@ -50,14 +50,6 @@ export default function CartPage() {
     },
   ]);
 
-  // const [recommendations] = useState([
-  //   { id: 1, name: "Hair Comb", price: 4, image: "https://api.builder.io/api/v1/image/assets/TEMP/8c62af914b77dc38e63131c4f7f2fa6274f0ae05?width=510" },
-  //   { id: 2, name: "Plastic Basket", price: 3, image: "https://api.builder.io/api/v1/image/assets/TEMP/e6fe2aaf95020bfdc57277274f789cba64fdf0e4?width=510" },
-  //   { id: 3, name: "Mechanical Keyboard.", price: 12, image: "https://api.builder.io/api/v1/image/assets/TEMP/9e1695e076f1ba74f1557ae9abd86e8151dbac9b?width=510" },
-  //   { id: 4, name: "Old Teddy Bear", price: 7, image: "https://api.builder.io/api/v1/image/assets/TEMP/d8fde9c2acd5d9330cfd44bbb710d87ff0889ef7?width=510" },
-  //   { id: 5, name: "Key Board", price: 4, image: "https://api.builder.io/api/v1/image/assets/TEMP/c641d842f26ff9e38fd5b886f1c804a68abad349?width=304" },
-  // ]);
-
   const removeItem = (id) => {
     setCartItems(prev => prev.filter((item) => item.id !== id));
   };
