@@ -176,12 +176,19 @@ export const getListProducts = asyncHandler(async (req, res) => {
   const totalProducts = await ProductService.countTotalProduct(filter);
   // Fetch products with pagination and sorting
   const pagingProduct = await ProductService.pagingTotalProduct(filter, sortOrder, skip, limit);
+  // Generate signed URL for the product image
+  const result = await Promise.all(
+    pagingProduct.map(async (product) => ({
+      ...product,
+      imagePublicId: CloudinaryService.generateSignedUrl(product.imagePublicId),
+    }))
+  );
 
   return res.status(200).json({
     page,
     limit,
     totalProducts,
     totalPages: Math.ceil(totalProducts / limit),
-    data: pagingProduct,
+    data: result,
   });
 });

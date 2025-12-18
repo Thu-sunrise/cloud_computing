@@ -33,10 +33,10 @@ export default function ProductCard({ image, title, address, points }) {
             <span className="text-sm font-medium text-gray-600">points</span>
           </div>
           {/* ADDRESS */}
-          <div className="flex items-center gap-1 text-sm text-gray-600 min-w-0">
+          {/* <div className="flex items-center gap-1 text-sm text-gray-600 min-w-0">
             <MapPin size={14} className="text-gray-500 shrink-0" />
             <span className="truncate">{address}</span>
-          </div>
+          </div> */}
 
           {/* POINTS */}
         </div>
