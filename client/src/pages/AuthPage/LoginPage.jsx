@@ -8,7 +8,6 @@ import { CheckCircle, XCircle } from "lucide-react";
 const LoginPage = () => {
   const navigate = useNavigate();
 
-  // Form state
   const [form, setForm] = useState({
     mail: "",
     password: "",
@@ -16,17 +15,27 @@ const LoginPage = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [apiError, setApiError] = useState(""); // Hiển thị lỗi login
-  const [success, setSuccess] = useState(""); // Hiển thị login thành công
+  const [apiError, setApiError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Load saved mail if rememberMe
+  // ========================
+  // LOAD REMEMBER EMAIL
+  // ========================
   useEffect(() => {
     const savedMail = localStorage.getItem("savedMail");
-    if (savedMail) setForm((prev) => ({ ...prev, mail: savedMail, rememberMe: true }));
+    if (savedMail) {
+      setForm((prev) => ({
+        ...prev,
+        mail: savedMail,
+        rememberMe: true,
+      }));
+    }
   }, []);
 
-  // Validation logic
+  // ========================
+  // VALIDATE FORM
+  // ========================
   const validate = (values) => {
     const errs = {};
     if (!values.mail) {
@@ -34,14 +43,15 @@ const LoginPage = () => {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.mail)) {
       errs.mail = "Email is invalid";
     }
-
     if (!values.password) {
       errs.password = "Password is required";
     }
     return errs;
   };
 
-  // Handle input change
+  // ========================
+  // HANDLE INPUT CHANGE
+  // ========================
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
     const nextForm = {
@@ -52,7 +62,9 @@ const LoginPage = () => {
     setErrors(validate(nextForm));
   };
 
-  // Handle submit
+  // ========================
+  // SUBMIT LOGIN
+  // ========================
   const handleSubmit = async (e) => {
     e.preventDefault();
     setApiError("");
@@ -63,9 +75,27 @@ const LoginPage = () => {
     if (Object.keys(validationErrors).length > 0) return;
 
     setLoading(true);
+
     try {
       const res = await authApi.login(form.mail, form.password);
 
+      // Backend trả: { id, role }
+      const user = res.data?.data || res.data;
+
+      if (!user || !user.role) {
+        throw new Error("User role not found");
+      }
+
+      // Lưu user vào localStorage
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: user.id,
+          role: user.role,
+        })
+      );
+
+      // Remember email
       if (form.rememberMe) {
         localStorage.setItem("savedMail", form.mail);
       } else {
@@ -73,7 +103,15 @@ const LoginPage = () => {
       }
 
       setSuccess("🎉 Login successful! Redirecting...");
-      setTimeout(() => navigate("/home"), 1500);
+
+      // Redirect theo role
+      setTimeout(() => {
+        if (user.role === "admin") {
+          navigate("/dashboard");
+        } else {
+          navigate("/home");
+        }
+      }, 800);
     } catch (err) {
       console.error("Login failed:", err);
       const message = err.response?.data?.message || err.message || "Login failed";
@@ -87,11 +125,7 @@ const LoginPage = () => {
     <AuthLayout title="Login">
       <p className="text-gray-600 mb-6 text-center text-base">Please enter your login details</p>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-5 w-full max-w-md mx-auto animate-fadeIn"
-      >
-        {/* ERROR BOX */}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full max-w-md mx-auto">
         {apiError && (
           <div className="flex items-center gap-3 bg-red-100 text-red-800 border border-red-300 rounded-lg px-4 py-2">
             <XCircle size={20} className="text-red-600" />
@@ -99,7 +133,6 @@ const LoginPage = () => {
           </div>
         )}
 
-        {/* SUCCESS BOX */}
         {success && (
           <div className="flex items-center gap-3 bg-green-100 text-green-800 border border-green-300 rounded-lg px-4 py-2">
             <CheckCircle size={20} className="text-green-600" />
@@ -123,6 +156,7 @@ const LoginPage = () => {
           value={form.password}
           onChange={handleChange}
           error={errors.password}
+          autoComplete="current-password"
         />
 
         <div className="flex justify-between items-center text-sm flex-wrap gap-2 text-[#4b8063]">
@@ -140,15 +174,12 @@ const LoginPage = () => {
           <a href="/forgot-password" className="font-semibold hover:underline">
             Forgot Password?
           </a>
-          {/* <a href="/change-password" className="font-semibold hover:underline">
-            Change Password?
-          </a> */}
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="bg-[#7fa88d] hover:bg-[#6b9478] text-white font-semibold py-3 rounded-lg w-full text-lg transition-colors disabled:opacity-60"
+          className="bg-[#7fa88d] hover:bg-[#6b9478] text-white font-semibold py-3 rounded-lg w-full text-lg disabled:opacity-60"
         >
           {loading ? "Logging in..." : "Login"}
         </button>

@@ -33,7 +33,7 @@ function TitleUpdater() {
       "/change-password": "Change Password | SecondHandLand",
       "/home": "Home | SecondHandLand",
       "/view-product": "View Product | SecondHandLand",
-      "/home/cart": "Cart | SecondHandLand",
+      "/cart": "Cart | SecondHandLand",
       "/checkout": "CheckOutPage | SecondHandLand",
       "/profile": "Profile | SecondHandLand",
       "/my-listing": "My Listing | SecondHandLand",
@@ -62,7 +62,7 @@ export default function AppRouter() {
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/verify-otp" element={<OtpPage />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/home/cart" element={<CartPage />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/product/:id" element={<ViewProductPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/checkout" element={<CheckOutPage />} />

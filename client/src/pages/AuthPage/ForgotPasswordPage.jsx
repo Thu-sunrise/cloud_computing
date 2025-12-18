@@ -30,11 +30,10 @@ const ForgotPasswordPage = () => {
 
     setLoading(true);
     try {
-      // Gọi API gửi OTP, không cần check mail ở client
-      const res = await authApi.sendOtp("forgot-password", mail);
+      // ✅ Gửi object { mail } đúng backend
+      const res = await authApi.sendOtp("forgot-password", { mail });
       console.log("OTP sent response:", res.data);
 
-      // Lấy token trả về từ server và chuyển sang trang Verify OTP
       const token = res.data.token;
       navigate("/verify-otp", { state: { mail, token } });
     } catch (err) {

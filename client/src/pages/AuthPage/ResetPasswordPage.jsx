@@ -24,7 +24,6 @@ const ResetPasswordPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setError("");
     setSuccess("");
 
@@ -42,7 +41,6 @@ const ResetPasswordPage = () => {
     try {
       const res = await authApi.forgotPassword(mail, newPassword);
 
-      // ✅ Kiểm tra đúng theo response server
       if (res.status >= 200 && res.status < 300) {
         setSuccess("🎉 Password updated successfully! Redirecting to login...");
         setTimeout(() => navigate("/login"), 2000);
@@ -60,7 +58,6 @@ const ResetPasswordPage = () => {
   return (
     <AuthLayout title="Reset Password">
       <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto">
-        {/* ERROR BOX */}
         {error && (
           <div className="flex items-center gap-3 bg-red-100 text-red-800 border border-red-300 rounded-lg px-4 py-2">
             <XCircle size={20} className="text-red-600" />
@@ -68,7 +65,6 @@ const ResetPasswordPage = () => {
           </div>
         )}
 
-        {/* SUCCESS BOX */}
         {success && (
           <div className="flex items-center gap-3 bg-green-100 text-green-800 border border-green-300 rounded-lg px-4 py-2">
             <CheckCircle size={20} className="text-green-600" />
@@ -76,7 +72,6 @@ const ResetPasswordPage = () => {
           </div>
         )}
 
-        {/* FORM INPUTS */}
         <FloatingInput id="mail" label="Email" type="email" value={mail} disabled />
 
         <FloatingInput
@@ -97,7 +92,6 @@ const ResetPasswordPage = () => {
           autoComplete="new-password"
         />
 
-        {/* SUBMIT BUTTON */}
         <button
           type="submit"
           disabled={loading}

@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { ChevronDown, Plus, Bookmark } from 'lucide-react';
+import React, { useState } from "react";
+import { ChevronDown, Plus, Bookmark } from "lucide-react";
 import PropTypes from "prop-types";
 
 export default function CheckoutForm({ onSubmit }) {
   const [formData, setFormData] = useState({
-    fullName: 'The blackest nigga',
-    phone: '000000000',
-    district: 'Nigga Hill',
-    specificAddress: 'Left Right Right Left',
-    addressType: 'Tree' // Default value will change later ~~
+    fullName: "The blackest nigga",
+    phone: "000000000",
+    district: "Nigga Hill",
+    specificAddress: "Left Right Right Left",
+    addressType: "Tree", // Default value will change later ~~
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   // const handleTypeChange = (type) => {
@@ -33,7 +33,9 @@ export default function CheckoutForm({ onSubmit }) {
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
-            <label htmlFor="fullName" className="text-sm font-medium text-slate-800 mb-1">Full name</label>
+            <label htmlFor="fullName" className="text-sm font-medium text-slate-800 mb-1">
+              Full name
+            </label>
             <input
               id="fullName"
               name="fullName"
@@ -45,7 +47,9 @@ export default function CheckoutForm({ onSubmit }) {
           </div>
 
           <div className="flex flex-col">
-            <label htmlFor="phone" className="text-sm font-medium text-slate-800 mb-1">Phone number</label>
+            <label htmlFor="phone" className="text-sm font-medium text-slate-800 mb-1">
+              Phone number
+            </label>
             <input
               id="phone"
               name="phone"
@@ -58,7 +62,9 @@ export default function CheckoutForm({ onSubmit }) {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="district" className="text-sm font-medium text-slate-800 mb-1">District</label>
+          <label htmlFor="district" className="text-sm font-medium text-slate-800 mb-1">
+            District
+          </label>
           <div className="relative">
             <select
               id="district"
@@ -67,7 +73,9 @@ export default function CheckoutForm({ onSubmit }) {
               onChange={handleChange}
               className="w-full appearance-none bg-gray-200 border border-slate-400 rounded-[4px] px-3 py-2.5 text-slate-500 focus:outline-none cursor-pointer transition-colors"
             >
-              <option value="" disabled>Select District in Ho Chi Minh City...</option>
+              <option value="" disabled>
+                Select District in Ho Chi Minh City...
+              </option>
               <option value="d1">District 1</option>
               <option value="d2">District 2</option>
             </select>
@@ -76,7 +84,9 @@ export default function CheckoutForm({ onSubmit }) {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="specificAddress" className="text-sm font-medium text-slate-800 mb-1">Specific Address</label>
+          <label htmlFor="specificAddress" className="text-sm font-medium text-slate-800 mb-1">
+            Specific Address
+          </label>
           <input
             id="specificAddress"
             name="specificAddress"

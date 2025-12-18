@@ -2,13 +2,19 @@ import { Product } from "../models/product.model.js";
 import { AppError } from "../utils/AppError.js";
 import { User } from "../models/user.model.js";
 import { Cart } from "../models/cart.model.js";
+import { CloudinaryService } from "./cloudinary.service.js";
 
 export const ProductService = {
   async getProductById(id) {
-    const product = await Product.findById(id).populate("createdBy", "name _id");
+    const product = await Product.findById(id)
+      .populate("createdBy", "name _id")
+      .populate("categoryId", "name");
     if (!product) {
       throw new AppError("Product not found", 404);
     }
+    let urlCheck = product.imagePublicId;
+    if (urlCheck.startsWith("http") === false)
+      product.imagePublicId = CloudinaryService.generateSignedUrl(product.imagePublicId);
     return product;
   },
 
@@ -68,6 +74,14 @@ export const ProductService = {
   },
 
   async pagingTotalProduct(query, sortOrder, skip, limit) {
-    return Product.find(query).sort({ price: sortOrder }).skip(skip).limit(limit);
+    const products = await Product.find({
+      ...query,
+      status: "active",
+    })
+      .sort({ price: sortOrder })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+    return products;
   },
 };

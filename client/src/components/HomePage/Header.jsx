@@ -20,7 +20,7 @@ function Header() {
   };
 
   const navItems = [
-    { icon: ShoppingCart, path: "/home/cart" },
+    { icon: ShoppingCart, path: "/cart" },
     { icon: MessageCircle, path: "/NotFound" },
     { icon: Bell, path: "/NotFound" },
     { icon: User, path: "/profile" },

@@ -6,6 +6,7 @@ import { authApi } from "@/api/authApi";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     email: "",
@@ -13,10 +14,11 @@ const RegisterPage = () => {
     confirmPassword: "",
     otp: "",
   });
+
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,24 +32,36 @@ const RegisterPage = () => {
     setError("");
     setSuccessMessage("");
 
-    // STEP 1: Gửi OTP
+    /* ======================
+       STEP 1: SEND OTP
+    ====================== */
     if (step === 1) {
       if (!form.email || !form.password || !form.confirmPassword) {
-        setError("Please fill in all fields!");
+        setError("Please fill in all fields");
         return;
       }
+
       if (form.password !== form.confirmPassword) {
-        setError("Passwords do not match!");
+        setError("Passwords do not match");
         return;
       }
 
       setLoading(true);
       try {
-        const res = await authApi.sendOtp("register", form.email, form.password);
+        // Send OTP for register
+        const payload = { mail: form.email, password: form.password };
+        const res = await authApi.sendOtp("register", payload);
+
+        if (!res.data.token) {
+          setError("Failed to get OTP token");
+          return;
+        }
+
         setToken(res.data.token);
         setStep(2);
-        setSuccessMessage("OTP sent to your email!");
+        setSuccessMessage("OTP sent to your email");
       } catch (err) {
+        console.error("sendOtp ERROR:", err.response?.data || err);
         setError(err.response?.data?.message || "Failed to send OTP");
       } finally {
         setLoading(false);
@@ -55,9 +69,16 @@ const RegisterPage = () => {
       return;
     }
 
-    // STEP 2: Verify OTP + tạo user
-    if (!form.otp || !token) {
+    /* ======================
+       STEP 2: VERIFY OTP + REGISTER
+    ====================== */
+    if (!form.otp) {
       setError("OTP is required");
+      return;
+    }
+
+    if (!token) {
+      setError("Token missing, please request OTP again");
       return;
     }
 
@@ -66,26 +87,14 @@ const RegisterPage = () => {
       // Verify OTP
       await authApi.verifyOtp("register", token, form.otp);
 
-      // Tạo user
-      await authApi.register(token, {
-        mail: form.email,
-        password: form.password,
-        role: "customer",
-        status: "active",
-      });
+      // Register
+      const registerRes = await authApi.register(token);
 
       setSuccessMessage("🎉 Registration successful! Redirecting to login...");
-
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000);
-
-      // Reset form
-      setStep(1);
-      setForm({ email: "", password: "", confirmPassword: "", otp: "" });
-      setToken(null);
+      setTimeout(() => navigate("/login"), 3000);
     } catch (err) {
-      setError(err.response?.data?.message || "OTP verification or registration failed");
+      console.error("STEP 2 ERROR:", err.response?.data || err);
+      setError(err.response?.data?.message || "Register failed");
     } finally {
       setLoading(false);
     }
@@ -93,14 +102,15 @@ const RegisterPage = () => {
 
   return (
     <AuthLayout title="Create Account">
-      <form onSubmit={handleSubmit} className="space-y-5 max-w-md mx-auto relative">
-        {/* Thông báo lỗi */}
+      <form onSubmit={handleSubmit} className="space-y-5 max-w-md mx-auto">
+        {/* Error */}
         {error && (
           <div className="bg-red-100 text-red-800 border border-red-300 rounded-lg px-4 py-2 text-center">
             {error}
           </div>
         )}
-        {/* Thông báo thành công */}
+
+        {/* Success */}
         {successMessage && (
           <div className="bg-green-100 text-green-800 border border-green-300 rounded-lg px-4 py-2 text-center">
             {successMessage}
@@ -116,7 +126,6 @@ const RegisterPage = () => {
               name="email"
               value={form.email}
               onChange={handleChange}
-              error={error}
             />
             <FloatingInput
               id="password"
@@ -125,7 +134,6 @@ const RegisterPage = () => {
               name="password"
               value={form.password}
               onChange={handleChange}
-              error={error}
               autoComplete="new-password"
             />
             <FloatingInput
@@ -135,7 +143,6 @@ const RegisterPage = () => {
               name="confirmPassword"
               value={form.confirmPassword}
               onChange={handleChange}
-              error={error}
               autoComplete="new-password"
             />
           </>
@@ -147,7 +154,6 @@ const RegisterPage = () => {
             name="otp"
             value={form.otp}
             onChange={handleChange}
-            error={error}
           />
         )}
 

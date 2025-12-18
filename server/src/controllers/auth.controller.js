@@ -20,7 +20,7 @@ export const sendOTP = asyncHandler(async (req, res) => {
 
   const key = `otp:${token}`;
   let value;
-  const isExisted = await UserService.getUserByMail(mail);
+  const isExisted = await UserService.getByMail(mail);
   if (type === "register") {
     const { password } = req.body;
 
@@ -37,7 +37,8 @@ export const sendOTP = asyncHandler(async (req, res) => {
     value = { mail, otpHashed };
   }
 
-  RedisService.set(key, value, env.OTP_EXPIRE_SEC);
+  await RedisService.set(key, value, env.OTP_EXPIRE_SEC);
+
   // Send OTP email
   await MailService.sendOtp(mail, otpRaw);
 
@@ -99,8 +100,13 @@ export const login = asyncHandler(async (req, res) => {
     sameSite: "strict",
     maxAge: 60 * 60 * 1000,
   });
-
-  res.status(200).json({ message: "Login successful" });
+  return res.status(200).json({
+    message: "Login successful",
+    data: {
+      id,
+      role,
+    },
+  });
 });
 
 export const changePassword = asyncHandler(async (req, res) => {

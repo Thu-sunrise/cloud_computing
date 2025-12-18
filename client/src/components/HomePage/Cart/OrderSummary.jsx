@@ -1,28 +1,25 @@
-import {Package, Truck, FileText, CreditCard } from "lucide-react";
+import React from "react";
+import { Package, Truck, FileText, CreditCard } from "lucide-react";
 import PropTypes from "prop-types";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-export default function OrderSummary({listPrice }) {
+export default function OrderSummary({ listPrice }) {
   const navigate = useNavigate();
 
   const handleCheckout = () => {
-    if (listPrice.length === 0) {
-      return;
-    }
-    navigate('/checkout', { state: { listItem: listPrice } });
+    if (listPrice.length === 0) return;
+    navigate("/checkout", { state: { listItem: listPrice } });
   };
+
   const totalPrice = listPrice.reduce((acc, curr) => acc + curr, 0);
   const itemCount = listPrice.length;
-
-  const shippingFee = itemCount > 0 ? 2 : 0; // tempted to use change later when have API :v
+  const shippingFee = itemCount > 0 ? 2 : 0;
   const grandTotal = totalPrice + shippingFee;
 
   return (
     <div className="bg-[#CFDDC6] mx-auto rounded-lg p-8">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="font-['Roboto'] font-bold text-xl text-black">
-          Order Summary
-        </h2>
+        <h2 className="font-['Roboto'] font-bold text-xl text-black">Order Summary</h2>
         <span className="text-gray-500 font-['Roboto']">{itemCount} items</span>
       </div>
 
@@ -32,9 +29,7 @@ export default function OrderSummary({listPrice }) {
             <Package className="w-6 h-6" />
             <span className="font-['Roboto'] text-lg">Item Total</span>
           </div>
-          <span className="font-['Roboto'] text-lg font-medium">
-            {totalPrice} Points
-          </span>
+          <span className="font-['Roboto'] text-lg font-medium">{totalPrice} Points</span>
         </div>
 
         <div className="flex justify-between">
@@ -42,9 +37,7 @@ export default function OrderSummary({listPrice }) {
             <Truck className="w-6 h-6" />
             <span className="font-['Roboto'] text-lg">Shipping Fee</span>
           </div>
-          <span className="font-['Roboto'] text-lg font-medium">
-            {shippingFee} Points
-          </span>
+          <span className="font-['Roboto'] text-lg font-medium">{shippingFee} Points</span>
         </div>
 
         <div className="flex items-center justify-between">
@@ -52,21 +45,20 @@ export default function OrderSummary({listPrice }) {
             <FileText className="w-6 h-6" />
             <span className="font-['Roboto'] text-lg">Subtotal</span>
           </div>
-          <span className="font-['Roboto'] text-lg font-medium">
-            {grandTotal} Points
-          </span>
+          <span className="font-['Roboto'] text-lg font-medium">{grandTotal} Points</span>
         </div>
       </div>
 
-      <button onClick={handleCheckout}
-              className={`w-full  p-4 flex items-center transition-colors group rounded-xl ${
-                listPrice.length === 0 ? 'bg-gray-500 text-gray-300 cursor-not-allowed' : 'bg-[#283645] hover:bg-[#1a242f]  text-white '
-              }`}
+      <button
+        onClick={handleCheckout}
+        className={`w-full p-4 flex items-center justify-center gap-3 transition-colors rounded-xl ${
+          listPrice.length === 0
+            ? "bg-gray-500 text-gray-300 cursor-not-allowed"
+            : "bg-[#283645] hover:bg-[#1a242f] text-white"
+        }`}
       >
-        <div className="flex items-center gap-3">
-          <CreditCard className="w-6 h-6" />
-          <span className="font-['Roboto'] text-lg font-medium">Checkout</span>
-        </div>
+        <CreditCard className="w-6 h-6" />
+        <span className="font-['Roboto'] text-lg font-medium">Checkout</span>
       </button>
     </div>
   );
