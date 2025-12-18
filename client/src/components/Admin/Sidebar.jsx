@@ -1,0 +1,51 @@
+import React from "react";
+import { LayoutDashboard, ShoppingCart, Package, Tags, Users, LogOut } from "lucide-react";
+import mockProfileData from "@/pages/ProfilePage/ProfileData.js";
+
+const MENU_ITEMS = [
+  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "orders", label: "Orders", icon: ShoppingCart },
+  { id: "products", label: "Products", icon: Package },
+  { id: "categories", label: "Categories", icon: Tags },
+  { id: "customers", label: "Customers", icon: Users },
+  { id: "logout", label: "Logout", icon: LogOut, danger: true },
+];
+
+export default function Sidebar({ activeTab, setActiveTab }) {
+  return (
+    <aside className="w-64 bg-[#283645] text-white p-6 hidden md:flex flex-col">
+      {/* Profile */}
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-lg font-bold">
+          {mockProfileData.fullName.charAt(0)}
+        </div>
+
+        <div className="leading-tight">
+          <p className="font-semibold">{mockProfileData.fullName}</p>
+          <p className="text-sm text-white/70">{mockProfileData.email}</p>
+        </div>
+      </div>
+
+      {/* Menu + Logout */}
+      <nav className="space-y-2">
+        {MENU_ITEMS.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition
+              ${
+                tab.danger
+                  ? "text-red-300 hover:bg-red-500/20"
+                  : activeTab === tab.id
+                    ? "bg-white/15 font-semibold"
+                    : "hover:bg-white/10"
+              }`}
+          >
+            <tab.icon size={18} />
+            {tab.label}
+          </button>
+        ))}
+      </nav>
+    </aside>
+  );
+}
