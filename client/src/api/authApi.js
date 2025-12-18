@@ -72,5 +72,12 @@ export const cartApi = {
   addToCart: (productId) => axiosClient.put(`/cart/${productId}`),
   removeOne: (productId) => axiosClient.delete(`/cart/${productId}`),
 };
+export const categoryApi = {
+  // Lấy tất cả categories
+  getListCategories: () => axiosClient.get("/category/list"),
+
+  // Lấy top-selling categories
+  getTopSellingCategories: () => axiosClient.get("/category/top-selling"),
+};
 
 export default axiosClient;

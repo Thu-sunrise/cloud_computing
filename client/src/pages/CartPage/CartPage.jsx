@@ -4,7 +4,7 @@ import Footer from "../../components/HomePage/Footer";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import OrderSummary from "../../components/HomePage/Cart/OrderSummary";
 import CartItem from "../../components/HomePage/Cart/CartItem";
-import { cartApi, productApi } from "../../api/authApi";
+import { cartApi } from "../../api/authApi";
 import { CartContext } from "../../context/CartContext";
 import { getCloudinaryImage } from "../../utils/cloudinary";
 
@@ -16,14 +16,12 @@ export default function CartPage() {
     setLoading(true);
     try {
       const res = await cartApi.getCart();
-
-      console.log("🛒 CART RESPONSE", res.data);
+      console.log("🛒 CART RESPONSE:", res.data);
 
       const products = Array.isArray(res.data.data?.products) ? res.data.data.products : [];
-
       console.log("📦 PRODUCTS RAW:", products);
 
-      const mappedItems = products.map((item) => {
+      const mappedItems = products.map((item, index) => {
         const product = item.id; // populated product
 
         if (!product || !product._id) {
@@ -31,12 +29,10 @@ export default function CartPage() {
           return null;
         }
 
+        // Xử lý ảnh: ưu tiên Cloudinary publicId, fallback imageUrl, cuối cùng placeholder
         const imageUrl = product.imagePublicId
           ? getCloudinaryImage(product.imagePublicId)
-          : "https://via.placeholder.com/136";
-
-        console.log("🛒 CART PRODUCT:", product.name);
-        console.log("🖼 IMAGE URL:", imageUrl);
+          : product.imageUrl || "https://via.placeholder.com/136";
 
         return {
           id: product._id,
@@ -48,9 +44,8 @@ export default function CartPage() {
         };
       });
 
-      console.log("✅ MAPPED CART ITEMS:", mappedItems);
-
       setCartItems(mappedItems.filter(Boolean));
+      console.log("✅ MAPPED CART ITEMS:", mappedItems);
     } catch (error) {
       console.error("❌ Failed to fetch cart:", error);
     } finally {
