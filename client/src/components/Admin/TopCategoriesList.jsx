@@ -1,6 +1,6 @@
 export default function TopCategoriesList({ categories = [] }) {
   return (
-    <div className="bg-white p-6 rounded-xl h-full">
+    <div className="bg-white p-6 rounded-xl h-100">
       <h3 className="font-bold mb-6">Top categories by highest revenue</h3>
 
       <div className="space-y-5">
@@ -12,7 +12,9 @@ export default function TopCategoriesList({ categories = [] }) {
 
             <div>
               <p className="font-medium">{c.name}</p>
-              <p className="text-sm text-gray-500">{(c.revenue ?? 0).toLocaleString("vi-VN")}₫</p>
+              <p className="text-sm text-gray-500">
+                {(c.revenue ?? 0).toLocaleString("vi-VN")}point
+              </p>
             </div>
           </div>
         ))}

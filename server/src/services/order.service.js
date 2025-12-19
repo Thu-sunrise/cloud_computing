@@ -1,85 +1,56 @@
+import mongoose from "mongoose";
+
 import { Product } from "../models/product.model.js";
 import { AppError } from "../utils/AppError.js";
 import { User } from "../models/user.model.js";
 import { Cart } from "../models/cart.model.js";
 import { Order } from "../models/order.model.js";
+import { ProviderService } from "./provider.service.js";
 
 export const OrderService = {
-  async getProductById(id) {
-    const product = await Product.findById(id).populate("createdBy", "name _id");
-    if (!product) {
-      throw new AppError("Product not found", 404);
-    }
-    const uid = product.createdBy;
-    const cus = await User.findById(uid);
-    return product;
-  },
+  async create(userId, products, pickupAddress) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+      // group product by createdBy
+      const ordersBySeller = {};
 
-  async groupProductsBySeller(products) {
-    const grouped = {};
-
-    products.forEach((p) => {
-      const sellerId = p.id.createdBy.toString();
-      if (!grouped[sellerId]) {
-        grouped[sellerId] = [];
+      for (const product of products) {
+        const sellerId = product.createdBy.toString();
+        if (!ordersBySeller[sellerId]) {
+          ordersBySeller[sellerId] = [];
+        }
+        ordersBySeller[sellerId].push(product);
       }
-      grouped[sellerId].push({
-        productId: p.id._id,
-        name: p.id.name,
-        price: p.id.price,
-        description: p.id.description,
-        imagePublicId: p.id.imagePublicId,
-        images: p.id.images,
-      });
-    });
 
-    return grouped;
-  },
+      // cal total price
+      const sellerOrders = [];
 
-  async createOrder(
-    grouped,
-    thisUserCart,
-    providerId,
-    pickupAddress,
-    deliveryAddress,
-    expectedDeliveryDate,
-    actualDeliveryDate,
-    thisUserId
-  ) {
-    // Extracting Product IDs for setting status
+      for (const sellerId in ordersBySeller) {
+        const items = ordersBySeller[sellerId];
 
-    const allProductIds = [];
-    Object.values(grouped).forEach((products) => {
-      products.forEach((p) => allProductIds.push(p.productId));
-    });
-    await Product.updateMany(
-      { _id: { $in: allProductIds }, status: "active" },
-      { $set: { status: "sold" } }
-    );
+        const subtotal = items.reduce((sum, item) => sum + item.price, 0);
 
-    // create Order for each seller
-    const orders = [];
-    for (const sellerId of Object.keys(grouped)) {
-      const productsForSeller = grouped[sellerId];
-      const newOrder = await Order.create({
-        ownerId: thisUserId,
-        shipping: {
+        const { providerId, shippingFee } = await ProviderService.calculateShippingFee(subtotal);
+
+        sellerOrders.push({
+          sellerId,
+          items,
+          subtotal,
           providerId,
-          pickupAddress,
-          deliveryAddress,
-          expectedDeliveryDate,
-          actualDeliveryDate,
-        },
-        products: productsForSeller.map((p) => ({ id: p.productId.toString() })),
-        status: "pending",
-      });
-      orders.push(newOrder);
+          shippingFee,
+        });
+      }
+
+      await session.commitTransaction();
+      session.endSession();
+
+      return;
+    } catch (err) {
+      await session.abortTransaction();
+      session.endSession();
+      throw err;
     }
-
-    thisUserCart.products = [];
-    await thisUserCart.save();
-
-    return orders;
   },
 
   async getOrdersByUserId(thisUserId) {

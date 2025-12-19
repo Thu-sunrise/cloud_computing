@@ -4,10 +4,10 @@ import { requireAuth, requireRole } from "../middlewares/auth.middleware.js";
 
 export const router = Router();
 
-// Example: api/product/list?page=1&limit=10&search=abc&sort=asc&category=electronics&priceMin=100&priceMax=1000
-// if query params not provided, use default values in controller (remcommended)
-router.post("/", requireAuth, createOrder);
+router.use(requireAuth);
 
-router.get("/order-history", requireAuth, getOrderHistory);
+router.post("/", createOrder);
 
-router.get("/list", requireAuth, requireRole("admin"), getOrderList);
+router.get("/order-history", getOrderHistory);
+
+router.get("/list", requireRole("admin"), getOrderList);

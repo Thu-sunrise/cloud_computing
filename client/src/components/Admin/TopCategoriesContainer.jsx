@@ -11,7 +11,7 @@ export default function TopCategoriesContainer() {
     const fetchTopCategories = async () => {
       try {
         const res = await categoryDashboardApi.getTopSelling();
-        const mapped = mapTopSellingCategories(res.data.data, 3);
+        const mapped = mapTopSellingCategories(res.data.data, 5);
         setCategories(mapped);
       } catch (err) {
         console.error("Failed to fetch top categories", err);

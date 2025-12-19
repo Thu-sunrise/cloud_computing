@@ -22,10 +22,14 @@ export const getCustomer = asyncHandler(async (req, res) => {
 });
 
 export const updateCustomer = asyncHandler(async (req, res) => {
-  const id = req.user.sub;
+  const { id } = req.params;
+  const user = {
+    id: req.user?.sub,
+    role: req.user?.role,
+  };
   const payload = req.body;
   const image = req.file;
-  const updateUser = await CustomerService.update(id, payload, image);
+  const updateUser = await CustomerService.update(user, id, payload, image);
 
   return res.status(200).json({
     message: "Information updated successfully.",

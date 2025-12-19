@@ -53,8 +53,8 @@ export default function Customers() {
             <tr>
               <th className="py-3 text-left">User</th>
               <th className="py-3 text-left">Email</th>
-              <th className="py-3 text-center">Orders</th>
-              <th className="py-3 text-center">Total Purchase</th>
+              <th className="py-3 text-center">Avg Rating</th>
+              <th className="py-3 text-center">Total rating</th>
               <th className="py-3 text-center">Status</th>
               <th className="py-3 text-center">Action</th>
             </tr>
@@ -74,10 +74,8 @@ export default function Customers() {
                 </td>
 
                 <td className="py-3">{c.email}</td>
-                <td className="py-3 text-center font-medium">{c.orders}</td>
-                <td className="py-3 text-center text-gray-600">
-                  ${c.productsSold.toLocaleString()}
-                </td>
+                <td className="py-3 text-center text-gray-600">{c.ratingAvg}</td>
+                <td className="py-3 text-center text-gray-600">{c.ratingTotal}</td>
 
                 <td className="py-3 text-center">
                   <span

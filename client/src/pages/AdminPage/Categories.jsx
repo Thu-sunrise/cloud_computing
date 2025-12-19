@@ -101,7 +101,7 @@ export default function Categories() {
                     <span className="font-medium">{c.name}</span>
                   </div>
                 </td>
-                <td className="py-3 text-center">0</td>
+                <td className="py-3 text-center">{c.soldCount}</td>
                 <td className="py-3 text-center">{c.revenue}</td>
                 <td className="py-3 text-center">
                   <button

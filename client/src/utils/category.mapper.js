@@ -6,5 +6,6 @@ export const mapCategoryListFromApiToUI = (categories = []) =>
     name: c.name ?? "",
     description: c.description ?? "",
     revenue: c.totalRevenue ?? 0,
+    soldCount: c.soldCount,
     image: c.imagePublicId ? `${CLOUDINARY_BASE_URL}/${c.imagePublicId}` : "",
   }));
