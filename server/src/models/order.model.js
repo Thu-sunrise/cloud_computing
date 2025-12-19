@@ -16,6 +16,11 @@ const orderSchema = new mongoose.Schema(
         },
       },
     ],
+
+    subtotal: {
+      type: Number,
+      require: true,
+    },
     status: {
       type: String,
       enum: ["created", "confirmed", "shipping", "completed", "cancelled", "refunded"],
@@ -24,7 +29,7 @@ const orderSchema = new mongoose.Schema(
     shipping: {
       providerId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "DeliveryProvider",
+        ref: "Provider",
       },
       pickupAddress: {
         type: String,

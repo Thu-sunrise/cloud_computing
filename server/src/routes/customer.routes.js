@@ -13,7 +13,7 @@ export const router = Router();
 
 router.get("/list", getListCustomers);
 
-router.put("/me", requireAuth, upload.single("image"), updateCustomer);
+router.put("/:id", requireAuth, upload.single("image"), updateCustomer);
 
 router.get("/top-selling", getTopSellingCustomers);
 

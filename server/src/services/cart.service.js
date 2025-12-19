@@ -18,7 +18,7 @@ export const CartService = {
         select: "name description price imagePublicId createdBy",
         populate: {
           path: "createdBy",
-          select: "name",
+          select: "name address",
         },
       })
       .lean();
@@ -36,6 +36,7 @@ export const CartService = {
         seller: {
           _id: product.createdBy._id,
           name: product.createdBy.name,
+          address: product.createdBy.address,
         },
       };
     });

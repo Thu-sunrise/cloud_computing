@@ -73,11 +73,15 @@ export const CustomerService = {
     };
   },
 
-  async update(userId, payload, image = null) {
+  async update(user, userId, payload, image = null) {
     const customer = await Customer.findById(userId);
 
     if (!customer) {
       throw new AppError("Customer not found", 404);
+    }
+
+    if (user.id.toString() !== customer._id.toString() && user.role !== "admin") {
+      throw new AppError("Access denied", 403);
     }
 
     let updateData = {};
