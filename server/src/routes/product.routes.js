@@ -7,7 +7,7 @@ import {
   getListProducts,
   getMyListProducts,
 } from "../controllers/product.controller.js";
-import { requireAuth } from "../middlewares/auth.middleware.js";
+import { requireAuth, optionalAuth } from "../middlewares/auth.middleware.js";
 
 import { upload } from "../config/multer.js";
 
@@ -19,8 +19,8 @@ router.put("/:id", requireAuth, upload.single("image"), updateProduct);
 
 router.delete("/:id", requireAuth, deleteProduct);
 
-router.get("/list", getListProducts);
+router.get("/list", optionalAuth, getListProducts);
 
 router.get("/my-list", requireAuth, getMyListProducts);
 
-router.get("/:id", getProduct);
+router.get("/:id", optionalAuth, getProduct);

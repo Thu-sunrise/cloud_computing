@@ -17,17 +17,21 @@ import { router as walletRoutes } from "./wallet.routes.js";
 const router = express.Router();
 
 router.use("/auth", authRoutes);
-// router.use("/user", userRoutes);
+
 router.use("/product", productRoutes);
-// router.use("/customer", customerRoutes);
-// router.use("/admin", adminRoutes);
+
 router.use("/cart", cartRoutes);
+
 router.use("/order", orderRoutes);
+
 router.use("/user", userRoutes);
+
 router.use("/customer", customerRoutes);
-// router.use("/product", productRoutes);
+
 router.use("/category", categoryRoutes);
+
 router.use("/wallet", walletRoutes);
+
 router.use("/review", reviewRoutes);
 
 export default router;

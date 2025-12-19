@@ -4,5 +4,7 @@ import { getWallet, updateWallet } from "../controllers/wallet.controller.js";
 
 export const router = Router();
 
-router.get("/me", requireAuth, getWallet);
-router.put("/me", requireAuth, updateWallet);
+router.use(requireAuth);
+
+router.get("/me", getWallet);
+router.put("/me", updateWallet);

@@ -1,31 +1,70 @@
-import { removeOne } from "../controllers/cart.controller.js";
+import mongoose from "mongoose";
 import { Cart } from "../models/cart.model.js";
 import { Product } from "../models/product.model.js";
+
+import { CloudinaryService } from "./cloudinary.service.js";
 import { AppError } from "../utils/AppError.js";
 
 export const CartService = {
-  async addToCart(customerId, productId) {
-    let cart = await Cart.findOne({ customerId: customerId });
-    const product = await Product.findById(productId);
-    if (!product) throw new AppError("Product not found", 404);
-    else if (!(product.status === "active")) throw new AppError("Product is not available", 400);
+  async create(userId) {
+    const cart = await Cart.create({ userId: userId });
+    return cart;
+  },
+
+  async getByUserId(userId) {
+    const cart = await Cart.findOne({ userId })
+      .populate({
+        path: "products.id",
+        select: "name description price imagePublicId createdBy",
+        populate: {
+          path: "createdBy",
+          select: "name",
+        },
+      })
+      .lean();
+
+    const products = cart.products.map((item) => {
+      const product = item.id;
+
+      return {
+        _id: product._id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        imagePublicId: product.imagePublicId,
+        imagePublicUrl: CloudinaryService.generateSignedUrl(product.imagePublicId),
+        seller: {
+          _id: product.createdBy._id,
+          name: product.createdBy.name,
+        },
+      };
+    });
+
+    const totalProducts = products.length;
+    const totalPrice = products.reduce((sum, product) => sum + product.price, 0);
+
+    return {
+      _id: cart._id,
+      userId: cart.userId,
+      products,
+      totalProducts,
+      totalPrice,
+    };
+  },
+
+  async addToCart(userId, productId) {
+    const product = await Product.findById(productId).lean();
+    if (!product || product.status !== "active") throw new AppError("Product not found", 404);
 
     // Check owner product
-    if (customerId.toString() === product.createdBy.toString()) {
+    if (userId.toString() === product.createdBy.toString()) {
       throw new AppError("Cannot add your own product", 400);
     }
 
-    if (!cart) {
-      cart = await Cart.create({
-        customerId,
-        products: [{ id: productId }],
-      });
-      return cart;
-    }
-
-    // Check trung
-    const exists = cart.products.some((item) => item.id.toString() === productId.toString());
-    if (exists) {
+    const cart = await Cart.findOne({ userId: userId });
+    // Check prod in cart
+    const p = cart.products.some((item) => item.id.toString() === productId.toString());
+    if (p) {
       throw new AppError("Product already in cart", 400);
     }
 
@@ -34,20 +73,11 @@ export const CartService = {
     return cart;
   },
 
-  async getCart(thisUserId) {
-    const cart = await Cart.findOne({ customerId: thisUserId }).populate(
-      "products.id",
-      "name description price imagePublicId images createdBy"
-    );
-    return cart;
-  },
-
-  async removeOne(thisUserId, productId) {
-    const cart = await Cart.findOne({ customerId: thisUserId });
-    if (!cart) return null;
+  async remove(userId, productId) {
+    const cart = await Cart.findOne({ userId: userId });
     // Check product in cart
-    const exists = cart.products.some((item) => item.id._id.toString() === productId.toString());
-    if (!exists) {
+    const p = cart.products.some((item) => item.id._id.toString() === productId.toString());
+    if (!p) {
       throw new AppError("Product not in cart", 404);
     }
 
@@ -56,21 +86,5 @@ export const CartService = {
 
     await cart.save();
     return cart;
-  },
-
-  async cartTotal(cart) {
-    if (!cart) return 0;
-    let total = 0;
-    let count = 0;
-    for (const item of cart.products) {
-      const product = item.id;
-      if (product.salePrice) {
-        total += product.salePrice;
-      } else {
-        total += product.price;
-      }
-      count += 1;
-    }
-    return { total, count };
   },
 };

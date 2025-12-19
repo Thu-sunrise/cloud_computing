@@ -67,7 +67,7 @@ export const ProductService = {
     if (!product) {
       throw new AppError("Product not found", 404);
     }
-    if (product.createdBy.toString() !== user.id.toString()) {
+    if (product.createdBy.toString() !== user.id.toString() && user.role !== "admin") {
       throw new AppError("Access denied", 403);
     }
 
