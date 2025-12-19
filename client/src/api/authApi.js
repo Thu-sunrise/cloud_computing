@@ -33,7 +33,13 @@ export const productApi = {
   getMyList: (params = {}) => axiosClient.get("/product/my-list", { params }),
 
   // Chi tiết sản phẩm
-  getById: (id) => axiosClient.get(`/product/${id}`),
+ getById: (id) =>
+  axios.get(`/product/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
+  }),
+
 
   // Thêm sản phẩm (cần formData để upload ảnh)
   create: (formData) => axiosClient.post("/product", formData),

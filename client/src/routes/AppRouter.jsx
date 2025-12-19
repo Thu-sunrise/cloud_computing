@@ -20,13 +20,14 @@ import ListProducts from "@/pages/HomePage/ListPorducts.jsx";
 import ProfileHistoryPage from "@/pages/ProfilePage/ProfileHistoryPage";
 import ShopDetailPage from "../pages/ShopDetailPage/ShopDetailPage";
 import AdminPage from "../pages/AdminPage/AdminPage";
-
+import EditProduct from "../pages/ProfilePage/EditProdut";
 function TitleUpdater() {
   const location = useLocation();
 
   useEffect(() => {
     const pathTitleMap = {
       "/login": "Login | SecondHandLand",
+      "/edit" : "Edit |SecondHandLand",
       "/register": "Register | SecondHandLand",
       "/forgot-password": "Forgot Password | SecondHandLand",
       "/reset-password": "Reset Password | SecondHandLand",
@@ -54,10 +55,13 @@ export default function AppRouter() {
     <BrowserRouter>
       <TitleUpdater />
       <Routes>
+
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/my-listing/edit/:id" element={<EditProduct />} />
+
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/verify-otp" element={<OtpPage />} />
