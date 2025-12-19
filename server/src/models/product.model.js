@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema(
     createdBy: {
       // FK
       type: mongoose.Schema.Types.ObjectId,
-      ref: "customer",
+      ref: "User",
       required: true,
     },
     categoryId: {

@@ -13,35 +13,35 @@ const MENU_ITEMS = [
 
 export default function Sidebar({ activeTab, setActiveTab }) {
   return (
-    <aside className="w-64 bg-[#283645] text-white p-6 hidden md:flex flex-col">
+    <aside className="w-56 bg-[#283645] text-white p-4 hidden md:flex flex-col">
       {/* Profile */}
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-lg font-bold">
+      <div className="flex items-center gap-2 mb-6">
+        <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg font-bold">
           {mockProfileData.fullName.charAt(0)}
         </div>
 
-        <div className="leading-tight">
-          <p className="font-semibold">{mockProfileData.fullName}</p>
-          <p className="text-sm text-white/70">{mockProfileData.email}</p>
+        <div className="leading-tight truncate">
+          <p className="font-semibold text-sm">{mockProfileData.fullName}</p>
+          <p className="text-xs text-white/70 truncate">{mockProfileData.email}</p>
         </div>
       </div>
 
-      {/* Menu + Logout */}
+      {/* Menu */}
       <nav className="space-y-2">
         {MENU_ITEMS.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition
-              ${
-                tab.danger
-                  ? "text-red-300 hover:bg-red-500/20"
-                  : activeTab === tab.id
-                    ? "bg-white/15 font-semibold"
-                    : "hover:bg-white/10"
-              }`}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-base transition
+    ${
+      tab.danger
+        ? "text-red-300 hover:bg-red-500/20"
+        : activeTab === tab.id
+          ? "bg-white/15 font-semibold"
+          : "hover:bg-white/10"
+    }`}
           >
-            <tab.icon size={18} />
+            <tab.icon size={20} />
             {tab.label}
           </button>
         ))}

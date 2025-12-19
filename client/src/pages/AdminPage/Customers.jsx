@@ -1,145 +1,274 @@
-import React, { useState, useMemo } from "react";
-import { mockCustomers } from "@/pages/AdminPage/adminData"; // Đảm bảo đường dẫn import đúng
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState } from "react";
+import useCustomer from "@/hooks/useCustomer";
+import { Search, ChevronLeft, ChevronRight, MoreVertical, X } from "lucide-react";
 
 export default function Customers() {
-  // 1. State quản lý nội bộ
-  const [searchTerm, setSearchTerm] = useState("");
-  const [page, setPage] = useState(1);
-  const pageSize = 8;
+  const {
+    customers,
+    loading,
+    error,
+    page,
+    setPage,
+    totalPages,
+    totalCustomers,
+    searchTerm,
+    setSearchTerm,
+  } = useCustomer({ pageSize: 8 });
 
-  // 2. Logic Filter
-  const filteredCustomers = useMemo(() => {
-    return mockCustomers.filter(
-      (c) =>
-        c.id.includes(searchTerm) ||
-        c.email.includes(searchTerm) ||
-        c.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [searchTerm]);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [formData, setFormData] = useState(null);
 
-  // 3. Logic Pagination
-  const totalPages = Math.ceil(filteredCustomers.length / pageSize);
-  const pagedCustomers = filteredCustomers.slice((page - 1) * pageSize, page * pageSize);
+  if (loading) {
+    return <div className="p-6 text-gray-500">Loading customers...</div>;
+  }
 
-  // Helper chuyển trang
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setPage(newPage);
-    }
-  };
+  if (error) {
+    return <div className="p-6 text-red-500">Failed to load customers</div>;
+  }
 
   return (
     <div className="space-y-4">
-      {/* Tiêu đề */}
       <h2 className="text-2xl font-bold text-gray-800">Customers</h2>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        {/* --- THANH TÌM KIẾM --- */}
+      <div className="bg-white rounded-xl shadow-sm border p-6">
+        {/* SEARCH */}
         <div className="mb-6">
           <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input
-              type="text"
-              placeholder="Search by name, email or ID..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
                 setPage(1);
               }}
+              placeholder="Search by name, email or ID"
+              className="w-full pl-10 pr-4 py-2 border rounded-lg text-sm"
             />
           </div>
         </div>
 
-        {/* --- BẢNG DỮ LIỆU --- */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-gray-500 font-medium border-b border-gray-100">
-              <tr>
-                <th className="py-4 pl-2">User</th>
-                <th className="py-4 px-2">Email</th>
-                <th className="py-4 px-2">Orders</th>
-                <th className="py-4 px-2">Sold</th>
-                <th className="py-4 px-2">Rating</th>
-                <th className="py-4 px-2">Status</th>
+        {/* TABLE */}
+        <table className="w-full text-sm">
+          <thead className="border-b text-gray-500">
+            <tr>
+              <th className="py-3 text-left">User</th>
+              <th className="py-3 text-left">Email</th>
+              <th className="py-3 text-center">Orders</th>
+              <th className="py-3 text-center">Total Purchase</th>
+              <th className="py-3 text-center">Status</th>
+              <th className="py-3 text-center">Action</th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y text-gray-700">
+            {customers.map((c) => (
+              <tr key={c.id} className="hover:bg-gray-50">
+                <td className="py-3">
+                  <div className="flex items-center gap-3">
+                    <img src={c.avatar} alt={c.name} className="w-9 h-9 rounded-full" />
+                    <div>
+                      <div className="font-medium">{c.name}</div>
+                      <div className="text-xs text-gray-400">{c.id}</div>
+                    </div>
+                  </div>
+                </td>
+
+                <td className="py-3">{c.email}</td>
+                <td className="py-3 text-center font-medium">{c.orders}</td>
+                <td className="py-3 text-center text-gray-600">
+                  ${c.productsSold.toLocaleString()}
+                </td>
+
+                <td className="py-3 text-center">
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                      c.status === "Active"
+                        ? "bg-green-50 text-green-700"
+                        : "bg-red-50 text-red-700"
+                    }`}
+                  >
+                    {c.status}
+                  </span>
+                </td>
+
+                <td className="py-3 text-center">
+                  <button
+                    onClick={() => {
+                      setSelectedCustomer(c);
+                      setFormData({
+                        ...c,
+                        firstName: c.name.split(" ")[0],
+                        lastName: c.name.split(" ").slice(1).join(" "),
+                      });
+                    }}
+                    className="p-2 hover:bg-gray-100 rounded-lg"
+                  >
+                    <MoreVertical size={16} />
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {pagedCustomers.length > 0 ? (
-                pagedCustomers.map((c) => (
-                  <tr key={c.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="flex items-center gap-3 py-4 pl-2">
-                      <img
-                        src={c.avatar}
-                        alt={c.name}
-                        className="w-10 h-10 rounded-full object-cover border border-gray-200"
-                      />
-                      <div>
-                        <span className="block font-medium text-gray-800">{c.name}</span>
-                        <span className="text-xs text-gray-400">{c.id}</span>
-                      </div>
-                    </td>
-                    <td className="py-4 px-2 text-gray-600">{c.email}</td>
-                    <td className="py-4 px-2 text-gray-600">{c.orders}</td>
-                    <td className="py-4 px-2 text-gray-600">{c.productsSold}</td>
-                    <td className="py-4 px-2">
-                      <span className="inline-flex items-center gap-1 bg-yellow-50 text-yellow-700 px-2 py-1 rounded text-xs font-medium border border-yellow-100">
-                        ★ {c.rating.score}
-                      </span>
-                      <span className="text-gray-400 text-xs ml-1">({c.rating.count})</span>
-                    </td>
-                    <td className="py-4 px-2">
-                      <span
-                        className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          c.status === "Active"
-                            ? "bg-green-50 text-green-700 border border-green-100"
-                            : "bg-red-50 text-red-700 border border-red-100"
-                        }`}
-                      >
-                        {c.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="text-center py-8 text-gray-400">
-                    No customers found matching "{searchTerm}".
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
 
-        {/* --- PHÂN TRANG (Pagination) --- */}
-        <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => handlePageChange(page - 1)}
-              disabled={page === 1}
-              className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 disabled:opacity-30 transition-colors"
-            >
-              <ChevronLeft size={18} />
+        {/* PAGINATION */}
+        <div className="flex justify-between items-center mt-6">
+          <div className="flex items-center gap-2">
+            <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+              <ChevronLeft />
             </button>
-
-            <span className="text-sm font-medium text-gray-600 px-2">
-              Page {page} of {totalPages}
+            <span className="text-sm">
+              Page {page} / {totalPages || 1}
             </span>
-
             <button
-              onClick={() => handlePageChange(page + 1)}
-              disabled={page === totalPages}
-              className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 disabled:opacity-30 transition-colors"
+              disabled={page === totalPages || totalPages === 0}
+              onClick={() => setPage(page + 1)}
             >
-              <ChevronRight size={18} />
+              <ChevronRight />
             </button>
           </div>
 
-          <div className="text-sm text-gray-500">{filteredCustomers.length} Results</div>
+          <div className="text-sm text-gray-500">
+            {customers.length} / {totalCustomers} results
+          </div>
         </div>
       </div>
+      {/* ===== MODAL DETAIL ===== */}
+      {selectedCustomer && formData && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white w-full max-w-2xl rounded-xl p-6 relative">
+            <button
+              onClick={() => {
+                setSelectedCustomer(null);
+                setFormData(null);
+              }}
+              className="absolute right-4 top-4 p-1 hover:bg-gray-100 rounded"
+            >
+              <X size={18} />
+            </button>
+
+            <h3 className="text-xl font-semibold mb-4">Customer Detail</h3>
+
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <Input
+                label="Email"
+                value={formData.email}
+                onChange={(v) => setFormData({ ...formData, email: v })}
+              />
+              <Input
+                label="Phone"
+                value={formData.phone}
+                onChange={(v) => setFormData({ ...formData, phone: v })}
+              />
+              <Input
+                label="First Name"
+                value={formData.firstName}
+                onChange={(v) => setFormData({ ...formData, firstName: v })}
+              />
+              <Input
+                label="Last Name"
+                value={formData.lastName}
+                onChange={(v) => setFormData({ ...formData, lastName: v })}
+              />
+              <Select
+                label="Status"
+                value={formData.status}
+                options={["Active", "Inactive"]}
+                onChange={(v) => setFormData({ ...formData, status: v })}
+              />
+              <Select
+                label="Role"
+                value={formData.role}
+                options={["Customer", "Admin"]}
+                onChange={(v) => setFormData({ ...formData, role: v })}
+              />
+              <Input
+                label="Failed Login Attempt"
+                value={formData.failedLoginAttempt}
+                onChange={(v) =>
+                  setFormData({
+                    ...formData,
+                    failedLoginAttempt: Number(v),
+                  })
+                }
+              />
+              <Input
+                label="Date of Birth"
+                value={formData.dob}
+                onChange={(v) => setFormData({ ...formData, dob: v })}
+              />
+              <Select
+                label="Gender"
+                value={formData.gender}
+                options={["Male", "Female", "Other"]}
+                onChange={(v) => setFormData({ ...formData, gender: v })}
+              />
+              <Input
+                label="Address"
+                value={formData.address}
+                onChange={(v) => setFormData({ ...formData, address: v })}
+                className="col-span-2"
+              />
+            </div>
+
+            <div className="flex justify-end mt-6 gap-2">
+              <button
+                onClick={() => {
+                  setSelectedCustomer(null);
+                  setFormData(null);
+                }}
+                className="px-4 py-2 text-sm border rounded-lg"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  console.log("SAVE PAYLOAD", formData);
+                  setSelectedCustomer(null);
+                  setFormData(null);
+                }}
+                className="px-4 py-2 text-sm bg-green-600 text-white rounded-lg"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ===== REUSABLE INPUTS ===== */
+
+function Input({ label, value, onChange, className = "" }) {
+  return (
+    <div className={className}>
+      <label className="text-xs text-gray-500">{label}</label>
+      <input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full mt-1 px-3 py-2 border rounded-lg text-sm"
+      />
+    </div>
+  );
+}
+
+function Select({ label, value, options, onChange }) {
+  return (
+    <div>
+      <label className="text-xs text-gray-500">{label}</label>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full mt-1 px-3 py-2 border rounded-lg text-sm"
+      >
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

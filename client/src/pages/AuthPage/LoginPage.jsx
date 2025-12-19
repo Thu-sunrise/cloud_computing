@@ -107,7 +107,7 @@ const LoginPage = () => {
       // Redirect theo role
       setTimeout(() => {
         if (user.role === "admin") {
-          navigate("/dashboard");
+          navigate("/admin");
         } else {
           navigate("/home");
         }

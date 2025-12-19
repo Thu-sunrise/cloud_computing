@@ -3,7 +3,7 @@ import { RedisService } from "../services/redis.service.js";
 import { MailService } from "../services/mail.service.js";
 import { CloudinaryService } from "../services/cloudinary.service.js";
 import { requireAuth } from "../middlewares/auth.middleware.js";
-
+import cloudinary from "../config/cloudinary.config.js";
 // import { requireAuth } from "../middlewares/auth.middleware.js";
 
 import { upload } from "../config/multer.js";
@@ -11,7 +11,19 @@ import { upload } from "../config/multer.js";
 const router = express.Router();
 
 // test routes
-router.get("/ping", (req, res) => {
+router.get("/ping", async (req, res) => {
+  const resources = await cloudinary.api.resources({
+    type: "upload",
+    max_results: 500,
+  });
+
+  for (const file of resources.resources) {
+    await cloudinary.uploader.destroy(file.public_id, {
+      type: "upload",
+      resource_type: file.resource_type || "image",
+    });
+  }
+
   res.json({ msg: "pong" });
 });
 
@@ -51,7 +63,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 // });
 
 router.get("/url-cloudinary", (req, res) => {
-  const signedUrl = CloudinaryService.generateSignedUrl("images/user/1763474508667_tlb8r6");
+  const signedUrl = CloudinaryService.generateSignedUrl("avtdf_kvmacl");
   res.json({ signedUrl });
 });
 

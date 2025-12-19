@@ -39,24 +39,15 @@ const transactionSchema = new mongoose.Schema(
      * - deposit: deposit to wallet
      * - withdrawal: withdrawal to external account
      * - refund: refund to buyer
-     * - escrow_lock: lock funds in escrow
-     * - escrow_release: release funds from escrow to seller
+     * - escrow: ...
      */
     type: {
       type: String,
-      enum: ["deposit", "withdrawal", "refund", "escrow_lock", "escrow_release"],
+      enum: ["deposit", "withdrawal", "refund", "escrow"],
       required: true,
     },
     description: {
       type: String,
-    },
-    lockedAt: {
-      type: Date,
-      default: null,
-    },
-    releaseAt: {
-      type: Date,
-      default: null,
     },
   },
   { timestamps: true }

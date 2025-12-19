@@ -1,11 +1,13 @@
 import { Router } from "express";
-import { getCart, addToCart, removeOne } from "../controllers/cart.controller.js";
+import { getCart, addToCart, removeFromCart } from "../controllers/cart.controller.js";
 import { requireAuth } from "../middlewares/auth.middleware.js";
 
 export const router = Router();
 
-router.get("/me", requireAuth, getCart);
+router.use(requireAuth);
 
-router.put("/:productId", requireAuth, addToCart); // owner
+router.get("/me", getCart);
 
-router.delete("/:productId", requireAuth, removeOne);
+router.put("/:id", addToCart); // id is productId
+
+router.delete("/:id", removeFromCart);

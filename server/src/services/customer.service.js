@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
 import { Customer } from "../models/customer.model.js";
 import { AppError } from "../utils/AppError.js";
+
+import { ReviewService } from "./review.service.js";
 import { CloudinaryService } from "./cloudinary.service.js";
 
 export const CustomerService = {
@@ -21,33 +22,12 @@ export const CustomerService = {
     if (search && search.trim() !== "") {
       const keyword = search.trim();
 
-      if (mongoose.Types.ObjectId.isValid(keyword)) {
-        const byId = await Customer.findOne({
-          _id: keyword,
-          role: "customer",
-        })
-          .select("-password")
-          .lean();
-
-        if (byId) {
-          return {
-            data: [byId],
-            pagination: {
-              page: 1,
-              limit: 1,
-              total: 1,
-              totalPages: 1,
-            },
-          };
-        }
-      }
-
-      const byMailCount = await Customer.countDocuments({
+      const customers_ = await Customer.countDocuments({
         role: "customer",
         mail: { $regex: keyword, $options: "i" },
       });
 
-      if (byMailCount > 0) {
+      if (customers_ > 0) {
         filter.mail = { $regex: keyword, $options: "i" };
       } else {
         filter.$or = [
@@ -60,7 +40,7 @@ export const CustomerService = {
     const [customers, total] = await Promise.all([
       Customer.find(filter)
         .select("-password")
-        .sort({ createdAt: -1 })
+        .sort({ createdAt: 1 })
         .skip(skip)
         .limit(limit)
         .lean(),
@@ -68,8 +48,22 @@ export const CustomerService = {
       Customer.countDocuments(filter),
     ]);
 
+    const data = await Promise.all(
+      customers.map(async (customer) => {
+        const reviewStats = await ReviewService.getList(customer._id);
+        return {
+          ...customer,
+          avatarPublicUrl: CloudinaryService.generateSignedUrl(customer.avatarPublicId),
+          stats: {
+            avg: reviewStats.averageRating,
+            total: reviewStats.totalReviewCount,
+          },
+        };
+      })
+    );
+
     return {
-      data: customers,
+      data: data,
       pagination: {
         page,
         limit,
@@ -127,7 +121,7 @@ export const CustomerService = {
   },
 
   async getTopSelling(top = 10) {
-    const result = await Customer.aggregate([
+    const customers = await Customer.aggregate([
       {
         // join product
         $lookup: {
@@ -180,7 +174,11 @@ export const CustomerService = {
         },
       },
     ]);
-    return result;
+
+    return customers.map((customer) => ({
+      ...customer,
+      avatarPublicUrl: CloudinaryService.generateSignedUrl(customer.avatarPublicId),
+    }));
   },
 
   async getById(id) {

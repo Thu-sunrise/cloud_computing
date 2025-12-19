@@ -4,7 +4,7 @@ const orderSchema = new mongoose.Schema(
   {
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Customer",
+      ref: "User",
       required: true,
     },
     products: [
@@ -18,8 +18,8 @@ const orderSchema = new mongoose.Schema(
     ],
     status: {
       type: String,
-      enum: ["created", "confirmed", "shipping", "completed", "cancelled", "refunded", "pending"],
-      default: "pending",
+      enum: ["created", "confirmed", "shipping", "completed", "cancelled", "refunded"],
+      default: "created",
     },
     shipping: {
       providerId: {

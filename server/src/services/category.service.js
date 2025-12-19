@@ -1,6 +1,5 @@
 import { Category } from "../models/category.model.js";
 import { CloudinaryService } from "../services/cloudinary.service.js";
-// import { AppError } from "../utils/AppError.js";
 
 export const CategoryService = {
   async getList() {
@@ -14,57 +13,55 @@ export const CategoryService = {
     );
   },
   async getTopSelling() {
-    const result = await Category.aggregate([
+    const categories = await Category.aggregate([
       {
-        // Join products
         $lookup: {
           from: "products",
-          localField: "_id",
-          foreignField: "categoryId",
-          as: "products",
-        },
-      },
-
-      {
-        // where status = sold
-        $addFields: {
-          soldProducts: {
-            $filter: {
-              input: "$products",
-              as: "p",
-              cond: { $eq: ["$$p.status", "sold"] },
+          let: { categoryId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [{ $eq: ["$categoryId", "$$categoryId"] }, { $eq: ["$status", "sold"] }],
+                },
+              },
             },
-          },
+            {
+              $group: {
+                _id: null,
+                totalRevenue: { $sum: "$price" },
+                soldCount: { $sum: 1 },
+              },
+            },
+          ],
+          as: "stats",
         },
       },
-
       {
-        // sum and count
         $addFields: {
           totalRevenue: {
-            $sum: "$soldProducts.price",
+            $ifNull: [{ $arrayElemAt: ["$stats.totalRevenue", 0] }, 0],
           },
           soldCount: {
-            $size: "$soldProducts",
+            $ifNull: [{ $arrayElemAt: ["$stats.soldCount", 0] }, 0],
           },
         },
       },
-
       {
-        // sort by revenue
+        $project: {
+          stats: 0,
+        },
+      },
+      {
         $sort: {
           totalRevenue: -1,
         },
       },
-
-      {
-        $project: {
-          products: 0,
-          soldProducts: 0,
-        },
-      },
     ]);
 
-    return result;
+    return categories.map((category) => ({
+      ...category,
+      imagePublicUrl: CloudinaryService.generateSignedUrl(category.imagePublicId),
+    }));
   },
 };

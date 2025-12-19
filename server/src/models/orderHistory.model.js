@@ -16,9 +16,6 @@ const orderHistorySchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    notes: {
-      type: String,
-    },
   },
   { timestamps: true }
 );

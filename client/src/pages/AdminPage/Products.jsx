@@ -1,48 +1,62 @@
-import React, { useState, useMemo } from "react";
-import { mockProducts } from "@/pages/AdminPage/adminData";
+import React, { useState } from "react";
 import { Search, MoreHorizontal, ChevronRight, ChevronLeft } from "lucide-react";
+import useProducts from "@/hooks/useProducts";
 
 export default function Products() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [page, setPage] = useState(1);
-  const pageSize = 8;
+  const {
+    products,
+    page,
+    setPage,
+    searchTerm,
+    setSearchTerm,
+    totalPages,
+    totalResults,
+    updateProductStatus,
+  } = useProducts({ pageSize: 8 });
 
-  // 1. Logic Filter
-  const filteredProducts = useMemo(() => {
-    return mockProducts.filter((p) => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
-  }, [searchTerm]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [statusValue, setStatusValue] = useState("");
 
-  // 2. Logic Pagination
-  const totalPages = Math.ceil(filteredProducts.length / pageSize);
-  const pagedProducts = filteredProducts.slice((page - 1) * pageSize, page * pageSize);
-
-  // Helper chọn màu cho Status
+  /* ===== STATUS COLOR ===== */
   const getStatusColor = (status) => {
     switch (status) {
-      case "Approved":
+      case "active":
         return "text-green-500";
-      case "Pending":
-        return "text-orange-400";
-      case "Rejected":
+      case "pending":
+        return "text-blue-400";
+      case "sold":
+        return "text-purple-500";
+      case "deleted":
+        return "text-orange-500";
+      case "rejected":
         return "text-red-500";
       default:
         return "text-gray-500";
     }
   };
 
+  const handleUpdateStatus = async () => {
+    await updateProductStatus({
+      id: selectedProduct.id,
+      status: statusValue,
+    });
+
+    setSelectedProduct(null);
+    setStatusValue("");
+  };
+
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-bold text-gray-800">Products</h2>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        {/* THANH TÌM KIẾM */}
+      <div className="bg-white rounded-xl shadow-sm border p-6">
+        {/* ===== SEARCH ===== */}
         <div className="mb-6">
           <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
             <input
-              type="text"
               placeholder="Search..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
+              className="w-full pl-10 pr-4 py-2 border rounded-lg text-sm"
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -52,99 +66,135 @@ export default function Products() {
           </div>
         </div>
 
-        {/* BẢNG DỮ LIỆU */}
+        {/* ===== TABLE ===== */}
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-gray-500 font-medium border-b border-gray-100">
+          <table className="w-full text-sm">
+            <thead className="border-b text-gray-500">
               <tr>
-                <th className="py-4 pr-4">Product</th>
-                <th className="py-4 px-2">Date</th>
-                <th className="py-4 px-2">Customer</th>
-                <th className="py-4 px-2">Status</th>
-                <th className="py-4 px-2">Price</th>
-                <th className="py-4 px-2">Category</th>
-                <th className="py-4 px-2 text-right">Action</th>
+                <th className="py-3 text-left">Product</th>
+                <th className="py-3 text-left">Date</th>
+                <th className="py-3 text-left">Customer</th>
+                <th className="py-3 text-left">Status</th>
+                <th className="py-3 text-left">Price</th>
+                <th className="py-3 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
-              {pagedProducts.length > 0 ? (
-                pagedProducts.map((p) => (
-                  <tr key={p.id} className="hover:bg-gray-50 group transition-colors">
-                    {/* Cột Product (Ảnh + Tên) */}
-                    <td className="py-4 pr-4">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={p.image}
-                          alt={p.name}
-                          className="w-10 h-10 rounded-md object-cover border border-gray-200"
-                        />
-                        <span className="font-medium text-gray-800">{p.name}</span>
-                      </div>
-                    </td>
 
-                    <td className="py-4 px-2 text-gray-600">{p.date}</td>
-                    <td className="py-4 px-2 text-gray-600">{p.customerId}</td>
-
-                    {/* Cột Status (Chữ màu) */}
-                    <td className={`py-4 px-2 font-medium ${getStatusColor(p.status)}`}>
-                      {p.status}
-                    </td>
-
-                    <td className="py-4 px-2 text-gray-800 font-medium">
-                      {p.price.toLocaleString()} pts
-                    </td>
-                    <td className="py-4 px-2 text-gray-600">{p.category}</td>
-
-                    {/* Cột Action (Dấu 3 chấm) */}
-                    <td className="py-4 px-2 text-right">
-                      <button className="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100">
-                        <MoreHorizontal size={20} />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="7" className="text-center py-8 text-gray-400">
-                    No products found.
+            <tbody className="divide-y">
+              {products.map((p) => (
+                <tr key={p.id} className="hover:bg-gray-50">
+                  <td className="py-3">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={p.image}
+                        alt={p.name}
+                        className="w-10 h-10 rounded-md object-cover"
+                      />
+                      <span className="font-medium">{p.name}</span>
+                    </div>
+                  </td>
+                  <td className="py-3 text-gray-600">{p.date}</td>
+                  <td className="py-3 text-gray-600">{p.customerId}</td>
+                  <td className={`py-3 font-medium ${getStatusColor(p.status)}`}>{p.status}</td>
+                  <td className="py-3 font-medium">{p.price.toLocaleString()} pts</td>
+                  <td className="py-3 text-right">
+                    <button
+                      onClick={() => {
+                        setSelectedProduct(p);
+                        setStatusValue(p.status);
+                      }}
+                      className="p-1 rounded-full hover:bg-gray-100"
+                    >
+                      <MoreHorizontal size={20} />
+                    </button>
                   </td>
                 </tr>
-              )}
+              ))}
             </tbody>
           </table>
         </div>
 
-        {/* PHÂN TRANG (Footer) */}
-        <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
-          {/* List số trang */}
-          <div className="flex items-center gap-1">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-              <button
-                key={num}
-                onClick={() => setPage(num)}
-                className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm transition-colors ${
-                  page === num
-                    ? "bg-blue-50 text-blue-600 font-bold"
-                    : "text-gray-500 hover:bg-gray-50"
-                }`}
-              >
-                {num}
-              </button>
-            ))}
+        {/* ===== PAGINATION ===== */}
+        <div className="flex justify-between items-center mt-6">
+          <div className="flex items-center gap-2">
+            <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
+              <ChevronLeft />
+            </button>
+
+            <span className="text-sm">
+              Page {page} / {totalPages}
+            </span>
 
             <button
-              onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="ml-2 text-gray-400 hover:text-gray-600 disabled:opacity-30"
             >
-              <ChevronRight size={20} />
+              <ChevronRight />
             </button>
           </div>
 
-          {/* Tổng số kết quả */}
-          <div className="text-sm text-gray-500">{filteredProducts.length} Results</div>
+          <div className="text-sm text-gray-500">{totalResults} results</div>
         </div>
       </div>
+
+      {/* ===== MODAL ===== */}
+      {selectedProduct && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white w-full max-w-md rounded-xl p-6 relative">
+            <button
+              onClick={() => setSelectedProduct(null)}
+              className="absolute top-4 right-4 p-1 hover:bg-gray-100 rounded"
+            >
+              ✕
+            </button>
+
+            <h3 className="text-lg font-semibold mb-4">Change Product Status</h3>
+
+            <Select
+              label="Status"
+              value={statusValue}
+              options={["active", "pending", "sold", "rejected", "deleted"]}
+              onChange={setStatusValue}
+            />
+
+            <div className="flex justify-end gap-2 mt-6">
+              <button
+                onClick={() => setSelectedProduct(null)}
+                className="px-4 py-2 border rounded-lg text-sm"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleUpdateStatus}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ===== SELECT ===== */
+function Select({ label, value, options, onChange }) {
+  return (
+    <div>
+      <label className="text-xs text-gray-500">{label}</label>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full mt-1 px-3 py-2 border rounded-lg text-sm"
+      >
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

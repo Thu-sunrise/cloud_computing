@@ -14,6 +14,24 @@ export const requireAuth = (req, res, next) => {
   next();
 };
 
+export const optionalAuth = (req, res, next) => {
+  const token = req.cookies?.token;
+
+  if (!token) {
+    req.user = null;
+    return next();
+  }
+
+  try {
+    const payload = verifyToken(token);
+    req.user = payload || null;
+  } catch (err) {
+    req.user = null;
+  }
+
+  next();
+};
+
 export const requireRole = (...allowedRoles) => {
   return (req, res, next) => {
     if (!req.user) {
