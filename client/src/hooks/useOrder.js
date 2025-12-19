@@ -9,12 +9,23 @@ export default function useOrder({ pageSize = 8 } = {}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
 
+  /* ================= FETCH ================= */
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         setLoading(true);
+
         const res = await orderApi.getList();
-        setOrders(mapOrderListFromApiToUI(res.data.data));
+
+        // 🛡 normalize data
+        const rawData = res?.data?.data;
+
+        const mappedOrders = mapOrderListFromApiToUI(rawData);
+
+        setOrders(mappedOrders);
+      } catch (err) {
+        console.error("❌ Fetch orders failed:", err);
+        setOrders([]);
       } finally {
         setLoading(false);
       }
@@ -23,25 +34,40 @@ export default function useOrder({ pageSize = 8 } = {}) {
     fetchOrders();
   }, []);
 
-  /* ===== FILTER ===== */
+  /* ================= FILTER ================= */
   const filteredOrders = useMemo(() => {
-    return orders.filter((o) => o.orderId.toLowerCase().includes(searchTerm.toLowerCase()));
+    if (!searchTerm) return orders;
+
+    const keyword = searchTerm.toLowerCase();
+
+    return orders.filter((o) =>
+      String(o.orderId || "")
+        .toLowerCase()
+        .includes(keyword)
+    );
   }, [orders, searchTerm]);
 
-  /* ===== PAGINATION ===== */
-  const totalPages = Math.ceil(filteredOrders.length / pageSize);
+  /* ================= PAGINATION ================= */
+  const totalOrders = filteredOrders.length;
+
+  const totalPages = Math.max(1, Math.ceil(totalOrders / pageSize));
 
   const pagedOrders = useMemo(() => {
     const start = (page - 1) * pageSize;
     return filteredOrders.slice(start, start + pageSize);
   }, [filteredOrders, page, pageSize]);
 
+  /* ================= RESET PAGE ON SEARCH ================= */
+  useEffect(() => {
+    setPage(1);
+  }, [searchTerm]);
+
   return {
     loading,
 
     // data
     orders: pagedOrders,
-    totalOrders: filteredOrders.length,
+    totalOrders,
     totalPages,
 
     // state
