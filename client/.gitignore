@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.vscode
+node_modules
+package-lock.json
+pnpm-lock.yaml
+.env
+tmp
+.idea/
