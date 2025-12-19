@@ -1,5 +1,4 @@
 import { Provider } from "../models/provider.model.js";
-import { AppError } from "../utils/AppError.js";
 
 export const ProviderService = {
   async calculateShippingFee(subtotal) {

@@ -21,10 +21,10 @@ export const mapProducts = (products = []) => {
       price: Number(p.price) || 0,
       status: p.status ?? "unknown",
 
-      image:
-        isValidCloudinaryId && CLOUDINARY_BASE_URL
-          ? `${CLOUDINARY_BASE_URL}/${p.imagePublicId}`
-          : p.imagePublicUrl || "",
+      image: p.imagePublicUrl,
+      // isValidCloudinaryId && CLOUDINARY_BASE_URL
+      //   ? `${CLOUDINARY_BASE_URL}/${p.imagePublicId}`
+      //   : p.imagePublicUrl || "",
 
       date: p.createdAt ? new Date(p.createdAt).toLocaleDateString("vi-VN") : "",
 

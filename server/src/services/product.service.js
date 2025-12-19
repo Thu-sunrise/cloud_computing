@@ -82,7 +82,7 @@ export const ProductService = {
 
     // update alway set status pending
     updateData.status = "pending";
-    if (payload.status && (user === "service" || user.role === "admin")) {
+    if (payload.status && user.role === "admin") {
       updateData.status = payload.status;
     }
     if (image) {

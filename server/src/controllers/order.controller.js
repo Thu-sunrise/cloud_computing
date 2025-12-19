@@ -1,7 +1,4 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { CartService } from "../services/cart.service.js";
-import { ProductService } from "../services/product.service.js";
-import { UserService } from "../services/user.service.js";
 import { OrderService } from "../services/order.service.js";
 
 export const createOrder = asyncHandler(async (req, res) => {
@@ -18,15 +15,16 @@ export const createOrder = asyncHandler(async (req, res) => {
   });
 });
 
-export const getOrderHistory = asyncHandler(async (req, res) => {
-  const thisUserId = req.user.sub;
+export const getListOrders = asyncHandler(async (req, res) => {
+  const user = {
+    id: req.user?.sub,
+    role: req.user?.role,
+  };
+  const { page = 1, limit = 10, status } = req.query;
+  const result = await OrderService.getList(user, page, limit, status);
 
-  const orders = await OrderService.getOrdersByUserId(thisUserId);
-
-  return res.status(200).json({ data: orders });
-});
-
-export const getOrderList = asyncHandler(async (req, res) => {
-  const orders = await OrderService.getAllOrders();
-  return res.status(200).json({ data: orders });
+  return res.status(200).json({
+    message: "Get list orders successfully",
+    data: result,
+  });
 });

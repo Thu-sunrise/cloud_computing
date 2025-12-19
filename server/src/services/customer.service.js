@@ -99,6 +99,7 @@ export const CustomerService = {
 
     if (payload.gender) updateData.gender = payload.gender;
     if (payload.address) updateData.address = payload.address;
+    if (payload.status && user.role === "admin") updateData.status = payload.status;
 
     if (image) {
       const uploadResult = await CloudinaryService.uploadFile(image, "avatars");
