@@ -21,24 +21,34 @@ const STATUS_UI = {
   },
 };
 
+/**
+ * Map 1 order từ API → UI-safe object
+ */
 export const mapOrderFromApiToUI = (order) => {
+  if (!order) return null;
+
   const statusUI = STATUS_UI[order.status] || {
-    label: order.status,
+    label: order.status || "Unknown",
     className: "bg-gray-50 text-gray-700 border-gray-100",
   };
 
   return {
-    /** ===== ORDER IDS ===== */
-    orderId: order._id, // ID chính xác
+    /** ===== ORDER ===== */
+    orderId: order._id,
+    ownerId: order.ownerId || "-",
 
-    ownerId: order.ownerId,
-
-    /** ===== PRODUCT IDS ===== */
-    productIds: (order.products || []).map((p) => p.id || p._id),
+    /** ===== PRODUCTS (STRING ONLY) ===== */
+    productIds: (order.products || []).map((p) =>
+      typeof p === "string"
+        ? p
+        : p.name || p._id || p.id || "Unknown product"
+    ),
 
     /** ===== DATE ===== */
     createdAt: order.createdAt,
-    date: new Date(order.createdAt).toLocaleDateString("vi-VN"),
+    date: order.createdAt
+      ? new Date(order.createdAt).toLocaleDateString("vi-VN")
+      : "-",
 
     /** ===== STATUS ===== */
     status: order.status,
@@ -47,4 +57,17 @@ export const mapOrderFromApiToUI = (order) => {
   };
 };
 
-export const mapOrderListFromApiToUI = (orders = []) => orders.map(mapOrderFromApiToUI);
+/**
+ * 🔥 MAP NHIỀU ORDERS (CHUẨN HOÁ DATA)
+ * - API trả 1 object → convert thành array
+ * - API trả array → dùng luôn
+ */
+export const mapOrderListFromApiToUI = (data) => {
+  if (!data) return [];
+
+  const orders = Array.isArray(data) ? data : [data];
+
+  return orders
+    .map(mapOrderFromApiToUI)
+    .filter(Boolean);
+};

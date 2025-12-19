@@ -13,18 +13,15 @@ export default function Customers() {
     totalCustomers,
     searchTerm,
     setSearchTerm,
+    updateCustomer,
   } = useCustomer({ pageSize: 8 });
 
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [formData, setFormData] = useState(null);
+  const [saving, setSaving] = useState(false);
 
-  if (loading) {
-    return <div className="p-6 text-gray-500">Loading customers...</div>;
-  }
-
-  if (error) {
-    return <div className="p-6 text-red-500">Failed to load customers</div>;
-  }
+  if (loading) return <div className="p-6 text-gray-500">Loading customers...</div>;
+  if (error) return <div className="p-6 text-red-500">Failed to load customers</div>;
 
   return (
     <div className="space-y-4">
@@ -53,8 +50,8 @@ export default function Customers() {
             <tr>
               <th className="py-3 text-left">User</th>
               <th className="py-3 text-left">Email</th>
-              <th className="py-3 text-center">Orders</th>
-              <th className="py-3 text-center">Total Purchase</th>
+              <th className="py-3 text-center">Avg Rating</th>
+              <th className="py-3 text-center">Total Rating</th>
               <th className="py-3 text-center">Status</th>
               <th className="py-3 text-center">Action</th>
             </tr>
@@ -74,10 +71,8 @@ export default function Customers() {
                 </td>
 
                 <td className="py-3">{c.email}</td>
-                <td className="py-3 text-center font-medium">{c.orders}</td>
-                <td className="py-3 text-center text-gray-600">
-                  ${c.productsSold.toLocaleString()}
-                </td>
+                <td className="py-3 text-center">{c.ratingAvg}</td>
+                <td className="py-3 text-center">{c.ratingTotal}</td>
 
                 <td className="py-3 text-center">
                   <span
@@ -93,7 +88,10 @@ export default function Customers() {
 
                 <td className="py-3 text-center">
                   <button
+                    disabled={!c.id}
                     onClick={() => {
+                      if (!c.id) return;
+
                       setSelectedCustomer(c);
                       setFormData({
                         ...c,
@@ -101,7 +99,7 @@ export default function Customers() {
                         lastName: c.name.split(" ").slice(1).join(" "),
                       });
                     }}
-                    className="p-2 hover:bg-gray-100 rounded-lg"
+                    className="p-2 hover:bg-gray-100 rounded-lg disabled:opacity-50"
                   >
                     <MoreVertical size={16} />
                   </button>
@@ -133,7 +131,8 @@ export default function Customers() {
           </div>
         </div>
       </div>
-      {/* ===== MODAL DETAIL ===== */}
+
+      {/* MODAL */}
       {selectedCustomer && formData && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white w-full max-w-2xl rounded-xl p-6 relative">
@@ -185,12 +184,7 @@ export default function Customers() {
               <Input
                 label="Failed Login Attempt"
                 value={formData.failedLoginAttempt}
-                onChange={(v) =>
-                  setFormData({
-                    ...formData,
-                    failedLoginAttempt: Number(v),
-                  })
-                }
+                onChange={(v) => setFormData({ ...formData, failedLoginAttempt: Number(v) })}
               />
               <Input
                 label="Date of Birth"
@@ -222,14 +216,24 @@ export default function Customers() {
                 Cancel
               </button>
               <button
-                onClick={() => {
-                  console.log("SAVE PAYLOAD", formData);
-                  setSelectedCustomer(null);
-                  setFormData(null);
+                disabled={saving}
+                onClick={async () => {
+                  try {
+                    setSaving(true);
+                    await updateCustomer(selectedCustomer.id, formData);
+                    setSelectedCustomer(null);
+                    setFormData(null);
+                  } catch {
+                    alert("Update failed");
+                  } finally {
+                    setSaving(false);
+                  }
                 }}
-                className="px-4 py-2 text-sm bg-green-600 text-white rounded-lg"
+                className={`px-4 py-2 text-sm rounded-lg text-white ${
+                  saving ? "bg-gray-400" : "bg-green-600 hover:bg-green-700"
+                }`}
               >
-                Save Changes
+                {saving ? "Saving..." : "Save Changes"}
               </button>
             </div>
           </div>

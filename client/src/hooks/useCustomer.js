@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { customerApi } from "@/api/customerApi";
-import { mapCustomerListFromApiToUI } from "@/utils/customer.mapper";
+import { mapCustomerListFromApiToUI, mapCustomerFromUIToApi } from "@/utils/customer.mapper";
 
 export default function useCustomer({ pageSize = 8 } = {}) {
   const [customers, setCustomers] = useState([]);
@@ -10,33 +10,50 @@ export default function useCustomer({ pageSize = 8 } = {}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        setLoading(true);
-        const res = await customerApi.getList({
-          page: 1,
-          limit: 100,
-        });
+  /* ===== FETCH ===== */
+  const fetchCustomers = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await customerApi.getList({
+        page: 1,
+        limit: 100,
+      });
 
-        setCustomers(mapCustomerListFromApiToUI(res.data.data));
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCustomers();
+      setCustomers(mapCustomerListFromApiToUI(res.data.data));
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchCustomers();
+  }, [fetchCustomers]);
+
+  /* ===== UPDATE CUSTOMER ===== */
+  const updateCustomer = async (id, formData) => {
+    try {
+      const payload = mapCustomerFromUIToApi(formData);
+      await customerApi.update(id, payload);
+
+      // ✅ giữ nguyên logic: update xong fetch lại
+      await fetchCustomers();
+    } catch (err) {
+      setError(err);
+      throw err;
+    }
+  };
 
   /* ===== FILTER ===== */
   const filteredCustomers = useMemo(() => {
+    const keyword = searchTerm.toLowerCase();
+
     return customers.filter(
       (c) =>
-        c.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        c.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        c.name.toLowerCase().includes(searchTerm.toLowerCase())
+        c.id.toLowerCase().includes(keyword) ||
+        c.email.toLowerCase().includes(keyword) ||
+        c.name.toLowerCase().includes(keyword)
     );
   }, [customers, searchTerm]);
 
@@ -49,19 +66,18 @@ export default function useCustomer({ pageSize = 8 } = {}) {
   }, [filteredCustomers, page, pageSize]);
 
   return {
-    /* status */
     loading,
     error,
 
-    /* data */
     customers: pagedCustomers,
     totalCustomers: filteredCustomers.length,
     totalPages,
 
-    /* controls */
     page,
     setPage,
     searchTerm,
     setSearchTerm,
+
+    updateCustomer,
   };
 }
