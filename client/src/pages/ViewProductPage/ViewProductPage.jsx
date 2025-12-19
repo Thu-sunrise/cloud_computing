@@ -11,9 +11,8 @@ import ProductInfo from "../../components/ViewProduct/ProductInfo";
 import ShopOwnerCard from "../../components/ViewProduct/ShopOwnerCard";
 import ProductReviews from "../../components/ViewProduct/ProductReviews";
 
-// API + utils
+// API
 import { productApi, customerApi, reviewApi } from "../../api/authApi";
-import { getCloudinaryImage } from "../../utils/cloudinary";
 
 export default function ViewProductPage() {
   const { id } = useParams();
@@ -30,52 +29,32 @@ export default function ViewProductPage() {
 
         // 1️⃣ Lấy product
         const resProduct = await productApi.getById(id);
-        console.log("🧾 FULL PRODUCT RESPONSE:", resProduct);
-
         const productData = resProduct.data?.data;
         if (!productData) return;
 
-        console.log("🎯 PRODUCT DATA:", productData);
-
-        const imageUrl = productData.imagePublicId
-          ? getCloudinaryImage(productData.imagePublicId)
-          : "/placeholder.png";
-        console.log("🌐 FINAL PRODUCT IMAGE URL:", imageUrl);
-
         setProduct({
           ...productData,
-          image: imageUrl,
+          image: productData.imagePublicUrl || "/placeholder.png", // dùng trực tiếp từ API
         });
 
-        // 2️⃣ Lấy thông tin người bán từ customer/:id
+        // 2️⃣ Lấy thông tin người bán
         const sellerId = productData.createdBy?._id;
         if (sellerId) {
           try {
             const resOwner = await customerApi.getById(sellerId);
-            console.log("👤 OWNER RESPONSE:", resOwner);
-
-            const ownerData = resOwner.data?.data;
-            console.log("🏷 OWNER DATA:", ownerData);
-
-            setOwner(ownerData);
+            setOwner(resOwner.data?.data || null);
           } catch (err) {
             console.error("❌ Failed to fetch owner data:", err);
             setOwner(null);
           }
         } else {
-          console.warn("⚠️ Product has no createdBy._id");
           setOwner(null);
         }
 
-        // 3️⃣ Lấy review theo product
+        // 3️⃣ Lấy review của sản phẩm (hoặc của seller nếu muốn)
         try {
           const resReview = await reviewApi.getByUserId(sellerId);
-          console.log("📝 REVIEW RESPONSE:", resReview);
-
-          const reviewList = resReview.data?.data?.reviews || [];
-          console.log("📝 NORMALIZED REVIEW LIST:", reviewList);
-
-          setReviews(reviewList);
+          setReviews(resReview.data?.data?.reviews || []);
         } catch (err) {
           console.error("❌ Failed to fetch reviews:", err);
           setReviews([]);

@@ -9,54 +9,47 @@ const axiosClient = axios.create({
 // AUTH API
 // =======================
 export const authApi = {
-  // LOGIN
   login: (mail, password) => axiosClient.post("/auth/login", { mail, password }),
-
-  // SEND OTP
-  // type = "register" | "forgot-password"
-  // data = { mail, password } hoặc { mail }
   sendOtp: (type, data) => axiosClient.post(`/auth/send-otp?type=${type}`, data),
-
-  // VERIFY OTP
   verifyOtp: (type, token, otp) =>
     axiosClient.post(`/auth/verify-otp?type=${type}&token=${token}`, { otp }),
-
-  // REGISTER
-  // backend dùng token để lấy mail + password từ Redis
   register: (token) => axiosClient.post(`/auth/register?token=${token}`, {}),
-
-  // FORGOT PASSWORD
   forgotPassword: (mail, newPassword) =>
     axiosClient.post("/auth/forgot-password", { mail, newPassword }),
-
-  // CHANGE PASSWORD
   changePassword: (oldPassword, newPassword) =>
     axiosClient.post("/auth/change-password", { oldPassword, newPassword }),
-
-  // LOGOUT
   logout: () => axiosClient.post("/auth/logout"),
 };
+
 // =======================
 // PRODUCT API
 // =======================
 export const productApi = {
-  // Danh sách sản phẩm
+  // Danh sách sản phẩm public
   getList: (page = 1, limit = 6, params = {}) =>
-    axiosClient.get("/product/list", {
-      params: { page, limit, ...params },
-    }),
+    axiosClient.get("/product/list", { params: { page, limit, ...params } }),
+
+  // Danh sách sản phẩm của user hiện tại (my listing)
+  getMyList: (params = {}) => axiosClient.get("/product/my-list", { params }),
 
   // Chi tiết sản phẩm
   getById: (id) => axiosClient.get(`/product/${id}`),
+
+  // Thêm sản phẩm (cần formData để upload ảnh)
+  create: (formData) => axiosClient.post("/product", formData),
+
+  // Cập nhật sản phẩm
+  update: (id, formData) => axiosClient.put(`/product/${id}`, formData),
+
+  // Xoá sản phẩm
+  delete: (id) => axiosClient.delete(`/product/${id}`),
 };
 
 // =======================
 // REVIEW API
 // =======================
 export const reviewApi = {
-  // Lấy review theo productId
   getByUserId: (userId) => axiosClient.get(`/review/list/${userId}`),
-  // Tạo review
   create: (data) => axiosClient.post("/review", data),
 };
 
@@ -67,17 +60,31 @@ export const customerApi = {
   getMe: () => axiosClient.get("/customer/me"),
   getById: (id) => axiosClient.get(`/customer/${id}`),
 };
+
+// =======================
+// CART API
+// =======================
 export const cartApi = {
   getCart: () => axiosClient.get("/cart/me"),
   addToCart: (productId) => axiosClient.put(`/cart/${productId}`),
   removeOne: (productId) => axiosClient.delete(`/cart/${productId}`),
 };
-export const categoryApi = {
-  // Lấy tất cả categories
-  getListCategories: () => axiosClient.get("/category/list"),
 
-  // Lấy top-selling categories
+// =======================
+// CATEGORY API
+// =======================
+export const categoryApi = {
+  getListCategories: () => axiosClient.get("/category/list"),
   getTopSellingCategories: () => axiosClient.get("/category/top-selling"),
+};
+
+// =======================
+// ORDER API
+// =======================
+export const orderApi = {
+  createOrder: (data) => axiosClient.post("/order", data),
+  getOrderHistory: () => axiosClient.get("/order/order-history"),
+  getOrderList: () => axiosClient.get("/order/list"),
 };
 
 export default axiosClient;

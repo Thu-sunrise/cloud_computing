@@ -22,28 +22,34 @@ export default function ProductGrid({ headerTitle, searchQuery = "", itemsPerPag
       try {
         setLoading(true);
 
-        // ✅ truyền searchQuery vào API nếu có
         const res = await productApi.getList(currentPage, itemsPerPage, {
           ...(searchQuery && { search: searchQuery }),
           status: "active",
         });
 
-        const rawData = res.data?.data || [];
+        console.log("✅ API Response:", res);
+        console.log("✅ res.data.data:", res.data?.data);
+
+        // Lấy đúng mảng sản phẩm
+        const rawData = res.data?.data?.data || [];
+
+        console.log("✅ Final rawData array:", rawData);
 
         const normalizedData = rawData.map((p) => ({
           ...p,
-          imagePublicId:
-            p.imagePublicId || p.thumbnail || p.images?.[0]?.public_id || p.images?.[0] || null,
+          _id: p._id || p.id,
+          imagePublicId: p.images?.[0]?.public_id || p.imagePublicId || null,
         }));
 
         setProducts(normalizedData);
 
-        // 🔥 TÍNH PAGE DỰA TRÊN DATA THẬT
-        const totalProducts = res.data?.totalProducts ?? res.data?.total ?? normalizedData.length;
-
+        // Tính totalPages từ pagination
+        const totalProducts = res.data?.data?.pagination?.total ?? normalizedData.length;
         setTotalPages(Math.max(1, Math.ceil(totalProducts / itemsPerPage)));
       } catch (err) {
         console.error("❌ Failed to load products", err);
+        setProducts([]);
+        setTotalPages(1);
       } finally {
         setLoading(false);
       }
@@ -79,22 +85,16 @@ export default function ProductGrid({ headerTitle, searchQuery = "", itemsPerPag
         <p className="text-center text-gray-500">No products found</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-[50px]">
-          {products.map((product) => {
-            const imageUrl = product.imagePublicId
-              ? getCloudinaryImage(product.imagePublicId)
-              : "/placeholder.png";
-
-            return (
-              <Link key={product._id} to={`/product/${product._id}`}>
-                <ProductCard
-                  image={imageUrl}
-                  title={product.name}
-                  address={product.address || "Unknown"}
-                  points={product.price}
-                />
-              </Link>
-            );
-          })}
+          {products.map((product) => (
+            <Link key={product._id} to={`/product/${product._id}`}>
+              <ProductCard
+                image={product.imagePublicUrl || "/placeholder.png"} // dùng trực tiếp từ API
+                title={product.name}
+                address={product.address || "Unknown"}
+                points={product.price}
+              />
+            </Link>
+          ))}
         </div>
       )}
 

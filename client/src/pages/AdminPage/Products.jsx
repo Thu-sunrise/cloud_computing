@@ -68,36 +68,49 @@ export default function Products() {
 
         {/* ===== TABLE ===== */}
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm table-fixed">
             <thead className="border-b text-gray-500">
               <tr>
-                <th className="py-3 text-left">Product</th>
-                <th className="py-3 text-left">Date</th>
-                <th className="py-3 text-left">Customer</th>
-                <th className="py-3 text-left">Status</th>
-                <th className="py-3 text-left">Price</th>
-                <th className="py-3 text-right">Action</th>
+                <th className="py-3 px-2 text-left w-[35%]">Product</th>
+                <th className="py-3 px-2 text-left w-[25%]">Product ID</th>
+                <th className="py-3 px-2 text-left w-[15%]">Customer</th>
+                <th className="py-3 px-2 text-left w-[10%]">Status</th>
+                <th className="py-3 px-2 text-left w-[10%]">Price</th>
+                <th className="py-3 px-2 text-right w-[5%]">Action</th>
               </tr>
             </thead>
 
             <tbody className="divide-y">
               {products.map((p) => (
                 <tr key={p.id} className="hover:bg-gray-50">
-                  <td className="py-3">
-                    <div className="flex items-center gap-3">
+                  {/* PRODUCT */}
+                  <td className="py-3 px-2">
+                    <div className="flex items-center gap-3 truncate">
                       <img
                         src={p.image}
                         alt={p.name}
-                        className="w-10 h-10 rounded-md object-cover"
+                        className="w-10 h-10 rounded-md object-cover shrink-0"
                       />
-                      <span className="font-medium">{p.name}</span>
+                      <span className="font-medium truncate">{p.name}</span>
                     </div>
                   </td>
-                  <td className="py-3 text-gray-600">{p.date}</td>
-                  <td className="py-3 text-gray-600">{p.customerId}</td>
-                  <td className={`py-3 font-medium ${getStatusColor(p.status)}`}>{p.status}</td>
-                  <td className="py-3 font-medium">{p.price.toLocaleString()} pts</td>
-                  <td className="py-3 text-right">
+
+                  {/* PRODUCT ID */}
+                  <td className="py-3 px-2 text-xs text-gray-600 truncate">{p.id}</td>
+
+                  {/* CUSTOMER */}
+                  <td className="py-3 px-2 text-xs text-gray-600 truncate">{p.customerName}</td>
+
+                  {/* STATUS */}
+                  <td className={`py-3 px-2 font-medium truncate ${getStatusColor(p.status)}`}>
+                    {p.status}
+                  </td>
+
+                  {/* PRICE */}
+                  <td className="py-3 px-2 font-medium truncate">{p.price.toLocaleString()} pts</td>
+
+                  {/* ACTION */}
+                  <td className="py-3 px-2 text-right">
                     <button
                       onClick={() => {
                         setSelectedProduct(p);
@@ -110,6 +123,14 @@ export default function Products() {
                   </td>
                 </tr>
               ))}
+
+              {products.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="py-6 text-center text-gray-400">
+                    No products found
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -117,7 +138,11 @@ export default function Products() {
         {/* ===== PAGINATION ===== */}
         <div className="flex justify-between items-center mt-6">
           <div className="flex items-center gap-2">
-            <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="disabled:opacity-30"
+            >
               <ChevronLeft />
             </button>
 
@@ -128,6 +153,7 @@ export default function Products() {
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
+              className="disabled:opacity-30"
             >
               <ChevronRight />
             </button>

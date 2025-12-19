@@ -1,3 +1,4 @@
+// src/hooks/useProducts.js
 import { useEffect, useState } from "react";
 import productApi from "@/api/productApi";
 import { mapProducts } from "@/utils/mapProducts";
@@ -29,14 +30,18 @@ export default function useProducts({ pageSize = 8 }) {
         search: searchTerm,
       });
 
-      const mapped = mapProducts(res.data.data);
+      const rawProducts = res?.data?.data?.data || [];
+      const pagination = res?.data?.data?.pagination;
+
+      const mapped = mapProducts(rawProducts);
 
       setProducts(mapped);
-      setTotalPages(res.data.totalPages || 1);
-      setTotalResults(res.data.totalProducts || mapped.length);
+      setTotalPages(pagination?.totalPages || 1);
+      setTotalResults(pagination?.total || mapped.length);
     } catch (err) {
       console.error("Failed to fetch products:", err);
       setError(err);
+      setProducts([]);
     } finally {
       setLoading(false);
     }
@@ -46,7 +51,6 @@ export default function useProducts({ pageSize = 8 }) {
   const updateProductStatus = async ({ id, status }) => {
     await productApi.updateStatus({ id, status });
 
-    // optimistic update
     setProducts((prev) => prev.map((p) => (p.id === id ? { ...p, status } : p)));
   };
 
