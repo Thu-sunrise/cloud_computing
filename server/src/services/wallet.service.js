@@ -14,12 +14,10 @@ export const WalletService = {
 
   async update(userId, amount) {
     const wallet = await Wallet.findOne({ userId: userId });
-    if (!wallet) throw new AppError("Wallet not found", 404);
 
     wallet.balance += amount;
 
-    if (wallet.balance < 0)
-      throw new AppError("Balance is insufficient to complete the transaction.", 400);
+    if (wallet.balance < 0) throw new AppError("Insufficient wallet balance", 400);
     wallet.save();
 
     return wallet;

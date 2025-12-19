@@ -1,71 +1,141 @@
 import mongoose from "mongoose";
 
 import { Product } from "../models/product.model.js";
-import { AppError } from "../utils/AppError.js";
-import { User } from "../models/user.model.js";
 import { Cart } from "../models/cart.model.js";
 import { Order } from "../models/order.model.js";
+import { Wallet } from "../models/wallet.model.js";
 import { ProviderService } from "./provider.service.js";
 
+import { AppError } from "../utils/AppError.js";
+
 export const OrderService = {
-  async create(userId, products, pickupAddress) {
+  async create(userId, products, deliveryAddress) {
     const session = await mongoose.startSession();
     session.startTransaction();
-    try {
-      // group product by createdBy
-      const ordersBySeller = {};
 
-      for (const product of products) {
-        const sellerId = product.createdBy.toString();
-        if (!ordersBySeller[sellerId]) {
-          ordersBySeller[sellerId] = [];
-        }
-        ordersBySeller[sellerId].push(product);
+    try {
+      // group by seller
+      const ordersBySeller = {};
+      for (const p of products) {
+        const sellerId = p.createdBy.toString();
+        if (!ordersBySeller[sellerId]) ordersBySeller[sellerId] = [];
+        ordersBySeller[sellerId].push(p.id);
       }
 
-      // cal total price
-      const sellerOrders = [];
+      let grandTotal = 0;
+      const createdOrders = [];
 
       for (const sellerId in ordersBySeller) {
-        const items = ordersBySeller[sellerId];
+        // re-fetch product
+        const dbProducts = await Product.find({
+          _id: { $in: ordersBySeller[sellerId] },
+          status: "active",
+        }).session(session);
 
-        const subtotal = items.reduce((sum, item) => sum + item.price, 0);
+        if (dbProducts.length !== ordersBySeller[sellerId].length) {
+          throw new AppError("Some products are no longer available", 400);
+        }
 
+        const subtotal = dbProducts.reduce((s, p) => s + p.price, 0);
         const { providerId, shippingFee } = await ProviderService.calculateShippingFee(subtotal);
 
-        sellerOrders.push({
-          sellerId,
-          items,
-          subtotal,
-          providerId,
-          shippingFee,
-        });
+        const total = subtotal + shippingFee;
+        grandTotal += total;
+
+        // create order
+        const [order] = await Order.create(
+          [
+            {
+              ownerId: userId,
+              products: dbProducts.map((p) => ({ id: p._id })),
+              subtotal,
+              shipping: {
+                providerId,
+                pickupAddress: dbProducts[0].address,
+                deliveryAddress,
+                fee: shippingFee,
+              },
+            },
+          ],
+          { session }
+        );
+
+        createdOrders.push(order);
+
+        // mark product sold
+        await Product.updateMany(
+          { _id: { $in: dbProducts.map((p) => p._id) } },
+          { status: "sold" },
+          { session }
+        );
+
+        // credit seller wallet (no escrow)
+        await Wallet.findOneAndUpdate(
+          { userId: sellerId },
+          { $inc: { balance: subtotal } },
+          { session, upsert: true }
+        );
       }
 
-      await session.commitTransaction();
-      session.endSession();
+      // deduct wallet (atomic)
+      const wallet = await Wallet.findOneAndUpdate(
+        { userId, balance: { $gte: grandTotal } },
+        { $inc: { balance: -grandTotal } },
+        { session, new: true }
+      );
 
-      return;
+      if (!wallet) throw new AppError("Insufficient balance", 400);
+
+      // remove cart
+      await Cart.updateOne(
+        { userId },
+        { $pull: { products: { id: { $in: products.map((p) => p.id) } } } },
+        { session }
+      );
+
+      await session.commitTransaction();
+      return createdOrders;
     } catch (err) {
       await session.abortTransaction();
-      session.endSession();
       throw err;
+    } finally {
+      session.endSession();
     }
   },
 
-  async getOrdersByUserId(thisUserId) {
-    const orders = await Order.find({ ownerId: thisUserId }).populate(
-      "products.id",
-      "name description price imagePublicId"
-    );
-    return orders;
-  },
+  async getList(user, page, limit, status) {
+    const skip = (page - 1) * limit;
+    const filter = {};
 
-  async getAllOrders() {
-    const orders = await Order.find().populate(
-      "products.id",
-      "name description price imagePublicId"
-    );
-    return orders;
+    // role-based filter
+    if (user.role === "customer") {
+      filter.ownerId = user.id;
+    }
+
+    if (status) {
+      filter.status = status;
+    }
+
+    const [orders, total] = await Promise.all([
+      Order.find(filter)
+        .populate("products.id", "name price imagePublicId")
+        .populate("shipping.providerId", "name")
+        .sort({ createdAt: 1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+
+      Order.countDocuments(filter),
+    ]);
+
+    return {
+      data: orders,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   },
 };
