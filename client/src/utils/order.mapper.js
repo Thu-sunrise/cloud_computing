@@ -53,6 +53,11 @@ export const mapOrderFromApiToUI = (order) => {
   };
 };
 
+/**
+ * 🔥 MAP NHIỀU ORDERS (CHUẨN HOÁ DATA)
+ * - API trả 1 object → convert thành array
+ * - API trả array → dùng luôn
+ */
 export const mapOrderListFromApiToUI = (data) => {
   if (!data) return [];
 
