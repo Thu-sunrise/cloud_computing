@@ -3,11 +3,10 @@ import React from "react";
 export default function NewProductCard({ image, title, condition, points, oldPoints, discount }) {
   return (
     <div
-      className="bg-[#e4f2da] rounded-lg overflow-hidden shadow-sm transform transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-pointer flex flex-col"
-      style={{ aspectRatio: "2 / 3" }}
+      className="bg-[#e4f2da] rounded-lg overflow-hidden shadow-sm transform transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-pointer flex flex-col h-full"
     >
       {/* IMAGE */}
-      <div className="relative w-full flex-shrink-0" style={{ flexBasis: "60%" }}>
+      <div className="relative w-full h-48 overflow-hidden flex-shrink-0">
         <img
           src={image}
           alt={title}

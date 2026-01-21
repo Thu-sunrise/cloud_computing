@@ -8,9 +8,7 @@ export default function ProductReviews({ reviews }) {
         name: r.reviewer?.name
           ? `${r.reviewer.name.firstName} ${r.reviewer.name.lastName}`
           : "Người dùng",
-        avatar: r.reviewer?.avatarPublicId
-          ? `https://res.cloudinary.com/do7o7ymyt/image/upload/${r.reviewer.avatarPublicId}`
-          : "/default-avatar.png",
+        avatar: r.reviewer?.avatarPublicUrl || "/default-avatar.png",
         rating: r.rating || 0,
         comment: r.comment || "",
       }))

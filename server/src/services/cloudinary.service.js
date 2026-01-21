@@ -44,9 +44,6 @@ export const CloudinaryService = {
 
   generateSignedUrl(publicId, expiresInSeconds = 3600) {
     // expires_at = UNIX timestamp
-    if (!publicId.includes("/")) {
-      return cloudinary.url(publicId, { secure: true });
-    }
     const expiresAt = Math.floor(Date.now() / 1000) + expiresInSeconds;
 
     return cloudinary.url(publicId, {

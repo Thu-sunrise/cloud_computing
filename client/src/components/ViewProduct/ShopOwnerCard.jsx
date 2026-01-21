@@ -1,6 +1,5 @@
 import React from "react";
 import { Star, MessageCircle, MapPin } from "lucide-react";
-import { getCloudinaryImage } from "../../utils/cloudinary";
 
 export default function ShopOwnerCard({ owner, reviews = [] }) {
   if (!owner) return null;
@@ -10,7 +9,7 @@ export default function ShopOwnerCard({ owner, reviews = [] }) {
       ? owner.name
       : `${owner.name?.firstName || ""} ${owner.name?.lastName || ""}`.trim() || "Seller";
 
-  const avatarUrl = owner.avatar ? getCloudinaryImage(owner.avatar) : "/default-avatar.png";
+  const avatarUrl = owner.avatarPublicUrl || "/default-avatar.png";
 
   // Calculate average rating
   const averageRating =

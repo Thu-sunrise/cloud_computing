@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import CategoryCard from "./CategoryCard";
 import bgBanner from "../../../assets/images/bgtd.png";
 import { categoryApi } from "../../../api/authApi";
-import { getCloudinaryImage } from "../../../utils/cloudinary";
 
 export default function CategoryGrid() {
   const [categories, setCategories] = useState([]);
@@ -72,12 +71,11 @@ export default function CategoryGrid() {
       <div className="w-full max-w-8xl mx-auto px-4 mb-12">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
           {categories.map((c, index) => {
-            // Lấy publicId hoặc URL trực tiếp
-            const imageId = c.imagePublicId || null; // dùng getCloudinaryImage
-            const imageUrl = imageId ? getCloudinaryImage(imageId) : c.imageUrl || "/no-image.png";
+            // Sử dụng signed URL trực tiếp từ API
+            const imageUrl = c.imagePublicUrl || "/no-image.png";
 
             console.log(`🟢 CATEGORY[${index}] name:`, c.name);
-            console.log(`🖼️ CATEGORY[${index}] imageId:`, imageId);
+            console.log(`🖼️ CATEGORY[${index}] imagePublicId:`, c.imagePublicId);
             console.log(`🌐 CATEGORY[${index}] final image URL:`, imageUrl);
 
             return (

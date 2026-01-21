@@ -8,10 +8,11 @@ export default function ProductCard({ image, title, address, points }) {
       className="bg-[#e4f2da] rounded-2xl overflow-hidden
                  shadow-sm hover:shadow-xl
                  transition-all duration-300
-                 hover:-translate-y-1 cursor-pointer"
+                 hover:-translate-y-1 cursor-pointer
+                 flex flex-col h-full"
     >
       {/* IMAGE */}
-      <div className="relative w-full h-64 overflow-hidden">
+      <div className="relative w-full h-48 overflow-hidden flex-shrink-0">
         <img
           src={image}
           alt={title}

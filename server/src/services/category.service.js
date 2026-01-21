@@ -8,7 +8,7 @@ export const CategoryService = {
     return Promise.all(
       categories.map((category) => ({
         ...category,
-        imageUrl: CloudinaryService.generateSignedUrl(category.imagePublicId),
+        imagePublicUrl: CloudinaryService.generateSignedUrl(category.imagePublicId),
       }))
     );
   },

@@ -121,7 +121,7 @@ export const CustomerService = {
 
     return {
       ...updatedCustomer,
-      avatarUrl: CloudinaryService.generateSignedUrl(updatedCustomer.avatarPublicId),
+      avatarPublicUrl: CloudinaryService.generateSignedUrl(updatedCustomer.avatarPublicId),
     };
   },
 

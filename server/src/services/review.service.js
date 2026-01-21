@@ -2,6 +2,7 @@ import { AppError } from "../utils/AppError.js";
 import { Review } from "../models/review.model.js";
 import { Customer } from "../models/customer.model.js";
 import { Product } from "../models/product.model.js";
+import { CloudinaryService } from "./cloudinary.service.js";
 import mongoose from "mongoose";
 
 export const ReviewService = {
@@ -109,8 +110,17 @@ export const ReviewService = {
       totalReviewCount: 0,
     };
 
+    // Generate signed URLs for avatars
+    const reviewsWithUrls = reviews.map((review) => ({
+      ...review,
+      reviewer: {
+        ...review.reviewer,
+        avatarPublicUrl: CloudinaryService.generateSignedUrl(review.reviewer.avatarPublicId),
+      },
+    }));
+
     return {
-      reviews,
+      reviews: reviewsWithUrls,
       ...stats,
     };
   },

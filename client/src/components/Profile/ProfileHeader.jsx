@@ -21,9 +21,7 @@ export default function ProfileHeader() {
         console.log(response);
         const user = response.data.data;
         console.log(user);
-        let avatarUrl = user.avatarPublicId.length >0
-          ? "https://res.cloudinary.com/" + CLOUD_NAME + "/image/upload/" + user.avatarPublicId
-          : "https://i.pravatar.cc/200";
+        let avatarUrl = user.avatarPublicUrl || "https://i.pravatar.cc/200";
 
         setUserData({
           fullName: user.name ? `${user.name.firstName || ""} ${user.name.lastName || ""}`.trim() : "User",
