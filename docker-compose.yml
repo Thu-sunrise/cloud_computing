@@ -1,0 +1,92 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./server
+    image: cloud_backend:latest
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./server/.env
+    environment:
+      - NODE_ENV=development
+      - PORT=5000
+      - MONGO_URI=mongodb://mongo:27017/cloud_db
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      # Khóa bảo vệ: Ép Backend phải kiên nhẫn chờ đến khi Mongo và Redis báo "healthy" thì mới được chạy
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db # Ánh xạ ổ cứng thật vào container để dữ liệu không bị mất khi tắt máy
+    environment:
+      - MONGO_INITDB_DATABASE=cloud_db
+    healthcheck:
+      # KIỂM TRA: Cứ mỗi 10s, dùng lệnh 'mongosh' gõ cửa hỏi xem DB đã sẵn sàng nhận request chưa
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+      # Redis sẽ snapshot nếu có ít nhất 1 thay đổi trong 60s
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      # KIỂM TRA: Gõ lệnh 'ping', nếu Redis sống nó sẽ trả lời là 'PONG'
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis-exporter:
+    image: oliver006/redis_exporter
+    ports:
+      - "9121:9121"
+    environment:
+      - REDIS_ADDR=redis:6379
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin # Mật khẩu đã được đổi thành cloudcomputing
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+volumes:
+  mongo_data:
+  redis_data:
+  grafana_data:

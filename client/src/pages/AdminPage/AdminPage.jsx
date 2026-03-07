@@ -6,6 +6,7 @@ import Products from "./Products";
 import Categories from "./Categories";
 import Customers from "./Customers";
 import AdminHeader from "@/components/Admin/AdminHeader";
+import Monitoring from "./Monitoring";
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -22,6 +23,8 @@ export default function AdminPage() {
         return <Categories />;
       case "customers":
         return <Customers />;
+      case "monitoring":
+        return <Monitoring />;
       default:
         return <Dashboard />;
     }
