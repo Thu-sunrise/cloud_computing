@@ -1,5 +1,13 @@
 import React from "react";
-import { LayoutDashboard, ShoppingCart, Package, Tags, Users, LogOut } from "lucide-react";
+import {
+  LayoutDashboard,
+  ShoppingCart,
+  Package,
+  Tags,
+  Users,
+  LogOut,
+  Activity,
+} from "lucide-react";
 import mockProfileData from "@/pages/ProfilePage/ProfileData.js";
 
 const MENU_ITEMS = [
@@ -8,6 +16,7 @@ const MENU_ITEMS = [
   { id: "products", label: "Products", icon: Package },
   { id: "categories", label: "Categories", icon: Tags },
   { id: "customers", label: "Customers", icon: Users },
+  { id: "monitoring", label: "Monitoring", icon: Activity },
   { id: "logout", label: "Logout", icon: LogOut, danger: true },
 ];
 

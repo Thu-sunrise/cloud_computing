@@ -9,6 +9,8 @@ import testRoute from "./routes/test.routes.js";
 import { env } from "./config/env.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import { AppError } from "./utils/AppError.js";
+import { metricsMiddleware } from "./middlewares/metrics.middleware.js";
+import { metricsEndpoint } from "./routes/metrics.routes.js";
 
 export const createApp = () => {
   const app = express();
@@ -21,6 +23,12 @@ export const createApp = () => {
     app.use(morgan("dev")); // Logger
   }
   app.use(cookieParser()); // Cookie parser
+
+  // metrics
+  app.use(metricsMiddleware);
+
+  // Endpoint để Prometheus scrape metrics
+  app.get("/metrics", metricsEndpoint);
 
   // Routes
   app.use("/api", routes);
