@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthContext } from "@/context/AuthContext";
 
-// Hardcode, you can replace this with your own authentication logic
+// Redirects unauthenticated users to /login
 export default function PrivateRoute({ children }) {
-  const { user } = useAuth();
+  const { user, loading } = useAuthContext();
+  if (loading) return null;
   return user ? children : <Navigate to="/login" />;
 }
 

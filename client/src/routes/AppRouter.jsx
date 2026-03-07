@@ -21,6 +21,7 @@ import ProfileHistoryPage from "@/pages/ProfilePage/ProfileHistoryPage";
 import ShopDetailPage from "../pages/ShopDetailPage/ShopDetailPage";
 import AdminPage from "../pages/AdminPage/AdminPage";
 import EditProduct from "../pages/ProfilePage/EditProdut";
+import PrivateRoute from "./PrivateRouter";
 function TitleUpdater() {
   const location = useLocation();
 
@@ -72,10 +73,17 @@ export default function AppRouter() {
         <Route path="/checkout" element={<CheckOutPage />} />
         <Route path="/my-listing" element={<MyListing />} />
         <Route path="/my-listing/addproduct" element={<AddProduct />} />
-        <Route path="/home/result" element={<ListProducts />} />s
+        <Route path="/home/result" element={<ListProducts />} />
         <Route path="/orders" element={<ProfileHistoryPage />} />
         <Route path="/detail-shop" element={<ShopDetailPage />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute>
+              <AdminPage />
+            </PrivateRoute>
+          }
+        />
         {/*<Route path="*" element={<Navigate to="/notfound" replace />} />*/}
       </Routes>
     </BrowserRouter>
