@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
 import Sidebar from "@/components/Admin/Sidebar";
 import Dashboard from "./Dashboard";
 import Orders from "./Orders";
@@ -8,15 +7,9 @@ import Categories from "./Categories";
 import Customers from "./Customers";
 import AdminHeader from "@/components/Admin/AdminHeader";
 import Monitoring from "./Monitoring";
-import { useAuthContext } from "@/context/AuthContext";
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("dashboard");
-  const { user } = useAuthContext();
-
-  if (user?.role !== "admin") {
-    return <Navigate to="/home" replace />;
-  }
 
   const renderContent = () => {
     switch (activeTab) {
