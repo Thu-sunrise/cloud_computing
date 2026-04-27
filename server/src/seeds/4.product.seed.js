@@ -32,6 +32,7 @@ export const seed = async () => {
         name: product.name,
         description: product.description,
         price: product.price,
+        stock: product.status === "sold" ? 0 : 1,
         imagePublicId: product.imagePublicId,
         status: product.status,
         createdBy: customer._id,

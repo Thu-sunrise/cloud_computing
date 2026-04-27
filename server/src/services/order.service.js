@@ -1,42 +1,64 @@
-import mongoose from "mongoose";
-
 import { Product } from "../models/product.model.js";
-import { Cart } from "../models/cart.model.js";
+import { Customer } from "../models/customer.model.js";
 import { Order } from "../models/order.model.js";
 import { Wallet } from "../models/wallet.model.js";
 import { ProviderService } from "./provider.service.js";
+import { InventoryService } from "./inventory.service.js";
+import { RabbitMQService } from "./rabbitmq.service.js";
 
 import { AppError } from "../utils/AppError.js";
+import { logger } from "../utils/logger.js";
 
 export const OrderService = {
   async create(userId, products, deliveryAddress) {
-    const session = await mongoose.startSession();
-    session.startTransaction();
+    const reservedProducts = [];
+    const jobs = [];
+    const createdOrders = [];
 
     try {
       // group by seller
       const ordersBySeller = {};
+      const productIds = [];
       for (const p of products) {
         const sellerId = p.createdBy.toString();
         if (!ordersBySeller[sellerId]) ordersBySeller[sellerId] = [];
         ordersBySeller[sellerId].push(p.id);
+        productIds.push(p.id);
       }
+
+      const dbProducts = await Product.find({
+        _id: { $in: productIds },
+        status: "active",
+      }).lean();
+
+      if (dbProducts.length !== productIds.length) {
+        throw new AppError("Some products are no longer available", 400);
+      }
+
+      await InventoryService.reserve(dbProducts);
+      reservedProducts.push(...dbProducts);
+
+      const sellers = await Customer.find({
+        _id: { $in: Object.keys(ordersBySeller) },
+      })
+        .select("address")
+        .lean();
+
+      const sellerAddressMap = new Map(sellers.map((seller) => [seller._id.toString(), seller.address || ""]));
 
       let grandTotal = 0;
       const createdOrders = [];
 
       for (const sellerId in ordersBySeller) {
-        // re-fetch product
-        const dbProducts = await Product.find({
-          _id: { $in: ordersBySeller[sellerId] },
-          status: "active",
-        }).session(session);
+        const sellerProducts = dbProducts.filter((product) =>
+          ordersBySeller[sellerId].some((productId) => productId.toString() === product._id.toString())
+        );
 
-        if (dbProducts.length !== ordersBySeller[sellerId].length) {
+        if (sellerProducts.length !== ordersBySeller[sellerId].length) {
           throw new AppError("Some products are no longer available", 400);
         }
 
-        const subtotal = dbProducts.reduce((s, p) => s + p.price, 0);
+        const subtotal = sellerProducts.reduce((s, p) => s + p.price, 0);
         const { providerId, shippingFee } = await ProviderService.calculateShippingFee(subtotal);
 
         const total = subtotal + shippingFee;
@@ -47,59 +69,64 @@ export const OrderService = {
           [
             {
               ownerId: userId,
-              products: dbProducts.map((p) => ({ id: p._id })),
+              sellerId,
+              products: sellerProducts.map((p) => ({ id: p._id })),
               subtotal,
+              status: "created",
               shipping: {
                 providerId,
-                pickupAddress: dbProducts[0].address,
+                pickupAddress: sellerAddressMap.get(sellerId) || "",
                 deliveryAddress,
                 fee: shippingFee,
               },
             },
           ],
-          { session }
         );
 
         createdOrders.push(order);
 
-        // mark product sold
-        await Product.updateMany(
-          { _id: { $in: dbProducts.map((p) => p._id) } },
-          { status: "sold" },
-          { session }
-        );
-
-        // credit seller wallet (no escrow)
-        await Wallet.findOneAndUpdate(
-          { userId: sellerId },
-          { $inc: { balance: subtotal } },
-          { session, upsert: true }
-        );
+        jobs.push({
+          orderId: order._id.toString(),
+          userId,
+          sellerId,
+          subtotal,
+          productIds: sellerProducts.map((p) => p._id.toString()),
+        });
       }
 
       // deduct wallet (atomic)
       const wallet = await Wallet.findOneAndUpdate(
         { userId, balance: { $gte: grandTotal } },
         { $inc: { balance: -grandTotal } },
-        { session, new: true }
+        { new: true }
       );
 
-      if (!wallet) throw new AppError("Insufficient balance", 400);
+      if (!wallet) {
+        await Order.deleteMany({ _id: { $in: createdOrders.map((order) => order._id) } });
+        throw new AppError("Insufficient balance", 400);
+      }
 
-      // remove cart
-      await Cart.updateOne(
-        { userId },
-        { $pull: { products: { id: { $in: products.map((p) => p.id) } } } },
-        { session }
-      );
+      for (const job of jobs) {
+        try {
+          await RabbitMQService.publish(job);
+        } catch (publishError) {
+          logger.warn(`[RabbitMQ] publish failed for order ${job.orderId}: ${publishError.message}`);
+        }
+      }
 
-      await session.commitTransaction();
       return createdOrders;
     } catch (err) {
-      await session.abortTransaction();
+      if (reservedProducts.length > 0) {
+        try {
+          await InventoryService.release(reservedProducts);
+        } catch (releaseError) {
+          logger.warn(`[Inventory] release failed: ${releaseError.message}`);
+        }
+      }
+      if (createdOrders.length > 0) {
+        await Order.deleteMany({ _id: { $in: createdOrders.map((order) => order._id) } });
+      }
       throw err;
-    } finally {
-      session.endSession();
     }
   },
 
