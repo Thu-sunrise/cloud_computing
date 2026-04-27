@@ -1,0 +1,22 @@
+# Bỏ qua thư viện của máy tính cục bộ
+node_modules/
+npm-debug.log
+
+# Bỏ qua các file cấu hình môi trường
+.env
+
+# Bỏ qua các file build cũ
+dist/
+build/
+
+# Bỏ qua rác của IDE và logs
+.vscode/
+logs/
+*.log
+coverage/
+
+# Bỏ qua file của Git và Docker
+.git/
+.gitignore
+Dockerfile
+.dockerignore

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "@/components/Admin/Sidebar";
 import Dashboard from "./Dashboard";
 import Orders from "./Orders";
@@ -6,9 +6,20 @@ import Products from "./Products";
 import Categories from "./Categories";
 import Customers from "./Customers";
 import AdminHeader from "@/components/Admin/AdminHeader";
+import Monitoring from "./Monitoring";
+import { useAuthContext } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && user.role !== "admin") {
+      navigate("/home");
+    }
+  }, [user]);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -22,6 +33,8 @@ export default function AdminPage() {
         return <Categories />;
       case "customers":
         return <Customers />;
+      case "monitoring":
+        return <Monitoring />;
       default:
         return <Dashboard />;
     }
