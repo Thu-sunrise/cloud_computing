@@ -1,12 +1,23 @@
 version: "3.8"
 
 services:
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: cloud_frontend:latest
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
   backend:
     build:
       context: ./server
     image: cloud_backend:latest
     ports:
-      - "5000:5000"
+      - "5001:5000"
     env_file:
       - ./server/.env
     environment:
@@ -15,6 +26,8 @@ services:
       - MONGO_URI=mongodb://mongo:27017/cloud_db
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - JWT_SECRET=local-dev-secret-change-me
+      - COOKIE_SECURE=false
     depends_on:
       # Khóa bảo vệ: Ép Backend phải kiên nhẫn chờ đến khi Mongo và Redis báo "healthy" thì mới được chạy
       mongo:
@@ -72,11 +85,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
       - GF_SECURITY_ALLOW_EMBEDDING=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
     volumes:
       - grafana_data:/var/lib/grafana
     restart: unless-stopped
